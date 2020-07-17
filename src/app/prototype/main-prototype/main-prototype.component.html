@@ -1,0 +1,14 @@
+<p>main-prototype works!</p>
+<h1>Vsechny:</h1>
+<br>
+<div *ngFor="let item of weatherForecast">
+  {{item.date}}<br>
+  {{item.summary}}<br>
+  {{item.temperatureC}}<br><br><br>
+</div>
+
+<div *ngIf="singleForecast"><strong>
+  {{singleForecast.date}}<br>
+  {{singleForecast.summary}}<br>
+  {{singleForecast.temperatureC}}<br><br><br>
+</strong></div>
