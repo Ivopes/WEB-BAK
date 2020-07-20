@@ -17,4 +17,9 @@ export class PrototypeDataService {
   getSingle(): Observable<WeatherForecast> {
     return this.httpClient.get<WeatherForecast>(this.constants.API_ENDPOINT + '/weatherforecast/single');
   }
+  getMp3ById(id: string): Observable<any> {
+    return this.httpClient.get(this.constants.API_ENDPOINT + '/Mp3/' + id, {
+      responseType: 'text'
+    });
+  }
 }

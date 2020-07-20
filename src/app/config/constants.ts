@@ -1,9 +1,12 @@
 // Angular Modules
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class Constants {
-    public readonly API_ENDPOINT: string = 'https://localhost:44329/api';
-    public readonly API_MOCK_ENDPOINT: string = 'mock-domain/api';
+  private readonly baseUrl = environment.baseUrl;
+
+  public readonly API_ENDPOINT: string = this.baseUrl + '/api';
+  public readonly API_MOCK_ENDPOINT: string = 'mock-domain/api';
 }
