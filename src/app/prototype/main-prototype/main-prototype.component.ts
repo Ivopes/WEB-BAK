@@ -29,7 +29,7 @@ export class MainPrototypeComponent implements OnInit {
     },
     err => console.error(err)
     );
-    this.getMp3();
+    //this.getMp3();
   }
 
   getMp3(): void {
