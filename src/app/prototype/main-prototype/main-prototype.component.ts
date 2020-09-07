@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrototypeDataService } from '../shared/services/prototype-data.service';
-import { WeatherForecast } from '../shared/models/weather-forecast.model';
+import { WeatherForecast } from '../../main/shared/models/weather-forecast.model';
 
 
 @Component({
@@ -29,13 +29,13 @@ export class MainPrototypeComponent implements OnInit {
     },
     err => console.error(err)
     );
-    //this.getMp3();
+    // this.getMp3();
   }
 
   getMp3(): void {
     this.proData.getMp3ById('5').subscribe(data => {
       this.mp3File = data;
-      //new File(data, 'vytvorene.mp3');
+      // new File(data, 'vytvorene.mp3');
     },
     err => console.error(err)
     );
