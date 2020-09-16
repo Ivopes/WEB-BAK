@@ -9,6 +9,7 @@ import { MainLoginComponent } from './main/main-login/main-login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './main/shared/modules/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { JwtModule } from '@auth0/angular-jwt';
 
@@ -36,6 +37,7 @@ export function tokenGetter() {
         disallowedRoutes: [],
       },
     }),
+    FlexLayoutModule,
   ],
   exports: [
     MaterialModule
