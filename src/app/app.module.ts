@@ -13,7 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { JwtModule } from '@auth0/angular-jwt';
 
-export function tokenGetter() {
+export function tokenGetter(): string {
   return localStorage.getItem('jwt');
 }
 
@@ -32,8 +32,9 @@ export function tokenGetter() {
     ReactiveFormsModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ['localhost:44329'],
+        tokenGetter,
+        allowedDomains: ['localhost:44329',
+                         'https://garmusicapi.azurewebsites.net'],
         disallowedRoutes: [],
       },
     }),
