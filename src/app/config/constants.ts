@@ -8,5 +8,4 @@ export class Constants {
   private readonly baseUrl = environment.baseUrl;
 
   public readonly API_ENDPOINT: string = this.baseUrl + '/api';
-  public readonly API_MOCK_ENDPOINT: string = 'mock-domain/api';
 }
