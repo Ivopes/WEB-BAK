@@ -6,7 +6,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -16,7 +16,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
    MatFormFieldModule,
    MatInputModule,
    MatSlideToggleModule,
-   MatProgressSpinnerModule
+   MatProgressSpinnerModule,
+   MatSnackBarModule
   ],
   exports: [
    MatSliderModule,
@@ -25,7 +26,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
    MatFormFieldModule,
    MatInputModule,
    MatSlideToggleModule,
-   MatProgressSpinnerModule
+   MatProgressSpinnerModule,
+   MatSnackBarModule
   ],
 })
 export class MaterialModule { }
