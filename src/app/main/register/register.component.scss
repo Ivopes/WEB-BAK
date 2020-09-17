@@ -2,21 +2,14 @@
   font-size: 0.8rem;
   margin-bottom: 10px;
   color: #2d8bfc;
-
 }
 .register-text:hover {
   cursor: pointer;
   text-decoration: underline;
 }
-
 .wrapper {
   height: 100%;
 }
-
-mat-card-content div mat-form-field:first-of-type{
-  margin-right: 1rem;
-}
-
 .spinner {
   position: absolute;
   top: 50%;

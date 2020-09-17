@@ -8,40 +8,41 @@
       Sign up
     </mat-card-title>
 
-    <mat-card-content fxLayout="column">
+    <mat-card-content fxLayout="column" fxLayoutGap="1rem">
 
-      <div fxLayout="row">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem">
         <mat-form-field>
-          <input formControlName="firstName" matInput placeholder="First name">
+          <input formControlName="firstName" required matInput placeholder="First name">
         </mat-form-field>
 
 
         <mat-form-field>
-          <input formControlName="lastName" matInput placeholder="Last name" />
+          <input formControlName="lastName" required matInput placeholder="Last name" />
         </mat-form-field>
       </div>
 
-      <div fxLayout="row">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem">
 
         <mat-form-field>
-          <input formControlName="email" matInput placeholder="Email adress" />
+          <input formControlName="email" required matInput placeholder="Email adress" />
           <mat-error>Email format is invalid</mat-error>
         </mat-form-field>
 
 
         <mat-form-field>
-          <input formControlName="username" matInput placeholder="Username" />
+          <input formControlName="username" required matInput placeholder="Username" />
           <mat-hint>Displays on your profile</mat-hint>
         </mat-form-field>
       </div>
 
-      <div fxLayout="row">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem">
         <mat-form-field>
-          <input formControlName="password" matInput type="password" placeholder="Password" />
+          <input formControlName="password" required matInput type="password" placeholder="Password" />
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="password" matInput type="password" placeholder="Re-type password" />
+          <input formControlName="retypePassword" required matInput type="password" placeholder="Re-type password" />
+          <mat-error>Passwords do not match</mat-error>
         </mat-form-field>
       </div>
 
@@ -49,7 +50,7 @@
         <a class="register-text" (click)="this.showLogin()">Already have an account?</a>
 
         <div class="button-flex-container">
-          <button [disabled]="!this.registerForm.valid" mat-raised-button color="primary" type="submit">Sign
+          <button mat-raised-button color="primary" type="submit">Sign
             up</button>
         </div>
       </div>
