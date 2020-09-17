@@ -1,0 +1,35 @@
+<div fxLayout fxLayoutAlign="space-around center" class="wrapper">
+
+  <form @remove *ngIf="!this.load" [formGroup]="this.loginForm" (ngSubmit)="onSubmit()" class="form-flex">
+    <mat-card>
+
+      <mat-card-title>
+        Login
+      </mat-card-title>
+
+      <mat-card-content fxLayout="column">
+
+        <mat-form-field>
+          <input formControlName="username" matInput placeholder="Username">
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="password" matInput type="password" placeholder="Password" />
+        </mat-form-field>
+
+        <div fxLayoutAlign="center center" fxLayout="column">
+          <a class="register-text" (click)="this.showRegister()">Dont have an account yet?</a>
+
+          <div class="button-flex-container">
+            <button [disabled]="!this.loginForm.valid" mat-raised-button color="primary" type="submit">Login</button>
+          </div>
+        </div>
+
+      </mat-card-content>
+
+    </mat-card>
+
+  </form>
+</div>
+
+<mat-spinner *ngIf="this.load" class="spinner"></mat-spinner>

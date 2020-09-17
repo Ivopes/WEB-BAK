@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { User } from '../shared/models/user.model';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { UserCredentials } from '../shared/models/userCredentials.model';
 import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-main-login',
@@ -11,34 +12,34 @@ import { Router } from '@angular/router';
 })
 export class MainLoginComponent implements OnInit {
 
+  showLoginForm = true;
+  load = false;
+
   constructor(
-    private fb: FormBuilder,
     private auth: AuthService,
     private router: Router
     ) { }
 
-  public loginForm;
-
   ngOnInit(): void {
-    this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
   }
 
   onSubmit(): void {
-    console.log(this.loginForm.value);
-    this.login(this.loginForm.value);
+    this.load = true;
   }
 
-  login(user: User): void {
-    this.auth.login(user).subscribe(res => {
+  login(credentials: UserCredentials): void {
+    this.auth.login(credentials).subscribe(res => {
       console.log(res);
       const token = res.token;
       localStorage.setItem('jwt', token);
       this.router.navigate(['/test']);
     },
-    err => console.error(err));
+    err => {
+      this.load = false;
+    });
   }
 
+  changeForms(): void {
+    this.showLoginForm = !this.showLoginForm;
+  }
 }

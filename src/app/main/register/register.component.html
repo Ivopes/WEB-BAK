@@ -1,0 +1,63 @@
+<div fxLayout fxLayoutAlign="space-around center" class="wrapper">
+
+
+<form @remove *ngIf="!this.load" [formGroup]="this.registerForm" (ngSubmit)="onSubmit()" class="form-flex">
+  <mat-card>
+
+    <mat-card-title>
+      Sign up
+    </mat-card-title>
+
+    <mat-card-content fxLayout="column">
+
+      <div fxLayout="row">
+        <mat-form-field>
+          <input formControlName="firstName" matInput placeholder="First name">
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <input formControlName="lastName" matInput placeholder="Last name" />
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row">
+
+        <mat-form-field>
+          <input formControlName="email" matInput placeholder="Email adress" />
+          <mat-error>Email format is invalid</mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field>
+          <input formControlName="username" matInput placeholder="Username" />
+          <mat-hint>Displays on your profile</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row">
+        <mat-form-field>
+          <input formControlName="password" matInput type="password" placeholder="Password" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="password" matInput type="password" placeholder="Re-type password" />
+        </mat-form-field>
+      </div>
+
+      <div fxLayoutAlign="center center" fxLayout="column">
+        <a class="register-text" (click)="this.showLogin()">Already have an account?</a>
+
+        <div class="button-flex-container">
+          <button [disabled]="!this.registerForm.valid" mat-raised-button color="primary" type="submit">Sign
+            up</button>
+        </div>
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+</form>
+
+<mat-spinner *ngIf="this.load" class="spinner"></mat-spinner>
+</div>
