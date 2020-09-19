@@ -1,5 +1,9 @@
+<div fxLayout fxLayoutAlign="space-around center" class="wrapper">
+
  <app-login (showRegisterEvent)="this.changeForms()"  *ngIf="this.showLoginForm;else registerForm"></app-login>
 
  <ng-template #registerForm>
    <app-register (showLoginEvent)="this.changeForms()"></app-register>
   </ng-template>
+
+  </div>

@@ -59,10 +59,10 @@ export class LoginComponent implements OnInit {
       console.log(err);
       this.load = false;
       if (err.status === 401) {
-        this.snack.showsnackBar('Wrong password or username', 'Close', 0);
+        this.snack.showsnackBar('Wrong password or username', 'Close', 5000);
       }
       else {
-        this.snack.showsnackBar('Unknown error', 'Close', 0);
+        this.snack.showsnackBar('Unknown error', 'Close', 5000);
       }
     },
     () => {

@@ -1,6 +1,3 @@
-<div fxLayout fxLayoutAlign="space-around center" class="wrapper">
-
-
 <form @remove *ngIf="!this.load" [formGroup]="this.registerForm" (ngSubmit)="onSubmit()" class="form-flex">
   <mat-card>
 
@@ -61,4 +58,3 @@
 </form>
 
 <mat-spinner *ngIf="this.load" class="spinner"></mat-spinner>
-</div>
