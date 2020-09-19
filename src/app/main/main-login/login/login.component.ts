@@ -3,9 +3,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserCredentials } from '../shared/models/userCredentials.model';
-import { AuthService } from '../shared/services/auth.service';
-import { SnackBarService } from '../shared/services/snackBar.service';
+import { UserCredentials } from '../../shared/models/userCredentials.model';
+import { AuthService } from '../../shared/services/auth.service';
+import { SnackBarService } from '../../shared/services/snackBar.service';
 
 @Component({
   selector: 'app-login',

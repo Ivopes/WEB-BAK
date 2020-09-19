@@ -1,13 +1,13 @@
-<form @remove *ngIf="!this.load" [formGroup]="this.registerForm" (ngSubmit)="onSubmit()" class="form-flex">
+<form @remove *ngIf="!this.load" [formGroup]="this.registerForm" (ngSubmit)="onSubmit()">
   <mat-card>
 
     <mat-card-title>
       Sign up
     </mat-card-title>
 
-    <mat-card-content fxLayout="column" fxLayoutGap="1rem">
+    <mat-card-content fxLayout="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
 
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
         <mat-form-field>
           <input formControlName="firstName" required matInput placeholder="First name">
         </mat-form-field>
@@ -18,7 +18,7 @@
         </mat-form-field>
       </div>
 
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
 
         <mat-form-field>
           <input formControlName="email" required matInput placeholder="Email adress" />
@@ -32,7 +32,7 @@
         </mat-form-field>
       </div>
 
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
         <mat-form-field>
           <input formControlName="password" required matInput type="password" placeholder="Password" />
         </mat-form-field>
@@ -45,11 +45,8 @@
 
       <div fxLayoutAlign="center center" fxLayout="column">
         <a class="register-text" (click)="this.showLogin()">Already have an account?</a>
-
-        <div class="button-flex-container">
-          <button mat-raised-button color="primary" type="submit">Sign
-            up</button>
-        </div>
+        <button mat-raised-button color="primary" type="submit">Sign
+          up</button>
       </div>
 
     </mat-card-content>

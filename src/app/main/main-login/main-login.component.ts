@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { UserCredentials } from '../shared/models/userCredentials.model';
 import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-main-login',
@@ -34,7 +32,7 @@ export class MainLoginComponent implements OnInit {
       localStorage.setItem('jwt', token);
       this.router.navigate(['/test']);
     },
-    err => {
+    () => {
       this.load = false;
     });
   }

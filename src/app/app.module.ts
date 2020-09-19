@@ -12,8 +12,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { JwtModule } from '@auth0/angular-jwt';
-import { LoginComponent } from './main/login/login.component';
-import { RegisterComponent } from './main/register/register.component';
+import { LoginComponent } from './main/main-login/login/login.component';
+import { RegisterComponent } from './main/main-login/register/register.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('jwt');

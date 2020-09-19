@@ -1,11 +1,10 @@
 import { trigger, transition, animate, style } from '@angular/animations';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { User } from '../shared/models/user.model';
-import { AuthService } from '../shared/services/auth.service';
-import { passMatchValidator } from '../shared/Validators/password-re-type';
-import { SnackBarService } from '../shared/services/snackBar.service';
+import { User } from '../../shared/models/user.model';
+import { AuthService } from '../../shared/services/auth.service';
+import { passMatchValidator } from '../../shared/Validators/password-re-type';
+import { SnackBarService } from '../../shared/services/snackBar.service';
 
 @Component({
   selector: 'app-register',
@@ -53,7 +52,7 @@ export class RegisterComponent implements OnInit {
   }
 
   register(user: User): void {
-    this.auth.register(user).subscribe(data => {
+    this.auth.register(user).subscribe(() => {
       this.snack.showsnackBar('Registration was succesfull', 'Close', 5000);
       this.showLogin();
     },
