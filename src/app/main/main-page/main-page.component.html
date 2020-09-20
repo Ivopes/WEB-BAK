@@ -1,0 +1,59 @@
+<mat-toolbar color="primary" fxLayoutGap="2rem" fxLayoutAlign="none center">
+  <span class="name">Garmusic</span>
+  <button mat-button>
+    <span>Songs</span>
+  </button>
+  <button mat-button >
+    <span>Playlists</span>
+  </button>
+
+  <span class="example-spacer"></span>
+
+  <button mat-button [matMenuTriggerFor]="menu">
+    <span class="material-icons">
+      account_circle
+    </span>
+    Profile
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <span>Profile</span>
+    </button>
+    <button mat-menu-item disabled>
+      <span>Settings</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+
+
+</mat-toolbar>
+<mat-card style="display: inline-block;">
+  <mat-card-title>
+    Add a song
+  </mat-card-title>
+
+  <mat-card-actions>
+    <button mat-icon-button>
+      <span class="material-icons">
+        add_circle
+        </span>
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<br>
+
+  <mat-card *ngFor="let item of [].constructor(50)" style="display: inline-block;">
+    <mat-card-title>
+      Nazev
+    </mat-card-title>
+    <mat-card-subtitle>
+      podnazev
+    </mat-card-subtitle>
+    <mat-card-content>
+      Obrazek
+    </mat-card-content>
+  </mat-card>
+

@@ -14,6 +14,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './main/main-login/login/login.component';
 import { RegisterComponent } from './main/main-login/register/register.component';
+import { MainPageComponent } from './main/main-page/main-page.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('jwt');
@@ -26,6 +27,7 @@ export function tokenGetter(): string {
     MainLoginComponent,
     LoginComponent,
     RegisterComponent,
+    MainPageComponent,
   ],
   imports: [
     BrowserModule,

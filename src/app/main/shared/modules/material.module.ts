@@ -7,6 +7,10 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   imports: [
@@ -17,7 +21,11 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
    MatInputModule,
    MatSlideToggleModule,
    MatProgressSpinnerModule,
-   MatSnackBarModule
+   MatSnackBarModule,
+   MatToolbarModule,
+   MatIconModule,
+   MatSidenavModule,
+   MatMenuModule
   ],
   exports: [
    MatSliderModule,
@@ -27,7 +35,11 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
    MatInputModule,
    MatSlideToggleModule,
    MatProgressSpinnerModule,
-   MatSnackBarModule
+   MatSnackBarModule,
+   MatToolbarModule,
+   MatIconModule,
+   MatSidenavModule,
+   MatMenuModule
   ],
 })
 export class MaterialModule { }

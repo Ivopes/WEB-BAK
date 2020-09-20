@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(credentials).subscribe(res => {
       const token = res.token;
       localStorage.setItem('jwt', token);
-      this.router.navigate(['/test']);
+      this.router.navigate(['/']);
     },
     (err: HttpErrorResponse) => {
       console.log(err);
