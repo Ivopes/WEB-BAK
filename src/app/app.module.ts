@@ -40,7 +40,7 @@ export function tokenGetter(): string {
       config: {
         tokenGetter,
         allowedDomains: ['localhost:44303',
-                         'garmusicapi.azurewebsites.net'],
+                         'garmusic.azurewebsites.net'],
         disallowedRoutes: [],
       },
     }),
