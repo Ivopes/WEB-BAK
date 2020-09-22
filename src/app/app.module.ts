@@ -39,7 +39,7 @@ export function tokenGetter(): string {
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        allowedDomains: ['localhost:44329',
+        allowedDomains: ['localhost:44303',
                          'garmusicapi.azurewebsites.net'],
         disallowedRoutes: [],
       },
