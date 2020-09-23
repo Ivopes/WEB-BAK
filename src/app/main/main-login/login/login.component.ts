@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { PrototypeDataService } from 'src/app/prototype/shared/services/prototype-data.service';
 import { UserCredentials } from '../../shared/models/userCredentials.model';
 import { AuthService } from '../../shared/services/auth.service';
 import { SnackBarService } from '../../shared/services/snackBar.service';
@@ -31,7 +32,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private snack: SnackBarService
+    private snack: SnackBarService,
+    private testS: PrototypeDataService
   ) { }
 
   ngOnInit(): void {
@@ -73,4 +75,12 @@ export class LoginComponent implements OnInit {
   showRegister(): void {
     this.showRegisterEvent.emit();
   }
+
+  testR(): void {
+    this.testS.getSingle().subscribe(data => {
+      console.log(data);
+    },
+    err => console.log(err));
+  }
+
 }

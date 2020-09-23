@@ -18,6 +18,8 @@
       <div fxLayoutAlign="center center" fxLayout="column">
         <a class="register-text" (click)="this.showRegister()">Don't have an account yet?</a>
         <button mat-raised-button color="primary" type="submit">Login</button>
+
+
       </div>
 
     </mat-card-content>
@@ -25,5 +27,8 @@
   </mat-card>
 
 </form>
+<button mat-raised-button color="primary" (click)="this.testR()">Reqwuest</button>
+
+
 
 <mat-spinner *ngIf="this.load" class="spinner"></mat-spinner>
