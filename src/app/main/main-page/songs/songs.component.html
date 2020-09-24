@@ -1,0 +1,27 @@
+<mat-card style="display: inline-block;">
+  <mat-card-title>
+    Add a song
+  </mat-card-title>
+
+  <mat-card-actions>
+    <button mat-icon-button>
+      <span class="material-icons">
+        add_circle
+      </span>
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<br>
+
+<mat-card *ngFor="let item of [].constructor(120)" style="display: inline-block;">
+  <mat-card-title>
+    Nazev
+  </mat-card-title>
+  <mat-card-subtitle>
+    podnazev
+  </mat-card-subtitle>
+  <mat-card-content>
+    Obrazek
+  </mat-card-content>
+</mat-card>

@@ -19,6 +19,9 @@ export class MainLoginComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    if (this.auth.isLoggedIn()) {
+      this.router.navigate(['']);
+    }
   }
 
   onSubmit(): void {

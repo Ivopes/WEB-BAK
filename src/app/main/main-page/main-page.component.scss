@@ -1,9 +1,26 @@
+mat-sidenav-container {
+  position: fixed;
+  height: 100%;
+}
+mat-sidenav {
+  width: 10rem;
+}
+.active {
+  background-color: skyblue !important;
+}
 .name {
   font-size: 2rem;
 }
 .example-spacer {
   flex: 1 1 auto;
 }
-mat-card {
-  margin: 1rem;
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100% !important;
+}
+.end-line {
+  margin-left: auto;
 }

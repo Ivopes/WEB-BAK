@@ -1,21 +1,18 @@
 <mat-toolbar color="primary" fxLayoutGap="2rem" fxLayoutAlign="none center">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
   <span class="name">Garmusic</span>
-  <button mat-button>
-    <span>Songs</span>
-  </button>
-  <button mat-button >
-    <span>Playlists</span>
+  <button mat-icon-button class="end-line" (click)="logout()">
+    <mat-icon>power_settings_new</mat-icon>
   </button>
 
-  <span class="example-spacer"></span>
-
-  <button mat-button [matMenuTriggerFor]="menu">
-    <span class="material-icons">
-      account_circle
-    </span>
+  <!-- <button mat-button [matMenuTriggerFor]="menu" class="end-line">
+    <mat-icon>account_circle</mat-icon>
     Profile
   </button>
-  <mat-menu #menu="matMenu">
+
+  <mat-menu #menu="matMenu" xPosition="before">
     <button mat-menu-item>
       <span>Profile</span>
     </button>
@@ -25,35 +22,26 @@
     <button mat-menu-item (click)="logout()">
       <span>Logout</span>
     </button>
-  </mat-menu>
-
+  </mat-menu> -->
 
 </mat-toolbar>
-<mat-card style="display: inline-block;">
-  <mat-card-title>
-    Add a song
-  </mat-card-title>
 
-  <mat-card-actions>
-    <button mat-icon-button>
-      <span class="material-icons">
-        add_circle
-        </span>
-    </button>
-  </mat-card-actions>
-</mat-card>
 
-<br>
+<mat-sidenav-container>
 
-  <mat-card *ngFor="let item of [].constructor(50)" style="display: inline-block;">
-    <mat-card-title>
-      Nazev
-    </mat-card-title>
-    <mat-card-subtitle>
-      podnazev
-    </mat-card-subtitle>
-    <mat-card-content>
-      Obrazek
-    </mat-card-content>
-  </mat-card>
+  <mat-sidenav #sidenav mode="over">
+    <mat-nav-list>
+      <mat-list-item ><mat-icon matListIcon>account_circle</mat-icon>Profile</mat-list-item>
+      <mat-list-item routerLink="songs" routerLinkActive="active"><mat-icon matListIcon>music_note</mat-icon>Songs</mat-list-item>
+      <mat-list-item routerLink="playlists" routerLinkActive="active"><mat-icon matListIcon>library_music</mat-icon>Playlists</mat-list-item>
+     </mat-nav-list>
+  </mat-sidenav>
 
+  <mat-sidenav-content>
+
+    <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+
+
+</mat-sidenav-container>

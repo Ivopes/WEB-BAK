@@ -26,7 +26,7 @@ private readonly controller: string = '/auth';
   register(user: User): Observable<User> {
     return this.httpClient.post<User>(this.constants.API_ENDPOINT + this.controller + '/register', user).pipe(shareReplay());
   }
-  ifLoggedIn(): boolean {
+  isLoggedIn(): boolean {
     const token = localStorage.getItem('jwt');
     if (token && !this.jwtHelper.isTokenExpired(token)){
       return true;

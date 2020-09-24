@@ -8,11 +8,14 @@ import { Router } from '@angular/router';
 })
 export class MainPageComponent implements OnInit {
 
+  openSideNav = false;
+
   constructor(
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.router.navigate(['songs']);
   }
 
   logout(): void {
