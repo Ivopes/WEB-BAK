@@ -3,25 +3,22 @@
     Add a song
   </mat-card-title>
 
+
   <mat-card-actions>
-    <button mat-icon-button>
+    <button mat-icon-button (click)="fileInput.click()">
       <span class="material-icons">
         add_circle
       </span>
     </button>
+    <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
+    <button mat-raised-button color="primary" (click)="postFile()" [disabled]="this.fileToUpload === null">
+      Upload
+    </button>
   </mat-card-actions>
 </mat-card>
 
-<br>
+<br/>
 
-<mat-card *ngFor="let item of [].constructor(120)" style="display: inline-block;">
-  <mat-card-title>
-    Nazev
-  </mat-card-title>
-  <mat-card-subtitle>
-    podnazev
-  </mat-card-subtitle>
-  <mat-card-content>
-    Obrazek
-  </mat-card-content>
-</mat-card>
+<app-file-card *ngFor="let file of this.fileNames" [name]=file>
+
+</app-file-card>

@@ -17,6 +17,7 @@ import { RegisterComponent } from './main/main-login/register/register.component
 import { MainPageComponent } from './main/main-page/main-page.component';
 import { SongsComponent } from './main/main-page/songs/songs.component';
 import { PlaylistsComponent } from './main/main-page/playlists/playlists.component';
+import { FileCardComponent } from './main/shared/components/file-card/file-card.component';
 
 export function tokenGetter(): string {
   return localStorage.getItem('jwt');
@@ -32,6 +33,7 @@ export function tokenGetter(): string {
     MainPageComponent,
     SongsComponent,
     PlaylistsComponent,
+    FileCardComponent,
   ],
   imports: [
     BrowserModule,

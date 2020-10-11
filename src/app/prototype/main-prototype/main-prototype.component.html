@@ -3,7 +3,12 @@
 <br>
 
 <audio controls>
-  <source src="https://localhost:44303/api/Mp3" type="audio/mpeg">
+  <source src="https://localhost:44303/api/Mp3/info" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+
+<audio controls>
+  <source type="audio/mpeg" src="https://localhost:44303/api/Mp3/">
 Your browser does not support the audio element.
 </audio>
 
@@ -11,6 +16,14 @@ Your browser does not support the audio element.
   <source src="https://localhost:44303/api/Mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
+
+<div class="form-group">
+  <label for="file">Choose File</label>
+  <input type="file"
+         id="file"
+         (change)="handleFileInput($event.target.files)">
+</div>
+<button (click)="uploadFile()">Odeslat</button>
 
 <div *ngFor="let item of weatherForecast">
   {{item.date}}<br>

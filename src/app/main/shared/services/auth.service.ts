@@ -20,7 +20,9 @@ private readonly controller: string = '/auth';
     ) { }
 
   login(credentials: UserCredentials): Observable<any> {
-    return this.httpClient.post<UserCredentials>(this.constants.API_ENDPOINT + this.controller + '/login', credentials).pipe(shareReplay());
+    return this.httpClient.post<UserCredentials>(this.constants.API_ENDPOINT + this.controller + '/login',
+    credentials)
+    .pipe(shareReplay());
   }
 
   register(user: User): Observable<User> {

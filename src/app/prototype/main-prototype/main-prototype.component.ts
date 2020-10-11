@@ -14,6 +14,8 @@ export class MainPrototypeComponent implements OnInit {
   singleForecast: WeatherForecast = null;
   mp3File: any = null;
 
+  fileToUpload: File = null;
+
   constructor(
     private proData: PrototypeDataService
   ) { }
@@ -29,15 +31,33 @@ export class MainPrototypeComponent implements OnInit {
     },
     err => console.error(err)
     );
-    // this.getMp3();
+    this.getMp3();
+    this.getMp3Info();
   }
 
   getMp3(): void {
-    this.proData.getMp3ById('5').subscribe(data => {
+    this.proData.getMp3().subscribe(data => {
+      return data;
       this.mp3File = data;
-      // new File(data, 'vytvorene.mp3');
     },
     err => console.error(err)
     );
+  }
+  getMp3Info(): void {
+    this.proData.getMp3Info().subscribe(data => {
+    },
+      err => console.error(err)
+    );
+  }
+
+  handleFileInput(files: FileList): void {
+    this.fileToUpload = files.item(0);
+  }
+
+  uploadFile(): void {
+    this.proData.postMp3(this.fileToUpload).subscribe(data => {
+      }, error => {
+        console.log(error);
+      });
   }
 }
