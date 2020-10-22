@@ -1,7 +1,7 @@
 import { trigger, transition, animate, style } from '@angular/animations';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '../../shared/models/user.model';
+import { Account } from '../../shared/models/account.model';
 import { AuthService } from '../../shared/services/auth.service';
 import { passMatchValidator } from '../../shared/Validators/password-re-type';
 import { SnackBarService } from '../../shared/services/snackBar.service';
@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit {
     this.register(this.registerForm.value);
   }
 
-  register(user: User): void {
+  register(user: Account): void {
     this.auth.register(user).subscribe(() => {
       this.snack.showsnackBar('Registration was succesfull', 'Close', 5000);
       this.showLogin();

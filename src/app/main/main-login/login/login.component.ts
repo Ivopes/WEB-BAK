@@ -4,7 +4,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PrototypeDataService } from 'src/app/prototype/shared/services/prototype-data.service';
-import { UserCredentials } from '../../shared/models/userCredentials.model';
+import { AccountCredentials } from '../../shared/models/accountCredentials.model';
 import { AuthService } from '../../shared/services/auth.service';
 import { SnackBarService } from '../../shared/services/snackBar.service';
 
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     this.login(this.loginForm.value);
   }
 
-  login(credentials: UserCredentials): void {
+  login(credentials: AccountCredentials): void {
     this.auth.login(credentials).subscribe(res => {
       const token = res.token;
       localStorage.setItem('jwt', token);

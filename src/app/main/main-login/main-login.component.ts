@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserCredentials } from '../shared/models/userCredentials.model';
+import { AccountCredentials } from '../shared/models/accountCredentials.model';
 import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
 
@@ -28,7 +28,7 @@ export class MainLoginComponent implements OnInit {
     this.load = true;
   }
 
-  login(credentials: UserCredentials): void {
+  login(credentials: AccountCredentials): void {
     this.auth.login(credentials).subscribe(res => {
       console.log(res);
       const token = res.token;
