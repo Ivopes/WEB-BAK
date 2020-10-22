@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainPrototypeComponent } from './prototype/main-prototype/main-prototype.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { MainLoginComponent } from './main/main-login/main-login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './main/shared/modules/material.module';
@@ -18,8 +18,12 @@ import { MainPageComponent } from './main/main-page/main-page.component';
 import { SongsComponent } from './main/main-page/songs/songs.component';
 import { PlaylistsComponent } from './main/main-page/playlists/playlists.component';
 import { FileCardComponent } from './main/shared/components/file-card/file-card.component';
+import { ProfileComponent } from './main/main-page/profile/profile.component';
 
-export function tokenGetter(): string {
+export function tokenGetter(request: HttpRequest<any>): string {
+  if (request.url.includes('dropbox')) {
+    return localStorage.getItem('jwt-dropbox');
+  }
   return localStorage.getItem('jwt');
 }
 
@@ -34,6 +38,7 @@ export function tokenGetter(): string {
     SongsComponent,
     PlaylistsComponent,
     FileCardComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,8 +50,9 @@ export function tokenGetter(): string {
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        allowedDomains: ['localhost:44303',
-                         'garmusic.azurewebsites.net'],
+        allowedDomains: [ 'localhost:44303',
+                          'garmusic.azurewebsites.net',
+                          'api.dropboxapi.com'],
         disallowedRoutes: [],
       },
     }),
