@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Constants } from '../../../config/constants';
+import { Song } from '../models/song.model';
 
 @Injectable({providedIn: 'root'})
 export class Mp3Service {
@@ -10,10 +11,10 @@ export class Mp3Service {
     private constants: Constants,
     ) { }
 
-  private readonly controller: string = '/mp3';
+  private readonly controller: string = '/song';
 
-  public getAll(): Observable<string[]> {
-    return this.httpClient.get<string[]>(this.constants.API_ENDPOINT + this.controller + '/all');
+  public getAll(): Observable<Song[]> {
+    return this.httpClient.get<Song[]>(this.constants.API_ENDPOINT + this.controller);
   }
   public post(file: File): Observable<boolean> {
     const formData: FormData = new FormData();

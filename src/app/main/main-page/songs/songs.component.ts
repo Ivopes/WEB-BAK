@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Mp3Service } from '../../shared/services/mp3.service';
 import { Mp3StorageService } from '../../shared/services/mp3-storage.service';
+import { Song } from '../../shared/models/song.model';
 
 @Component({
   selector: 'app-songs',
@@ -14,17 +15,19 @@ export class SongsComponent implements OnInit {
     private mp3StorageService: Mp3StorageService
   ) { }
 
-  fileNames: string[] = [];
+  songs: Song[] = [];
 
   fileToUpload = null;
 
   ngOnInit(): void {
     this.mp3Service.getAll().subscribe(data => {
-      this.fileNames = data;
+      this.songs = data;
+      console.log(this.songs);
+
     });
   }
   getData(): void {
-    this.fileNames = this.mp3StorageService.getAll();
+    //this.songs = this.mp3StorageService.getAll();
   }
   onFileSelected(files: FileList): void {
     console.log(files);
