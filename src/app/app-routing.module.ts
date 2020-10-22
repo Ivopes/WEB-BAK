@@ -6,6 +6,7 @@ import { AuthGuard } from './main/shared/services/auth-guard.service';
 import { MainPageComponent } from './main/main-page/main-page.component';
 import { SongsComponent } from './main/main-page/songs/songs.component';
 import { PlaylistsComponent } from './main/main-page/playlists/playlists.component';
+import { ProfileComponent } from './main/main-page/profile/profile.component';
 
 const routes: Routes = [
   { path: 'login', component: MainLoginComponent},
@@ -17,6 +18,9 @@ const routes: Routes = [
         },
         {
           path: 'playlists', component: PlaylistsComponent
+        },
+        {
+          path: 'profile', component: ProfileComponent
         }
       ]},
   { path: '**', redirectTo: '' }
