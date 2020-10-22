@@ -35,4 +35,7 @@ private readonly controller: string = '/auth';
     }
     return false;
   }
+  dropboxAuth(): any {
+    return this.httpClient.get('https://www.dropbox.com/oauth2/authorize?client_id=34niuwlpk3k4gki&redirect_uri=https://localhost:44303/test&response_type=code');
+  }
  }

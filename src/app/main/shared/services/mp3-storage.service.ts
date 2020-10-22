@@ -17,7 +17,7 @@ export class Mp3StorageService {
     console.log(this.requested);
     if (!this.requested) {
       this.mp3Service.getAll().subscribe(data => {
-        this.fileNames = data;
+        //this.fileNames = data;
         this.requested = true;
       }, err => this.fileNames = []);
     }

@@ -46,4 +46,30 @@ export class PrototypeDataService {
     formData
     );
   }
+  oauth(code: string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('code', code);
+    formData.append('grant_type', 'authorization_code');
+    formData.append('redirect_uri', 'https://localhost:44303/test');
+    //formData.append('client_secret', 'dopjxzkfmz66p6r');
+    //formData.append('client-id', '34niuwlpk3k4gki');
+
+    let myHeaders: HttpHeaders = new HttpHeaders();
+    myHeaders = myHeaders.append('Authorization', 'Basic ' + window.btoa('34niuwlpk3k4gki:dopjxzkfmz66p6r'));
+
+    console.log('davam post');
+
+    return this.httpClient.post('https://api.dropbox.com/1/oauth2/token',
+    formData, {
+      headers: myHeaders
+    }
+    );
+  }
+  getDropbox(): Observable<any> {
+
+    return this.httpClient.post('https://api.dropboxapi.com/2/files/list_folder',
+    {
+      "path": ""
+    });
+  }
 }
