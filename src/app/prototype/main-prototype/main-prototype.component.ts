@@ -38,11 +38,15 @@ export class MainPrototypeComponent implements OnInit {
     this.getMp3();
     this.getMp3Info();*/
 
+    this.readJwtCode();
+  }
+
+  private readJwtCode(): void {
     this.route.queryParams.subscribe(params => {
       this.code = params['code'];
+      console.log('ctu');
+      console.log(params);
       this.proData.oauth(this.code).subscribe(data => {
-        console.log('data');
-        console.log(data);
         localStorage.setItem('jwt-dropbox', data.access_token);
       });
     });

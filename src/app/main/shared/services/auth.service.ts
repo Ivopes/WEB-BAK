@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AccountCredentials } from '../models/accountCredentials.model';
 import { Observable } from 'rxjs';
 import { Constants } from '../../../config/constants';
 import { shareReplay } from 'rxjs/operators';
 import { Account } from '../models/account.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { DbxOAuth } from '../models/dbxOAuth.model';
+import { DbxJson } from '../models/dbxJson.model';
 
 @Injectable({providedIn: 'root'})
 
 export class AuthService {
 
-private readonly controller: string = '/auth';
+private readonly controller: string = 'auth';
 
   constructor(
     private httpClient: HttpClient,
@@ -20,13 +22,13 @@ private readonly controller: string = '/auth';
     ) { }
 
   login(credentials: AccountCredentials): Observable<any> {
-    return this.httpClient.post<AccountCredentials>(this.constants.API_ENDPOINT + this.controller + '/login',
+    return this.httpClient.post<AccountCredentials>(`${this.constants.API_ENDPOINT}/${this.controller}/login`,
     credentials)
     .pipe(shareReplay());
   }
 
   register(user: Account): Observable<Account> {
-    return this.httpClient.post<Account>(this.constants.API_ENDPOINT + this.controller + '/register', user).pipe(shareReplay());
+    return this.httpClient.post<Account>(`${this.constants.API_ENDPOINT}/${this.controller}/register`, user).pipe(shareReplay());
   }
   isLoggedIn(): boolean {
     const token = localStorage.getItem('jwt');
@@ -35,7 +37,25 @@ private readonly controller: string = '/auth';
     }
     return false;
   }
-  dropboxAuth(): any {
-    return this.httpClient.get('https://www.dropbox.com/oauth2/authorize?client_id=34niuwlpk3k4gki&redirect_uri=https://localhost:44303/test&response_type=code');
+  dropboxAuthCode(): void {
+    window.location.href = `https://www.dropbox.com/oauth2/authorize?client_id=${this.constants.dropboxKey}&redirect_uri=${this.constants.dropboxRedirectURL}&response_type=code`;
+  }
+  dropboxOAuth(code: string): Observable<DbxOAuth> {
+    const formData: FormData = new FormData();
+    formData.append('code', code);
+    formData.append('grant_type', 'authorization_code');
+    formData.append('redirect_uri', `${this.constants.dropboxRedirectURL}`);
+
+    let myHeaders: HttpHeaders = new HttpHeaders();
+    myHeaders = myHeaders.append('Authorization', 'Basic ' + window.btoa(`${this.constants.dropboxKey}:${this.constants.dropboxSecret}`));
+
+    return this.httpClient.post<DbxOAuth>('https://api.dropbox.com/1/oauth2/token',
+    formData, {
+      headers: myHeaders
+    });
+  }
+  saveDropboxJwt(dbxJson: DbxJson): Observable<any> {
+    console.log(dbxJson);
+    return this.httpClient.post<string>(`${this.constants.API_ENDPOINT}/${this.controller}/registerDropbox`, dbxJson);
   }
  }

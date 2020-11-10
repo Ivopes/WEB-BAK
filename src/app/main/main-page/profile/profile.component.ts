@@ -18,7 +18,6 @@ export class ProfileComponent implements OnInit {
   }
 
   auth(): void {
-    window.location.href = 'https://www.dropbox.com/oauth2/authorize?client_id=34niuwlpk3k4gki&redirect_uri=https://localhost:44303/test&response_type=code';
-    //this.authService.dropboxAuth();
+    this.authService.dropboxAuthCode();
   }
 }

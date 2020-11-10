@@ -6,32 +6,13 @@
   <button mat-icon-button class="end-line" (click)="logout()">
     <mat-icon>power_settings_new</mat-icon>
   </button>
-
-  <!-- <button mat-button [matMenuTriggerFor]="menu" class="end-line">
-    <mat-icon>account_circle</mat-icon>
-    Profile
-  </button>
-
-  <mat-menu #menu="matMenu" xPosition="before">
-    <button mat-menu-item>
-      <span>Profile</span>
-    </button>
-    <button mat-menu-item disabled>
-      <span>Settings</span>
-    </button>
-    <button mat-menu-item (click)="logout()">
-      <span>Logout</span>
-    </button>
-  </mat-menu> -->
-
 </mat-toolbar>
-
 
 <mat-sidenav-container>
 
   <mat-sidenav #sidenav mode="over">
     <mat-nav-list>
-      <mat-list-item routerLink="profile"><mat-icon matListIcon>account_circle</mat-icon>Profile</mat-list-item>
+      <mat-list-item routerLink="profile" routerLinkActive="active"><mat-icon matListIcon>account_circle</mat-icon>Profile</mat-list-item>
       <mat-list-item routerLink="songs" routerLinkActive="active"><mat-icon matListIcon>music_note</mat-icon>Songs</mat-list-item>
       <mat-list-item routerLink="playlists" routerLinkActive="active"><mat-icon matListIcon>library_music</mat-icon>Playlists</mat-list-item>
      </mat-nav-list>
@@ -42,6 +23,5 @@
     <router-outlet></router-outlet>
 
   </mat-sidenav-content>
-
 
 </mat-sidenav-container>

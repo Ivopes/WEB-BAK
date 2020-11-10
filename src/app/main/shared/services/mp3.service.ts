@@ -11,16 +11,16 @@ export class Mp3Service {
     private constants: Constants,
     ) { }
 
-  private readonly controller: string = '/song';
+  private readonly controller: string = 'song';
 
   public getAll(): Observable<Song[]> {
-    return this.httpClient.get<Song[]>(this.constants.API_ENDPOINT + this.controller);
+    return this.httpClient.get<Song[]>(`${this.constants.API_ENDPOINT}/${this.controller}`);
   }
   public post(file: File): Observable<boolean> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
 
-    return this.httpClient.post<boolean>(this.constants.API_ENDPOINT + this.controller,
+    return this.httpClient.post<boolean>(`${this.constants.API_ENDPOINT}/${this.controller}`,
     formData
     );
   }

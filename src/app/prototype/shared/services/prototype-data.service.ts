@@ -60,9 +60,9 @@ export class PrototypeDataService {
     console.log('davam post');
 
     return this.httpClient.post('https://api.dropbox.com/1/oauth2/token',
-    formData, {
-      headers: myHeaders
-    }
+      formData, {
+        headers: myHeaders
+      }
     );
   }
   getDropbox(): Observable<any> {
