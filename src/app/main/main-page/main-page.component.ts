@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { EMPTY, observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { DbxJson } from '../shared/models/dbxJson.model';
 import { AuthService } from '../shared/services/auth.service';
 
@@ -13,6 +13,7 @@ import { AuthService } from '../shared/services/auth.service';
 export class MainPageComponent implements OnInit {
 
   openSideNav = false;
+  showMain = true;
 
   constructor(
     private router: Router,
@@ -21,13 +22,22 @@ export class MainPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.readJwtCode();
+    this.showMainWatch();
+
+    this.readJwtCodeFromUrl();
+
+    this.getDropboxJwt();
+  }
+  getDropboxJwt(): void {
+    this.authService.getDropboxJwt().subscribe(data => {
+      localStorage.setItem('jwt-dropbox', data.token);
+    });
   }
   logout(): void {
     localStorage.removeItem('jwt');
     this.router.navigate(['/login']);
   }
-  private readJwtCode(): void {
+  private readJwtCodeFromUrl(): void {
     this.route.queryParamMap
     .pipe(
       switchMap(params => {
@@ -38,8 +48,6 @@ export class MainPageComponent implements OnInit {
         switchMap(data => {
           const token = data.access_token;
           const id = data.account_id;
-          console.log(data);
-
           localStorage.setItem('jwt-dropbox', token);
           const dbxJson: DbxJson = {
             cursor: '',
@@ -51,5 +59,22 @@ export class MainPageComponent implements OnInit {
       )
       .subscribe(() => {
       });
+  }
+  private showMainWatch(): void {
+    if (this.router.url === '/') {
+      this.showMain = true;
+    } else {
+      this.showMain = false;
+    }
+    this.router.events.pipe(
+      filter(url => url instanceof NavigationEnd)
+    ).subscribe((url: NavigationEnd) => {
+      console.log(url);
+      if (url.urlAfterRedirects === '/') {
+        this.showMain = true;
+      } else {
+        this.showMain = false;
+      }
+    });
   }
 }
