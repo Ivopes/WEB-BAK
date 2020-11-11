@@ -5,7 +5,7 @@ import { Constants } from '../../../config/constants';
 import { Song } from '../models/song.model';
 
 @Injectable({providedIn: 'root'})
-export class Mp3Service {
+export class SongService {
   constructor(
     private httpClient: HttpClient,
     private constants: Constants,

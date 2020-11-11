@@ -8,6 +8,7 @@ import { Account } from '../models/account.model';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { DbxOAuth } from '../models/dbxOAuth.model';
 import { DbxJson } from '../models/dbxJson.model';
+import { JwtToken } from '../models/jwtToken.model';
 
 @Injectable({providedIn: 'root'})
 
@@ -21,8 +22,8 @@ private readonly controller: string = 'auth';
     private jwtHelper: JwtHelperService,
     ) { }
 
-  login(credentials: AccountCredentials): Observable<any> {
-    return this.httpClient.post<AccountCredentials>(`${this.constants.API_ENDPOINT}/${this.controller}/login`,
+  login(credentials: AccountCredentials): Observable<JwtToken> {
+    return this.httpClient.post<JwtToken>(`${this.constants.API_ENDPOINT}/${this.controller}/login`,
     credentials)
     .pipe(shareReplay());
   }
@@ -56,6 +57,9 @@ private readonly controller: string = 'auth';
   }
   saveDropboxJwt(dbxJson: DbxJson): Observable<any> {
     console.log(dbxJson);
-    return this.httpClient.post<string>(`${this.constants.API_ENDPOINT}/${this.controller}/registerDropbox`, dbxJson);
+    return this.httpClient.post<any>(`${this.constants.API_ENDPOINT}/${this.controller}/registerDropbox`, dbxJson);
+  }
+  getDropboxJwt(): Observable<JwtToken> {
+    return this.httpClient.get<JwtToken>(`${this.constants.API_ENDPOINT}/${this.controller}/getDropboxJwt`);
   }
  }

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Mp3Service } from './mp3.service';
+import { SongService } from './song.service';
 
 @Injectable({providedIn: 'root'})
-export class Mp3StorageService {
+export class SongStorageService {
   constructor(
-    private mp3Service: Mp3Service
+    private songService: SongService
   ) { }
 
   private fileNames: string[] = [];
@@ -16,7 +16,7 @@ export class Mp3StorageService {
   public getAll(): string[] {
     console.log(this.requested);
     if (!this.requested) {
-      this.mp3Service.getAll().subscribe(data => {
+      this.songService.getAll().subscribe(data => {
         //this.fileNames = data;
         this.requested = true;
       }, err => this.fileNames = []);

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Mp3Service } from '../../shared/services/mp3.service';
-import { Mp3StorageService } from '../../shared/services/mp3-storage.service';
+import { SongService } from '../../shared/services/song.service';
+import { SongStorageService } from '../../shared/services/song-storage.service';
 import { Song } from '../../shared/models/song.model';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,8 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class SongsComponent implements OnInit {
 
   constructor(
-    private mp3Service: Mp3Service,
-    private router: Router
+    private songService: SongService
   ) { }
 
   songs: Song[] = [];
@@ -22,7 +21,7 @@ export class SongsComponent implements OnInit {
   fileToUpload = null;
 
   ngOnInit(): void {
-    this.mp3Service.getAll().subscribe(data => {
+    this.songService.getAll().subscribe(data => {
       this.songs = data;
       console.log(this.songs);
     });
@@ -36,7 +35,7 @@ export class SongsComponent implements OnInit {
   }
   postFile(): void {
     if (this.fileToUpload !== null) {
-        this.mp3Service.post(this.fileToUpload).subscribe(data => {
+        this.songService.post(this.fileToUpload).subscribe(data => {
           if (data === true) {
             this.getData();
           }
