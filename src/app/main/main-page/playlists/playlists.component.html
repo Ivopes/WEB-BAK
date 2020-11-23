@@ -4,7 +4,7 @@
   </mat-card-title>
 
   <mat-card-actions>
-    <button mat-icon-button>
+    <button mat-icon-button (click)="addPlaylist()">
       <span class="material-icons">
         add_circle
       </span>
@@ -14,13 +14,10 @@
 
 <br>
 
-<mat-card *ngFor="let item of [].constructor(120)" style="display: inline-block;">
+<mat-card *ngFor="let item of playlists" (click)="showInfo(item)">
   <mat-card-title>
-    Playlist
+    {{item.name}}
   </mat-card-title>
-  <mat-card-subtitle>
-    podnazev
-  </mat-card-subtitle>
   <mat-card-content>
     Obrazek
   </mat-card-content>

@@ -12,6 +12,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {MatListModule} from '@angular/material/list';
    MatSidenavModule,
    MatMenuModule,
    MatListModule,
+   MatDialogModule,
   ],
   exports: [
    MatSliderModule,
@@ -44,6 +46,7 @@ import {MatListModule} from '@angular/material/list';
    MatSidenavModule,
    MatMenuModule,
    MatListModule,
+   MatDialogModule,
   ],
 })
 export class MaterialModule { }

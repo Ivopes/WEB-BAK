@@ -22,17 +22,17 @@ export class MainPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.showMainWatch();
+    this.showMainGuard();
 
     this.readJwtCodeFromUrl();
 
-    this.getDropboxJwt();
+    //this.getDropboxJwt();
   }
-  getDropboxJwt(): void {
+  /*getDropboxJwt(): void {
     this.authService.getDropboxJwt().subscribe(data => {
       localStorage.setItem('jwt-dropbox', data.token);
     });
-  }
+  }*/
   logout(): void {
     localStorage.removeItem('jwt');
     this.router.navigate(['/login']);
@@ -60,7 +60,7 @@ export class MainPageComponent implements OnInit {
       .subscribe(() => {
       });
   }
-  private showMainWatch(): void {
+  private showMainGuard(): void {
     if (this.router.url === '/') {
       this.showMain = true;
     } else {
@@ -69,7 +69,6 @@ export class MainPageComponent implements OnInit {
     this.router.events.pipe(
       filter(url => url instanceof NavigationEnd)
     ).subscribe((url: NavigationEnd) => {
-      console.log(url);
       if (url.urlAfterRedirects === '/') {
         this.showMain = true;
       } else {

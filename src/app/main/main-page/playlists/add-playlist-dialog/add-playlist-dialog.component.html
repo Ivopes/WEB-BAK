@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Add a playlist</h2>
+<!-- <mat-dialog-content>add-playlist-dialog works!</mat-dialog-content> -->
+<form [formGroup]="playlistForm" (ngSubmit)="onSubmit()">
+  <mat-form-field >
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" placeholder="Super mega ultra music">
+    <mat-error>Fill a name</mat-error>
+  </mat-form-field>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button cdkFocusInitial type="submit">Add</button>
+  </mat-dialog-actions>
+</form>
