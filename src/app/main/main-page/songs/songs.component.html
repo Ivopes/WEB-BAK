@@ -1,4 +1,5 @@
-<mat-card style="display: inline-block;">
+<div fxLayoutAlign="center">
+<mat-card>
   <mat-card-title>
     Add a song
   </mat-card-title>
@@ -9,15 +10,15 @@
         add_circle
       </span>
     </button>
-    <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file">
-    <button mat-raised-button color="primary" (click)="postFile()" [disabled]="this.fileToUpload === null">
+    <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file" accept=".mp3">
+    <button mat-raised-button color="primary" (click)="postFile()" [disabled]="this.fileToUpload == null">
       Upload
     </button>
   </mat-card-actions>
 </mat-card>
+</div>
 
-<br/>
-
-<app-file-card *ngFor="let song of this.songs" [song]=song>
-
-</app-file-card>
+<div>
+  <app-file-card *ngFor="let song of this.songs" [song]=song>
+  </app-file-card>
+</div>

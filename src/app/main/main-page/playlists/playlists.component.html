@@ -1,24 +1,28 @@
-<mat-card style="display: inline-block;">
-  <mat-card-title>
-    Add a playlist
-  </mat-card-title>
+<div fxLayoutAlign="center">
 
-  <mat-card-actions>
-    <button mat-icon-button (click)="addPlaylist()">
-      <span class="material-icons">
-        add_circle
-      </span>
-    </button>
-  </mat-card-actions>
-</mat-card>
+  <mat-card >
+    <mat-card-title>
+      Add a playlist
+    </mat-card-title>
 
-<br>
+    <mat-card-actions>
+      <button mat-icon-button (click)="addPlaylist()">
+        <span class="material-icons">
+          add_circle
+        </span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
 
-<mat-card *ngFor="let item of playlists" (click)="showInfo(item)">
-  <mat-card-title>
-    {{item.name}}
-  </mat-card-title>
-  <mat-card-content>
-    Obrazek
-  </mat-card-content>
-</mat-card>
+<div>
+  <mat-card *ngFor="let item of playlists" (click)="showInfo(item)">
+
+    <mat-card-title>
+      {{item.name}}
+    </mat-card-title>
+    <mat-card-content>
+      Obrazek
+    </mat-card-content>
+  </mat-card>
+</div>

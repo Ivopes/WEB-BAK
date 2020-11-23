@@ -53,11 +53,11 @@ export class RegisterComponent implements OnInit {
 
   register(user: Account): void {
     this.auth.register(user).subscribe(() => {
-      this.snack.showsnackBar('Registration was succesfull', 'Close', 5000);
+      this.snack.showSnackBar('Registration was succesfull', 'Close', 5000);
       this.showLogin();
     },
     (err) => {
-      this.snack.showsnackBar(err.error, 'Close', 5000);
+      this.snack.showSnackBar(err.error, 'Close', 5000);
       this.load = false;
     },
     () => {

@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './main/shared/modules/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
 
 import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './main/main-login/login/login.component';
@@ -19,6 +20,7 @@ import { SongsComponent } from './main/main-page/songs/songs.component';
 import { PlaylistsComponent } from './main/main-page/playlists/playlists.component';
 import { FileCardComponent } from './main/shared/components/file-card/file-card.component';
 import { ProfileComponent } from './main/main-page/profile/profile.component';
+import { AddPlaylistDialogComponent } from './main/main-page/playlists/add-playlist-dialog/add-playlist-dialog.component';
 
 export function tokenGetter(request: HttpRequest<any>): string {
   if (request.url.includes('dropbox')) {
@@ -39,6 +41,7 @@ export function tokenGetter(request: HttpRequest<any>): string {
     PlaylistsComponent,
     FileCardComponent,
     ProfileComponent,
+    AddPlaylistDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,6 +60,7 @@ export function tokenGetter(request: HttpRequest<any>): string {
       },
     }),
     FlexLayoutModule,
+    FormsModule,
   ],
   exports: [
     MaterialModule

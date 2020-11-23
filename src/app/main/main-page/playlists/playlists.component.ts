@@ -4,6 +4,7 @@ import { filter, switchMap } from 'rxjs/operators';
 import { Playlist } from '../../shared/models/playlist.model';
 import { PlaylistService } from '../../shared/services/playlist.service';
 import { AddPlaylistDialogComponent } from './add-playlist-dialog/add-playlist-dialog.component';
+import { SnackBarService } from '../../shared/services/snackBar.service';
 
 @Component({
   selector: 'app-playlists',
@@ -16,7 +17,8 @@ export class PlaylistsComponent implements OnInit {
 
   constructor(
     private playlistService: PlaylistService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private snackBarService: SnackBarService
   ) { }
 
   ngOnInit(): void {
@@ -30,9 +32,9 @@ export class PlaylistsComponent implements OnInit {
     dialogRef.afterClosed().pipe(
       filter(res => res),
       switchMap(res => this.playlistService.Post(res))
-      ).subscribe(data => {
-        console.log(data);
-      });
+      ).subscribe(data => this.snackBarService.showSnackBar('Playlist was added', 'Close', 3000),
+        err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000)
+      );
   }
   showInfo(playlist: Playlist): void {
     console.log(playlist.name);

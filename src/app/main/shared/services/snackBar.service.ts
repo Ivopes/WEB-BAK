@@ -7,7 +7,7 @@ export class SnackBarService {
     private snackBar: MatSnackBar
   ) { }
 
-  public showsnackBar(message: string, action: string, timeout: number): void {
+  public showSnackBar(message: string, action: string, timeout: number): void {
     this.snackBar.open(message, action, {
       duration: timeout,
     });

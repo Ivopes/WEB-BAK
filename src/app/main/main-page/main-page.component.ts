@@ -26,13 +26,7 @@ export class MainPageComponent implements OnInit {
 
     this.readJwtCodeFromUrl();
 
-    //this.getDropboxJwt();
   }
-  /*getDropboxJwt(): void {
-    this.authService.getDropboxJwt().subscribe(data => {
-      localStorage.setItem('jwt-dropbox', data.token);
-    });
-  }*/
   logout(): void {
     localStorage.removeItem('jwt');
     this.router.navigate(['/login']);
