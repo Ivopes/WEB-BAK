@@ -35,14 +35,12 @@ export class LoginComponent implements OnInit {
     private snack: SnackBarService,
     private testS: PrototypeDataService
   ) { }
-
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
-
   onSubmit(): void {
     if (this.loginForm.invalid) {
       return;
@@ -50,7 +48,6 @@ export class LoginComponent implements OnInit {
     this.load = true;
     this.login(this.loginForm.value);
   }
-
   login(credentials: AccountCredentials): void {
     this.auth.login(credentials).subscribe(res => {
       const token = res.token;
@@ -58,7 +55,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/']);
     },
     (err: HttpErrorResponse) => {
-      console.log(err);
       this.load = false;
       if (err.status === 401) {
         this.snack.showsnackBar('Wrong password or username', 'Close', 5000);
@@ -71,16 +67,7 @@ export class LoginComponent implements OnInit {
       this.load = false;
     });
   }
-
   showRegister(): void {
     this.showRegisterEvent.emit();
   }
-
-  testR(): void {
-    this.testS.getSingle().subscribe(data => {
-      console.log(data);
-    },
-    err => console.log(err));
-  }
-
 }

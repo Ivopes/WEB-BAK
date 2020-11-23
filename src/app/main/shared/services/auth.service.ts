@@ -56,10 +56,6 @@ private readonly controller: string = 'auth';
     });
   }
   saveDropboxJwt(dbxJson: DbxJson): Observable<any> {
-    console.log(dbxJson);
     return this.httpClient.post<any>(`${this.constants.API_ENDPOINT}/${this.controller}/registerDropbox`, dbxJson);
-  }
-  getDropboxJwt(): Observable<JwtToken> {
-    return this.httpClient.get<JwtToken>(`${this.constants.API_ENDPOINT}/${this.controller}/getDropboxJwt`);
   }
  }

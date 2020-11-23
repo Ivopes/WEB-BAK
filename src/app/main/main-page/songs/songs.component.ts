@@ -23,7 +23,6 @@ export class SongsComponent implements OnInit {
   ngOnInit(): void {
     this.songService.getAll().subscribe(data => {
       this.songs = data;
-      console.log(this.songs);
     });
   }
   getData(): void {

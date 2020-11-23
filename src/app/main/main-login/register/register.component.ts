@@ -57,7 +57,6 @@ export class RegisterComponent implements OnInit {
       this.showLogin();
     },
     (err) => {
-      console.log(err);
       this.snack.showsnackBar(err.error, 'Close', 5000);
       this.load = false;
     },

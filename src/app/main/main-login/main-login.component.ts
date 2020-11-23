@@ -30,7 +30,6 @@ export class MainLoginComponent implements OnInit {
 
   login(credentials: AccountCredentials): void {
     this.auth.login(credentials).subscribe(res => {
-      console.log(res);
       const token = res.token;
       localStorage.setItem('jwt', token);
       this.router.navigate(['/test']);
