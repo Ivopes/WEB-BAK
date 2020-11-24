@@ -21,6 +21,9 @@ import { PlaylistsComponent } from './main/main-page/playlists/playlists.compone
 import { FileCardComponent } from './main/shared/components/file-card/file-card.component';
 import { ProfileComponent } from './main/main-page/profile/profile.component';
 import { AddPlaylistDialogComponent } from './main/main-page/playlists/add-playlist-dialog/add-playlist-dialog.component';
+import { DeleteDialogComponent } from './main/shared/components/dialogs/delete-dialog/delete-dialog.component';
+import { AddToPlDialogComponent } from './main/shared/components/dialogs/add-to-pl-dialog/add-to-pl-dialog.component';
+
 
 export function tokenGetter(request: HttpRequest<any>): string {
   if (request.url.includes('dropbox')) {
@@ -42,6 +45,8 @@ export function tokenGetter(request: HttpRequest<any>): string {
     FileCardComponent,
     ProfileComponent,
     AddPlaylistDialogComponent,
+    DeleteDialogComponent,
+    AddToPlDialogComponent,
   ],
   imports: [
     BrowserModule,

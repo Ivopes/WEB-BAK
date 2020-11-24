@@ -5,6 +5,10 @@ import { Song } from '../../shared/models/song.model';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '../../shared/services/snackBar.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddToPlDialogComponent } from '../../shared/components/dialogs/add-to-pl-dialog/add-to-pl-dialog.component';
+import { filter } from 'rxjs/operators';
+import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-songs',
@@ -25,7 +29,8 @@ export class SongsComponent implements OnInit {
 
   constructor(
     private songService: SongService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private matDialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -62,9 +67,22 @@ export class SongsComponent implements OnInit {
         this.resetFileInput();
       });
   }
-
   resetFileInput(): void {
     this.fileToUpload = null;
     this.fileInput.nativeElement.value = '';
+  }
+  addToPlaylist(): void {
+    const dialogRef = this.matDialog.open(AddToPlDialogComponent);
+  }
+  deleteSong(id: number): void {
+    //this.songs.splice(id, 1);
+    const dialogRef = this.matDialog.open(DeleteDialogComponent);
+
+    dialogRef.afterClosed().pipe(
+      filter(res => res)
+    ).subscribe(() => {
+      // TODO fill delete logic
+      console.log('delete');
+    });
   }
 }

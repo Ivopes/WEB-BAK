@@ -13,6 +13,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import {MatDialogModule} from '@angular/material/dialog';
    MatMenuModule,
    MatListModule,
    MatDialogModule,
+   MatCheckboxModule,
   ],
   exports: [
    MatSliderModule,
@@ -47,6 +49,7 @@ import {MatDialogModule} from '@angular/material/dialog';
    MatMenuModule,
    MatListModule,
    MatDialogModule,
+   MatCheckboxModule,
   ],
 })
 export class MaterialModule { }

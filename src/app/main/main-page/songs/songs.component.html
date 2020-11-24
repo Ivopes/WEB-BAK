@@ -1,5 +1,5 @@
 <div fxLayoutAlign="center">
-<mat-card>
+<mat-card class="main">
   <mat-card-title>
     Add a song
   </mat-card-title>
@@ -19,6 +19,28 @@
 </div>
 
 <div>
-  <app-file-card *ngFor="let song of this.songs" [song]=song>
-  </app-file-card>
+  <!-- <app-file-card *ngFor="let song of this.songs" [song]=song class="item">
+  </app-file-card> -->
+  <mat-card *ngFor="let song of this.songs; let i = index "  class="item">
+
+    <mat-card-title>
+      {{song.name.substring(0, song.name.lastIndexOf('.'))}}
+    </mat-card-title>
+
+    <mat-card-actions fxLayoutAlign="end none">
+
+      <button mat-icon-button (click)="addToPlaylist()">
+        <span class="material-icons">
+          playlist_add
+        </span>
+      </button>
+
+      <button mat-icon-button (click)="deleteSong(i)">
+        <span class="material-icons">
+          delete
+        </span>
+      </button>
+
+    </mat-card-actions>
+  </mat-card>
 </div>

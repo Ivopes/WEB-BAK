@@ -1,8 +1,25 @@
-mat-card {
+/*mat-card {
   margin: 1rem;
   display: inline-block;
 }
 app-file-card {
   margin: 1rem;
   display: inline-block;
+}*/
+.item {
+  margin: 1rem;
+  display: inline-block;
+  //cursor: pointer;
+  width: 120px;
+  overflow: hidden;
+  height: 70px;
 }
+.item mat-card-title {
+  font-size: 1rem;
+}
+.main {
+  margin: 1rem;
+  display: inline-block;
+  //cursor: pointer;
+}
+

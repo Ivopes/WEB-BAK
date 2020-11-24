@@ -1,6 +1,6 @@
 <div fxLayoutAlign="center">
 
-  <mat-card >
+  <mat-card class="main">
     <mat-card-title>
       Add a playlist
     </mat-card-title>
@@ -16,13 +16,20 @@
 </div>
 
 <div>
-  <mat-card *ngFor="let item of playlists" (click)="showInfo(item)">
+  <mat-card *ngFor="let item of playlists" (click)="showInfo(item)" class="item">
 
     <mat-card-title>
       {{item.name}}
     </mat-card-title>
-    <mat-card-content>
-      Obrazek
-    </mat-card-content>
+
+    <mat-card-actions fxLayoutAlign="end none">
+
+      <button mat-icon-button (click)="deletePlaylist()">
+        <span class="material-icons">
+          delete
+        </span>
+      </button>
+
+    </mat-card-actions>
   </mat-card>
 </div>

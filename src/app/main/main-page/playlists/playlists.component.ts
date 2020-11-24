@@ -5,6 +5,7 @@ import { Playlist } from '../../shared/models/playlist.model';
 import { PlaylistService } from '../../shared/services/playlist.service';
 import { AddPlaylistDialogComponent } from './add-playlist-dialog/add-playlist-dialog.component';
 import { SnackBarService } from '../../shared/services/snackBar.service';
+import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-playlists',
@@ -38,5 +39,15 @@ export class PlaylistsComponent implements OnInit {
   }
   showInfo(playlist: Playlist): void {
     console.log(playlist.name);
+  }
+  deletePlaylist(): void {
+    const dialogRef = this.matDialog.open(DeleteDialogComponent);
+
+    dialogRef.afterClosed().pipe(
+      filter(res => res)
+    ).subscribe(() => {
+      // TODO fill delete logic
+      console.log('delete');
+    });
   }
 }

@@ -1,4 +1,11 @@
-mat-card {
+.item {
+  margin: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  width: 120px;
+  overflow: hidden;
+}
+.main {
   margin: 1rem;
   display: inline-block;
   cursor: pointer;
