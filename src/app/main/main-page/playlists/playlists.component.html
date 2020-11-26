@@ -16,7 +16,7 @@
 </div>
 
 <div>
-  <mat-card *ngFor="let item of playlists" (click)="showInfo(item)" class="item">
+  <mat-card *ngFor="let item of playlists" (click)="showInfo(item.id)" class="item">
 
     <mat-card-title>
       {{item.name}}

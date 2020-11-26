@@ -6,9 +6,11 @@ import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '../../shared/services/snackBar.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AddToPlDialogComponent } from '../../shared/components/dialogs/add-to-pl-dialog/add-to-pl-dialog.component';
-import { filter } from 'rxjs/operators';
+import { AddToPlDialogComponent } from './add-to-pl-dialog/add-to-pl-dialog.component';
+import { filter, map, share, switchMap, tap } from 'rxjs/operators';
 import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-dialog/delete-dialog.component';
+import { PlaylistSong } from '../../shared/models/playlistSong.model';
+import { PlaylistService } from '../../shared/services/playlist.service';
 
 @Component({
   selector: 'app-songs',
@@ -27,10 +29,12 @@ export class SongsComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
+  data$;
+
   constructor(
     private songService: SongService,
     private snackBarService: SnackBarService,
-    private matDialog: MatDialog,
+    private matDialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +53,7 @@ export class SongsComponent implements OnInit {
       return;
     }
 
+    // extension format check
     const extension = this.fileToUpload.name.substring(this.fileToUpload.name.lastIndexOf('.'));
 
     if (!this.allowedExtensions.includes(extension)) {
@@ -56,10 +61,11 @@ export class SongsComponent implements OnInit {
       return;
     }
 
+    // post a file
     this.songService.post(this.fileToUpload).subscribe(
       data => {
+        this.songService.addToData(data);
         this.snackBarService.showSnackBar('File uploaded succesfully', 'Close', 3000);
-        this.getData();
         this.resetFileInput();
       },
       err => {
@@ -71,18 +77,44 @@ export class SongsComponent implements OnInit {
     this.fileToUpload = null;
     this.fileInput.nativeElement.value = '';
   }
-  addToPlaylist(): void {
-    const dialogRef = this.matDialog.open(AddToPlDialogComponent);
+  addToPlaylist(sIndex: number): void {
+    const dialogRef = this.matDialog.open(AddToPlDialogComponent,
+      {
+        data: {
+          song: this.songs[sIndex]
+        }
+      });
+
+    // subscribe to adding playlist to song
+    dialogRef.componentInstance.addPlaylist.pipe(
+      switchMap(pId => {
+        return this.songService.addPlaylistToSong(this.songs[sIndex].id, pId);
+      })
+    ).subscribe(
+      () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
+      err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
+    );
+
+    // subscribe to removing playlist to song
+    dialogRef.componentInstance.removePlaylist.pipe(
+      switchMap(pId => {
+        return this.songService.removePlaylist(this.songs[sIndex].id, pId);
+      })
+    ).subscribe(
+      () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
+      err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
+    );
   }
+  // dialog for deleting song
   deleteSong(id: number): void {
-    //this.songs.splice(id, 1);
     const dialogRef = this.matDialog.open(DeleteDialogComponent);
 
     dialogRef.afterClosed().pipe(
-      filter(res => res)
-    ).subscribe(() => {
-      // TODO fill delete logic
-      console.log('delete');
-    });
+      filter(res => res),
+      switchMap(res => this.songService.remove(this.songs[id].id))
+    ).subscribe(
+      () => this.snackBarService.showSnackBar('Song was deleted', 'Close', 2000),
+      err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
+    );
   }
 }

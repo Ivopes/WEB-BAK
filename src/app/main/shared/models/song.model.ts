@@ -1,5 +1,7 @@
+import { Playlist } from './playlist.model';
+
 export interface Song {
-  songID: number;
+  id: number;
   name: string;
-  accountID: number;
+  playlists: Playlist[];
 }

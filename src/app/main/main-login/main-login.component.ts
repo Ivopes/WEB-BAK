@@ -23,22 +23,9 @@ export class MainLoginComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
-
   onSubmit(): void {
     this.load = true;
   }
-
-  login(credentials: AccountCredentials): void {
-    this.auth.login(credentials).subscribe(res => {
-      const token = res.token;
-      localStorage.setItem('jwt', token);
-      this.router.navigate(['/test']);
-    },
-    () => {
-      this.load = false;
-    });
-  }
-
   changeForms(): void {
     this.showLoginForm = !this.showLoginForm;
   }

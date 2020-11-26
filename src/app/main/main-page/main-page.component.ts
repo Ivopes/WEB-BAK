@@ -4,6 +4,8 @@ import { EMPTY, observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { DbxJson } from '../shared/models/dbxJson.model';
 import { AuthService } from '../shared/services/auth.service';
+import { PlaylistService } from '../shared/services/playlist.service';
+import { SongService } from '../shared/services/song.service';
 
 @Component({
   selector: 'app-main-page',
@@ -18,7 +20,9 @@ export class MainPageComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private songService: SongService,
+    private playlistService: PlaylistService
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +33,8 @@ export class MainPageComponent implements OnInit {
   }
   logout(): void {
     localStorage.removeItem('jwt');
+    this.songService.clearData();
+    this.playlistService.clearData();
     this.router.navigate(['/login']);
   }
   private readJwtCodeFromUrl(): void {

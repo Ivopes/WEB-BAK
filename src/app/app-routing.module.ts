@@ -7,6 +7,7 @@ import { MainPageComponent } from './main/main-page/main-page.component';
 import { SongsComponent } from './main/main-page/songs/songs.component';
 import { PlaylistsComponent } from './main/main-page/playlists/playlists.component';
 import { ProfileComponent } from './main/main-page/profile/profile.component';
+import { PlaylistDetailComponent } from './main/main-page/playlists/playlist-detail/playlist-detail.component';
 
 const routes: Routes = [
   { path: 'login', component: MainLoginComponent},
@@ -15,6 +16,9 @@ const routes: Routes = [
       children: [
         {
           path: 'songs', component: SongsComponent
+        },
+        {
+          path: 'playlists/:id', component: PlaylistDetailComponent
         },
         {
           path: 'playlists', component: PlaylistsComponent

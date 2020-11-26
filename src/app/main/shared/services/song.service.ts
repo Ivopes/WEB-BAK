@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Constants } from '../../../config/constants';
 import { Song } from '../models/song.model';
-import { tap } from 'rxjs/operators';
+import { share, shareReplay, tap } from 'rxjs/operators';
+import { PlaylistSong } from '../models/playlistSong.model';
+import { Playlist } from '../models/playlist.model';
+import { PlaylistService } from './playlist.service';
 
 @Injectable({providedIn: 'root'})
 export class SongService {
@@ -13,10 +16,17 @@ export class SongService {
   constructor(
     private httpClient: HttpClient,
     private constants: Constants,
+
     ) { }
 
   private readonly controller: string = 'song';
 
+  public addToData(song: Song): void {
+    this.data.push(song);
+  }
+  public clearData(): void {
+    this.data = null;
+  }
   public getAll(): Observable<Song[]> {
     if (this.data) {
       return of(this.data);
@@ -27,13 +37,46 @@ export class SongService {
         this.data = data;
       })
     );
+
   }
-  public post(file: File): Observable<boolean> {
+  public post(file: File): Observable<Song> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
 
-    return this.httpClient.post<boolean>(`${this.constants.API_ENDPOINT}/${this.controller}`,
+    return this.httpClient.post<Song>(`${this.constants.API_ENDPOINT}/${this.controller}`,
     formData
     );
+  }
+  public addPlaylistToSong(sId: number, pId: number): Observable<any> {
+    this.addPlaylistToData(sId, pId);
+
+    return this.httpClient.get<any>(`${this.constants.API_ENDPOINT}/${this.controller}/pl/${sId}/${pId}`);
+  }
+  public removePlaylist(sId: number, pId: number): Observable<any> {
+    this.removePlaylistFromData(sId, pId);
+
+    return this.httpClient.delete<any>(`${this.constants.API_ENDPOINT}/${this.controller}/pl/${sId}/${pId}`);
+  }
+  public remove(id: number): Observable<any> {
+    this.deleteSongFromData(id);
+
+    return this.httpClient.delete<any>(`${this.constants.API_ENDPOINT}/${this.controller}/${id}`);
+  }
+  private removePlaylistFromData(sId: number, pId: number): void {
+    const song = this.data.find(s => s.id === sId);
+
+    song.playlists.splice(song.playlists.findIndex(p => p.id === pId), 1);
+  }
+  private addPlaylistToData(sId: number, pId: number): void {
+    const p: Playlist = {
+      id: pId,
+      name: null,
+      songs: null
+    };
+    this.data.find(s => s.id === sId).playlists.push(p);
+  }
+  private deleteSongFromData(id: number): void {
+    this.data.splice(this.data.findIndex(s => s.id === id), 1);
+
   }
 }

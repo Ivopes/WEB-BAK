@@ -6,6 +6,7 @@ import { PlaylistService } from '../../shared/services/playlist.service';
 import { AddPlaylistDialogComponent } from './add-playlist-dialog/add-playlist-dialog.component';
 import { SnackBarService } from '../../shared/services/snackBar.service';
 import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-dialog/delete-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-playlists',
@@ -19,7 +20,8 @@ export class PlaylistsComponent implements OnInit {
   constructor(
     private playlistService: PlaylistService,
     private matDialog: MatDialog,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -33,12 +35,13 @@ export class PlaylistsComponent implements OnInit {
     dialogRef.afterClosed().pipe(
       filter(res => res),
       switchMap(res => this.playlistService.Post(res))
-      ).subscribe(data => this.snackBarService.showSnackBar('Playlist was added', 'Close', 3000),
+      ).subscribe(
+        data => this.snackBarService.showSnackBar('Playlist was added', 'Close', 3000),
         err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000)
       );
   }
-  showInfo(playlist: Playlist): void {
-    console.log(playlist.name);
+  showInfo(pId: number): void {
+    this.router.navigate(['/playlists', pId]);
   }
   deletePlaylist(): void {
     const dialogRef = this.matDialog.open(DeleteDialogComponent);
