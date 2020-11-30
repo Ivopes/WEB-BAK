@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Constants } from '../../../config/constants';
 import { Song } from '../models/song.model';
@@ -21,6 +21,12 @@ export class SongService {
 
   private readonly controller: string = 'song';
 
+
+  public getFile(id: number): Observable<any> {
+    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/file/${id}`, {
+      responseType: 'blob'
+    });
+  }
   public addToData(song: Song): void {
     this.data.push(song);
   }
@@ -77,6 +83,5 @@ export class SongService {
   }
   private deleteSongFromData(id: number): void {
     this.data.splice(this.data.findIndex(s => s.id === id), 1);
-
   }
 }

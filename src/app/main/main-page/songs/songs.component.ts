@@ -29,8 +29,6 @@ export class SongsComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
-  data$;
-
   constructor(
     private songService: SongService,
     private snackBarService: SnackBarService,
@@ -106,15 +104,28 @@ export class SongsComponent implements OnInit {
     );
   }
   // dialog for deleting song
-  deleteSong(id: number): void {
+  deleteSong(index: number): void {
     const dialogRef = this.matDialog.open(DeleteDialogComponent);
 
     dialogRef.afterClosed().pipe(
       filter(res => res),
-      switchMap(res => this.songService.remove(this.songs[id].id))
+      switchMap(res => this.songService.remove(this.songs[index].id))
     ).subscribe(
       () => this.snackBarService.showSnackBar('Song was deleted', 'Close', 2000),
       err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
     );
+  }
+  downloadSong(index: number): void {
+    const fileName = this.songs[index].name;
+
+    this.songService.getFile(this.songs[index].id).subscribe(file => {
+      const blob = new Blob([file], { type: file.type });
+      const url = window.URL.createObjectURL(file);
+      const anchor = document.createElement('a');
+      anchor.download = fileName;
+      anchor.href = url;
+      anchor.click();
+      anchor.remove();
+    });
   }
 }
