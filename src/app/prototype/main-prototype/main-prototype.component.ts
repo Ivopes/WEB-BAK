@@ -44,8 +44,6 @@ export class MainPrototypeComponent implements OnInit {
   private readJwtCode(): void {
     this.route.queryParams.subscribe(params => {
       this.code = params['code'];
-      console.log('ctu');
-      console.log(params);
       this.proData.oauth(this.code).subscribe(data => {
         localStorage.setItem('jwt-dropbox', data.access_token);
       });
@@ -73,8 +71,6 @@ export class MainPrototypeComponent implements OnInit {
 
   uploadFile(): void {
     this.proData.postMp3(this.fileToUpload).subscribe(data => {
-      }, error => {
-        console.log(error);
       });
   }
   dropboxRequest(): void {

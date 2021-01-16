@@ -57,7 +57,6 @@ export class PrototypeDataService {
     let myHeaders: HttpHeaders = new HttpHeaders();
     myHeaders = myHeaders.append('Authorization', 'Basic ' + window.btoa('34niuwlpk3k4gki:dopjxzkfmz66p6r'));
 
-    console.log('davam post');
 
     return this.httpClient.post('https://api.dropbox.com/1/oauth2/token',
       formData, {

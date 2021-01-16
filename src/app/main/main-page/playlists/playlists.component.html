@@ -24,7 +24,7 @@
 
     <mat-card-actions fxLayoutAlign="end none">
 
-      <button mat-icon-button (click)="deletePlaylist()">
+      <button mat-icon-button (click)="deletePlaylist();$event.stopPropagation()">
         <span class="material-icons">
           delete
         </span>
