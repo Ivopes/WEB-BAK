@@ -75,7 +75,7 @@ export class SongsComponent implements OnInit {
     this.fileToUpload = null;
     this.fileInput.nativeElement.value = '';
   }
-  addToPlaylist(sIndex: number): void {
+  addOrRemoveToPlaylist(sIndex: number): void {
     const dialogRef = this.matDialog.open(AddToPlDialogComponent,
       {
         data: {

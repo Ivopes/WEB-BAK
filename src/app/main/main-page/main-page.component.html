@@ -19,7 +19,7 @@
      </mat-nav-list>
   </mat-sidenav>
 
-  <mat-sidenav-content fxLayout="row" fxLayoutAlign="center start">
+  <mat-sidenav-content fxLayoutAlign="center start">
 
     <!-- <div *ngIf="this.showMain" fxLayout="row" fxLayoutAlign="space-evenly center" style="width: 50%;margin-top: 10%;">
 
@@ -55,8 +55,9 @@
       </mat-card>
 
     </div> -->
-
-    <router-outlet></router-outlet>
+    <div class="content-container">
+      <router-outlet></router-outlet>
+    </div>
 
   </mat-sidenav-content>
 
