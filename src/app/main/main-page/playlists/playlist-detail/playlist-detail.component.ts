@@ -1,8 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Playlist } from 'src/app/main/shared/models/playlist.model';
 import { Song } from 'src/app/main/shared/models/song.model';
@@ -20,23 +21,20 @@ export class PlaylistDetailComponent implements OnInit {
   /**
    * table columns to display
    */
-  displayedColumns = ['select', 'id', 'name', 'remove'];
+  displayedColumns = ['select', 'name', 'remove'];
 
   selection: SelectionModel<Song>;
-
-  @ViewChild(MatSort) sort: MatSort;
 
   dataSource: MatTableDataSource<Song>;
 
   constructor(
     private playlistService: PlaylistService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    const initialSelection = [];
-    const allowMultiSelect = true;
-    this.selection = new SelectionModel<Song>(allowMultiSelect, initialSelection);
+    this.selection = new SelectionModel<Song>(true);
 
     this.route.paramMap.pipe(
       switchMap(params => {
@@ -51,7 +49,7 @@ export class PlaylistDetailComponent implements OnInit {
 
   isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
-    const numRows = this.playlist.songs.length;
+    const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
@@ -59,10 +57,22 @@ export class PlaylistDetailComponent implements OnInit {
   masterToggle(): void {
     this.isAllSelected() ?
         this.selection.clear() :
-        this.playlist.songs.forEach(row => this.selection.select(row));
+        this.dataSource.data.forEach(row => this.selection.select(row));
   }
+  removeFromPl(row?: Song): void {
+    if (!row) {
+      console.log(this.selection);
+      console.log(this.selection.selected);
 
-  removeFromPl(row): void {
+      this.dataSource.data = this.dataSource.data.filter(s => !this.selection.selected.includes(s));
+      this.selection.clear();
+
+
+      return;
+    }
     this.dataSource.data = this.dataSource.data.filter(s => s !== row);
+  }
+  toPlaylists(): void {
+    this.router.navigate(['/playlists']);
   }
 }
