@@ -1,25 +1,35 @@
-/*mat-card {
-  margin: 1rem;
-  display: inline-block;
-}
-app-file-card {
-  margin: 1rem;
-  display: inline-block;
-}*/
 .item {
   margin: 1rem;
-  display: inline-block;
+  display: inline-flex;
   //cursor: pointer;
-  width: 120px;
+  width: 240px;
   overflow: hidden;
-  height: 70px;
+  height: 140px;
+  flex-direction: column
 }
-.item mat-card-title {
-  font-size: 1rem;
+.item mat-card {
+  width: 100%;
+  height: auto;
+}
+.item mat-card mat-card-title {
+  font-size: 0.5rem;
+}
+.item mat-card-actions {
+  flex-grow: 1;
+  overflow: auto;
 }
 .main {
   margin: 1rem;
   display: inline-block;
   //cursor: pointer;
+}
+.titleOverflow {
+  /*text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;*/
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 

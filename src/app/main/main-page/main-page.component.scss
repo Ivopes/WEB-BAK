@@ -4,7 +4,12 @@ mat-sidenav-container {
   width: 100%;
 }
 mat-sidenav {
-  width: 10rem;
+  width: 20rem;
+}
+mat-card {
+  cursor: pointer;
+  width: 7rem;
+  height: auto;
 }
 .active {
   background-color: skyblue !important;

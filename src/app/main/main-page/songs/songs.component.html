@@ -21,13 +21,15 @@
 <div>
   <!-- <app-file-card *ngFor="let song of this.songs" [song]=song class="item">
   </app-file-card> -->
-  <mat-card *ngFor="let song of this.songs; let i = index "  class="item">
 
-    <mat-card-title>
+  <div >
+  <mat-card *ngFor="let song of this.songs; let i = index " class="item">
+
+    <mat-card-title class="titleOverflow">
       {{song.name.substring(0, song.name.lastIndexOf('.'))}}
     </mat-card-title>
 
-    <mat-card-actions fxLayoutAlign="end none">
+    <mat-card-actions fxLayoutAlign="end end">
 
       <button mat-icon-button (click)="downloadSong(i)">
         <span class="material-icons">

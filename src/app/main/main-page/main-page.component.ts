@@ -26,17 +26,26 @@ export class MainPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.showMainGuard();
+    // this.showMainGuard();
 
-    this.readJwtCodeFromUrl();
+    // TODO: move to main-dbx-auth component
+    // this.readJwtCodeFromUrl();
+
+    this.router.navigate(['playlists']);
 
   }
+  /**
+   * delete token from storage and and redirect user to login
+   */
   logout(): void {
     localStorage.removeItem('jwt');
     this.songService.clearData();
     this.playlistService.clearData();
     this.router.navigate(['/login']);
   }
+  /**
+   * reads jwt token from url - used for dropbox auth
+   */
   private readJwtCodeFromUrl(): void {
     this.route.queryParamMap
     .pipe(
