@@ -21,15 +21,4 @@
 .main {
   margin: 1rem;
   display: inline-block;
-  //cursor: pointer;
 }
-.titleOverflow {
-  /*text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;*/
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-

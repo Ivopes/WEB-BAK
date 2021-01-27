@@ -31,8 +31,8 @@ export class PlaylistService {
       })
     );
   }
-  public GetById(id: number): Observable<Song[]> {
-    return this.httpClient.get<Song[]>(`${this.constants.API_ENDPOINT}/${this.controller}/songs/${id}`);
+  public GetById(id: number): Observable<Playlist> {
+    return this.httpClient.get<Playlist>(`${this.constants.API_ENDPOINT}/${this.controller}/${id}`);
   }
   public Post(playlist: Playlist): Observable<any> {
     return this.httpClient.post(`${this.constants.API_ENDPOINT}/${this.controller}`,

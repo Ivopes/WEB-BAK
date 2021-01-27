@@ -11,8 +11,9 @@ import { PlaylistService } from 'src/app/main/shared/services/playlist.service';
   styleUrls: ['./playlist-detail.component.scss']
 })
 export class PlaylistDetailComponent implements OnInit {
+  playlist: Playlist;
 
-  songs: Song[];
+  displayedColumns = ['id', 'name'];
 
   constructor(
     private playlistService: PlaylistService,
@@ -23,12 +24,12 @@ export class PlaylistDetailComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap(params => {
         const id = Number.parseInt(params.get('id'), 10);
-
         return this.playlistService.GetById(id);
       })
     ).subscribe(data => {
       console.log(data);
-      this.songs = data;
+      //this.songs = data;
+      this.playlist = data;
     });
   }
 }
