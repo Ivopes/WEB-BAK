@@ -22,20 +22,34 @@ private readonly controller: string = 'auth';
     private jwtHelper: JwtHelperService,
     ) { }
 
+  /**
+   * request for logging user by credentials - for browser
+   * @param credentials user pass and username
+   */
   login(credentials: AccountCredentials): Observable<JwtToken> {
     return this.httpClient.post<JwtToken>(`${this.constants.API_ENDPOINT}/${this.controller}/login`,
     credentials)
     .pipe(shareReplay());
   }
+  /**
+   * request for logging user by credentials - for watch
+   * @param credentials user pass and username
+   */
   watchLogin(credentials: AccountCredentials): Observable<JwtToken> {
     return this.httpClient.post<JwtToken>(`${this.constants.API_ENDPOINT}/${this.controller}/login/watch`,
     credentials)
     .pipe(shareReplay());
   }
-
+  /**
+   * request for registerring user
+   * @param user user register information
+   */
   register(user: Account): Observable<Account> {
     return this.httpClient.post<Account>(`${this.constants.API_ENDPOINT}/${this.controller}/register`, user).pipe(shareReplay());
   }
+  /**
+   * is user logged in - is token valid
+   */
   isLoggedIn(): boolean {
     const token = localStorage.getItem('jwt');
     if (token && !this.jwtHelper.isTokenExpired(token)){
@@ -43,9 +57,16 @@ private readonly controller: string = 'auth';
     }
     return false;
   }
+  /**
+   * redirects user to dropbox auth site
+   */
   dropboxAuthCode(): void {
     window.location.href = `https://www.dropbox.com/oauth2/authorize?client_id=${this.constants.dropboxKey}&redirect_uri=${this.constants.dropboxRedirectURL}&response_type=code`;
   }
+  /**
+   * get dropbox token by dropbox code
+   * @param code string for dropbox indentification
+   */
   dropboxOAuth(code: string): Observable<DbxOAuth> {
     const formData: FormData = new FormData();
     formData.append('code', code);
@@ -60,6 +81,10 @@ private readonly controller: string = 'auth';
       headers: myHeaders
     });
   }
+  /**
+   * request for saving token to database
+   * @param dbxJson json containing dbx token
+   */
   saveDropboxJwt(dbxJson: DbxJson): Observable<any> {
     return this.httpClient.post<any>(`${this.constants.API_ENDPOINT}/${this.controller}/registerDropbox`, dbxJson);
   }

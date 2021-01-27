@@ -24,10 +24,19 @@ export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup;
 
+  /**
+   * show loading animation
+   */
   public load = false;
 
+  /**
+   * watch or main browser
+   */
   private loginType: string;
 
+  /**
+   * switch form to register
+   */
   @Output() showRegisterEvent = new EventEmitter();
 
   constructor(

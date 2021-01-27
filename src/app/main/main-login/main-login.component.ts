@@ -23,9 +23,9 @@ export class MainLoginComponent implements OnInit {
       this.router.navigate(['']);
     }
   }
-  onSubmit(): void {
-    this.load = true;
-  }
+  /**
+   * swap login and register forms
+   */
   changeForms(): void {
     this.showLoginForm = !this.showLoginForm;
   }
