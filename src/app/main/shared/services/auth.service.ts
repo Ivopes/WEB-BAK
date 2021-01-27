@@ -27,6 +27,11 @@ private readonly controller: string = 'auth';
     credentials)
     .pipe(shareReplay());
   }
+  watchLogin(credentials: AccountCredentials): Observable<JwtToken> {
+    return this.httpClient.post<JwtToken>(`${this.constants.API_ENDPOINT}/${this.controller}/login/watch`,
+    credentials)
+    .pipe(shareReplay());
+  }
 
   register(user: Account): Observable<Account> {
     return this.httpClient.post<Account>(`${this.constants.API_ENDPOINT}/${this.controller}/register`, user).pipe(shareReplay());

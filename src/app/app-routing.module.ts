@@ -8,10 +8,12 @@ import { SongsComponent } from './main/main-page/songs/songs.component';
 import { PlaylistsComponent } from './main/main-page/playlists/playlists.component';
 import { ProfileComponent } from './main/main-page/profile/profile.component';
 import { PlaylistDetailComponent } from './main/main-page/playlists/playlist-detail/playlist-detail.component';
+import { WatchLoginComponent } from './main/main-login/watch-login/watch-login.component';
 
 const routes: Routes = [
   { path: 'login', component: MainLoginComponent},
-  { path: 'test', component: MainPrototypeComponent, canActivate: [AuthGuard]},
+  { path: 'login/watch', component: WatchLoginComponent},
+  { path: 'test', component: MainPrototypeComponent},
   { path: '', component: MainPageComponent, canActivate: [AuthGuard] ,
       children: [
         {

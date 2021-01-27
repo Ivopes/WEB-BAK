@@ -26,20 +26,26 @@ export class LoginComponent implements OnInit {
 
   public load = false;
 
+  private loginType: string;
+
   @Output() showRegisterEvent = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private snack: SnackBarService,
-    private testS: PrototypeDataService
+    private snack: SnackBarService
   ) { }
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+    if (this.router.url.endsWith('login/watch')) {
+      this.loginType = 'watch';
+    } else {
+      this.loginType = 'main';
+    }
   }
   onSubmit(): void {
     if (this.loginForm.invalid) {
@@ -47,8 +53,30 @@ export class LoginComponent implements OnInit {
     }
     this.load = true;
     this.login(this.loginForm.value);
+
   }
+  /**
+   * Container for two login methods - calls proper login method by active url the user is in
+   * @param credentials user pass and username
+   */
   login(credentials: AccountCredentials): void {
+    if (this.loginType === 'watch') {
+      this.watchLogin(credentials);
+    } else {
+      this.mainLogin(credentials);
+    }
+  }
+  /**
+   * emits event to show register form and show this one
+   */
+  showRegister(): void {
+    this.showRegisterEvent.emit();
+  }
+  /**
+   * Login user - for browser use
+   * @param credentials user pass and username
+   */
+  mainLogin(credentials: AccountCredentials): void {
     this.auth.login(credentials).subscribe(res => {
       const token = res.token;
       localStorage.setItem('jwt', token);
@@ -58,8 +86,7 @@ export class LoginComponent implements OnInit {
       this.load = false;
       if (err.status === 401) {
         this.snack.showSnackBar('Wrong password or username', 'Close', 5000);
-      }
-      else {
+      } else {
         this.snack.showSnackBar('Unknown error', 'Close', 5000);
       }
     },
@@ -67,7 +94,25 @@ export class LoginComponent implements OnInit {
       this.load = false;
     });
   }
-  showRegister(): void {
-    this.showRegisterEvent.emit();
+  /**
+   * Login user - for watch use
+   * @param credentials user pass and username
+   */
+  watchLogin(credentials: AccountCredentials): void {
+    this.auth.watchLogin(credentials).subscribe(res => {
+      const token = res.token;
+      this.router.navigate(['/login'], {queryParams: {token}});
+    },
+    (err: HttpErrorResponse) => {
+      this.load = false;
+      if (err.status === 401) {
+        this.snack.showSnackBar('Wrong password or username', 'Close', 5000);
+      } else {
+        this.snack.showSnackBar('Unknown error', 'Close', 5000);
+      }
+    },
+    () => {
+      this.load = false;
+    });
   }
 }

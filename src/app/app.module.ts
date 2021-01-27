@@ -24,6 +24,7 @@ import { AddPlaylistDialogComponent } from './main/main-page/playlists/add-playl
 import { DeleteDialogComponent } from './main/shared/components/dialogs/delete-dialog/delete-dialog.component';
 import { AddToPlDialogComponent } from './main/main-page/songs/add-to-pl-dialog/add-to-pl-dialog.component';
 import { PlaylistDetailComponent } from './main/main-page/playlists/playlist-detail/playlist-detail.component';
+import { WatchLoginComponent } from './main/main-login/watch-login/watch-login.component';
 
 
 export function tokenGetter(request: HttpRequest<any>): string {
@@ -49,6 +50,7 @@ export function tokenGetter(request: HttpRequest<any>): string {
     DeleteDialogComponent,
     AddToPlDialogComponent,
     PlaylistDetailComponent,
+    WatchLoginComponent,
   ],
   imports: [
     BrowserModule,
