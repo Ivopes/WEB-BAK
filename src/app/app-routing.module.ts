@@ -8,6 +8,7 @@ import { SongsComponent } from './main/main-page/songs/songs.component';
 import { PlaylistsComponent } from './main/main-page/playlists/playlists.component';
 import { ProfileComponent } from './main/main-page/profile/profile.component';
 import { PlaylistDetailComponent } from './main/main-page/playlists/playlist-detail/playlist-detail.component';
+import { MainDbxAuthComponent } from './main/main-dbx-auth/main-dbx-auth.component';
 
 const routes: Routes = [
   { path: 'login', component: MainLoginComponent},
@@ -26,6 +27,9 @@ const routes: Routes = [
         },
         {
           path: 'profile', component: ProfileComponent
+        },
+        {
+          path: 'dbx', component: MainDbxAuthComponent
         }
       ]},
   { path: '**', redirectTo: '' }
