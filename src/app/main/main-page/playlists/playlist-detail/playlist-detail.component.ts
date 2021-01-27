@@ -1,10 +1,12 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
+import { DeleteDialogComponent } from 'src/app/main/shared/components/dialogs/delete-dialog/delete-dialog.component';
 import { Playlist } from 'src/app/main/shared/models/playlist.model';
 import { Song } from 'src/app/main/shared/models/song.model';
 import { PlaylistService } from 'src/app/main/shared/services/playlist.service';
@@ -30,7 +32,8 @@ export class PlaylistDetailComponent implements OnInit {
   constructor(
     private playlistService: PlaylistService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private matDialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -60,17 +63,24 @@ export class PlaylistDetailComponent implements OnInit {
         this.dataSource.data.forEach(row => this.selection.select(row));
   }
   removeFromPl(row?: Song): void {
-    if (!row) {
-      console.log(this.selection);
-      console.log(this.selection.selected);
+    const dialogRef = this.matDialog.open(DeleteDialogComponent);
 
-      this.dataSource.data = this.dataSource.data.filter(s => !this.selection.selected.includes(s));
-      this.selection.clear();
+    dialogRef.afterClosed().pipe(
+      filter(res => res)
+    ).subscribe(() => {
 
+      // TODO: send to server
+      if (!row) {
+        console.log(this.selection);
+        console.log(this.selection.selected);
 
-      return;
-    }
-    this.dataSource.data = this.dataSource.data.filter(s => s !== row);
+        this.dataSource.data = this.dataSource.data.filter(s => !this.selection.selected.includes(s));
+        this.selection.clear();
+
+        return;
+      }
+      this.dataSource.data = this.dataSource.data.filter(s => s !== row);
+    });
   }
   toPlaylists(): void {
     this.router.navigate(['/playlists']);
