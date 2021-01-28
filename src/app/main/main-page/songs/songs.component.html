@@ -31,19 +31,19 @@
 
     <mat-card-actions fxLayoutAlign="end end">
 
-      <button mat-icon-button (click)="downloadSong(i)">
+      <button mat-icon-button (click)="downloadSong(i)" matTooltip="Download">
         <span class="material-icons">
           download
         </span>
       </button>
 
-      <button mat-icon-button (click)="addOrRemoveToPlaylist(i)">
+      <button mat-icon-button (click)="addOrRemoveToPlaylist(i)"  matTooltip="Add to playlist">
         <span class="material-icons">
-          playlist_add
+          queue_music
         </span>
       </button>
 
-      <button mat-icon-button (click)="deleteSong(i)">
+      <button mat-icon-button (click)="deleteSong(i)"  matTooltip="Delete">
         <span class="material-icons">
           delete
         </span>

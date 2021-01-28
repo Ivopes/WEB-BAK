@@ -1,1 +1,47 @@
-<button mat-raised-button color="primary" (click)="auth()">Oauth</button>
+<div fxLayout="column" fxLayoutAlign="center center">
+  <button mat-raised-button color="primary" (click)="auth()">Oauth</button>
+
+
+  <span class="material-icons" style="font-size: 150px;">
+    account_circle
+    </span>
+
+  <form [formGroup]="this.profileForm" *ngIf="this.account;else spinner">
+    <mat-card>
+
+      <mat-card-title>
+        Profile informations
+      </mat-card-title>
+
+      <mat-card-content fxLayout="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
+
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
+          <mat-form-field >
+            <input formControlName="firstName" matInput placeholder="First name" [readonly]="true"/>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input formControlName="lastName" matInput placeholder="Last name" [readonly]="true"/>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
+
+          <mat-form-field>
+            <input formControlName="email" matInput placeholder="Email adress" [readonly]="true"/>
+            <mat-error>Email format is invalid</mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <input formControlName="username" matInput placeholder="Username" [readonly]="true"/>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </form>
+
+</div>
+
+<ng-template #spinner>
+  <mat-spinner style="margin-top: 10%;"></mat-spinner>
+</ng-template>

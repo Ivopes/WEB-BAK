@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { Constants } from '../../../config/constants';
 import { Playlist } from '../models/playlist.model';
 import { tap } from 'rxjs/operators';
-import { Song } from '../models/song.model';
 
 @Injectable({providedIn: 'root'})
 export class PlaylistService {

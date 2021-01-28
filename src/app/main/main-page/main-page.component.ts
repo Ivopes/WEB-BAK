@@ -6,6 +6,7 @@ import { DbxJson } from '../shared/models/dbxJson.model';
 import { AuthService } from '../shared/services/auth.service';
 import { PlaylistService } from '../shared/services/playlist.service';
 import { SongService } from '../shared/services/song.service';
+import { AccountService } from '../shared/services/account.service';
 
 @Component({
   selector: 'app-main-page',
@@ -26,12 +27,10 @@ export class MainPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.showMainGuard();
+     this.showMainGuard();
 
     // TODO: move to main-dbx-auth component
     // this.readJwtCodeFromUrl();
-
-    this.router.navigate(['playlists']);
 
   }
   /**
@@ -70,11 +69,14 @@ export class MainPageComponent implements OnInit {
       });
   }
   private showMainGuard(): void {
+    // Initial check
     if (this.router.url === '/') {
       this.showMain = true;
     } else {
       this.showMain = false;
     }
+
+    // Subscribe for changes for later
     this.router.events.pipe(
       filter(url => url instanceof NavigationEnd)
     ).subscribe((url: NavigationEnd) => {
@@ -85,4 +87,9 @@ export class MainPageComponent implements OnInit {
       }
     });
   }
+  toMain(): void {
+    this.router.navigate(['/']);
+  }
+
+
 }

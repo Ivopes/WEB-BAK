@@ -2,8 +2,8 @@
   <!-- <button mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button> -->
-  <span class="name">Garmusic</span>
-  <button mat-icon-button class="end-line" (click)="logout()">
+  <span class="name" (click)="toMain()">Garmusic</span>
+  <button mat-icon-button class="end-line" (click)="logout()" matTooltip="Delete" matTooltipPosition="left">
     <mat-icon>power_settings_new</mat-icon>
   </button>
 </mat-toolbar>
@@ -21,7 +21,7 @@
 
   <mat-sidenav-content fxLayoutAlign="center start">
 
-    <!-- <div *ngIf="this.showMain" fxLayout="row" fxLayoutAlign="space-evenly center" style="width: 50%;margin-top: 10%;">
+    <div *ngIf="this.showMain; else router" fxLayout="row" fxLayoutAlign="space-evenly center" style="width: 50%;margin-top: 10%;">
 
       <mat-card routerLink="profile">
         <mat-card-content fxLayoutAlign="center center">
@@ -46,7 +46,7 @@
       <mat-card routerLink="playlists">
         <mat-card-content fxLayoutAlign="center center" color="primary">
           <span class="material-icons">
-            view_list
+            library_music
           </span>
         </mat-card-content>
         <mat-card-actions fxLayoutAlign="center end">
@@ -54,10 +54,13 @@
         </mat-card-actions>
       </mat-card>
 
-    </div> -->
-    <div class="content-container">
-      <router-outlet></router-outlet>
     </div>
+
+    <ng-template #router>
+      <div class="content-container">
+        <router-outlet></router-outlet>
+      </div>
+    </ng-template>
 
   </mat-sidenav-content>
 
