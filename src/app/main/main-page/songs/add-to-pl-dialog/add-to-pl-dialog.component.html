@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add to playlist</h1>
+<h1 mat-dialog-title>Modify playlist</h1>
 <div mat-dialog-content fxLayout="column">
   <mat-checkbox class="checkMargin" color="primary" *ngFor="let item of this.playlists; let i = index" [checked]="this.checked[i]" (change)="this.changeChecked(i)">{{item.name}}</mat-checkbox>
 </div>

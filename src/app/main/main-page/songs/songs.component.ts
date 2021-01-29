@@ -59,6 +59,9 @@ export class SongsComponent implements OnInit {
   onFileSelected(files: FileList): void {
     this.fileToUpload = files.item(0);
   }
+  /**
+   * uploads file to backend
+   */
   postFile(): void {
     if (this.fileToUpload == null) {
       return;
@@ -88,18 +91,18 @@ export class SongsComponent implements OnInit {
     this.fileToUpload = null;
     this.fileInput.nativeElement.value = '';
   }
-  addOrRemoveToPlaylist(sIndex: number): void {
+  addOrRemoveToPlaylist(song: Song): void {
     const dialogRef = this.matDialog.open(AddToPlDialogComponent,
       {
         data: {
-          song: this.songs[sIndex]
+          song
         }
       });
 
     // subscribe to adding playlist to song
     dialogRef.componentInstance.addPlaylist.pipe(
       switchMap(pId => {
-        return this.songService.addPlaylistToSong(this.songs[sIndex].id, pId);
+        return this.songService.addPlaylistToSong(song.id, pId);
       })
     ).subscribe(
       () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
@@ -109,29 +112,36 @@ export class SongsComponent implements OnInit {
     // subscribe to removing playlist to song
     dialogRef.componentInstance.removePlaylist.pipe(
       switchMap(pId => {
-        return this.songService.removePlaylist(this.songs[sIndex].id, pId);
+        return this.songService.removePlaylist(song.id, pId);
       })
     ).subscribe(
       () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
       err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
     );
   }
-  // dialog for deleting song
-  deleteSong(index: number): void {
+  /**
+   * Deletes song from storage and database
+   * @param song song to delete
+   */
+  deleteSong(song: Song): void {
     const dialogRef = this.matDialog.open(DeleteDialogComponent);
 
     dialogRef.afterClosed().pipe(
       filter(res => res),
-      switchMap(res => this.songService.remove(this.songs[index].id))
+      switchMap(res => this.songService.remove(song.id))
     ).subscribe(
       () => this.snackBarService.showSnackBar('Song was deleted', 'Close', 2000),
       err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
     );
   }
-  downloadSong(index: number): void {
-    const fileName = this.songs[index].name;
+  /**
+   * Download song from storage for user
+   * @param song song to download
+   */
+  downloadSong(song: Song): void {
+    const fileName = song.name;
 
-    this.songService.getFile(this.songs[index].id).subscribe(file => {
+    this.songService.getFile(song.id).subscribe(file => {
       const blob = new Blob([file], { type: file.type });
       const url = window.URL.createObjectURL(file);
       const anchor = document.createElement('a');
@@ -146,11 +156,14 @@ export class SongsComponent implements OnInit {
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle(): void {
     this.isAllSelected() ?
         this.selection.clear() :
         this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
