@@ -6,6 +6,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { SnackBarService } from '../../shared/services/snackBar.service';
 import { StorageService  } from '../../shared/services/storage.service';
 import { Storage } from '../../shared/models/storage.model';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +22,8 @@ export class ProfileComponent implements OnInit {
   storages: Storage[];
 
   displayedColumns = ['storage', 'add', 'remove', 'signed'];
+
+  dataSource: MatTableDataSource<Storage>;
 
   constructor(
     private authService: AuthService,
@@ -53,7 +56,7 @@ export class ProfileComponent implements OnInit {
       this.account = data;
       this.profileForm = this.createForm();
       console.log(this.account);
-
+      this.dataSource = new MatTableDataSource(data.storage);
     },
       err => this.snackBarService.showSnackBar('Could not receive account information', 'Close', 5000)
     );
