@@ -1,4 +1,4 @@
-<div fxLayoutAlign="center">
+<div fxLayoutAlign="center center" fxLayout="column">
 <mat-card class="main">
   <mat-card-title>
     Add a song
@@ -16,14 +16,13 @@
     </button>
   </mat-card-actions>
 </mat-card>
-</div>
 
-<div>
+
   <!-- <app-file-card *ngFor="let song of this.songs" [song]=song class="item">
   </app-file-card> -->
 
-  <div >
-  <mat-card *ngFor="let song of this.songs; let i = index " class="item">
+  <div *ngIf="this.songs;else spinner">
+  <mat-card *ngFor="let song of this.songs; let i = index " class="item" >
 
     <mat-card-title>
       {{song.name.substring(0, song.name.lastIndexOf('.'))}}
@@ -51,4 +50,9 @@
 
     </mat-card-actions>
   </mat-card>
+</div >
+
+<ng-template #spinner>
+  <mat-spinner></mat-spinner>
+</ng-template>
 </div>

@@ -72,12 +72,7 @@ export class PlaylistDetailComponent implements OnInit {
     dialogRef.afterClosed().pipe(
       filter(res => res)
     ).subscribe(() => {
-      // TODO: send to server
       if (!row) {
-        console.log(this.selection);
-
-        console.log(this.selection.selected);
-
         this.selection.selected.forEach( s => {
           this.songService.removePlaylist(s.id, this.playlist.id).subscribe(
             () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
@@ -85,17 +80,13 @@ export class PlaylistDetailComponent implements OnInit {
         });
         console.log(this.selection);
         this.dataSource.data = this.dataSource.data.filter(s => !this.selection.selected.includes(s));
-
         this.selection.clear();
-
-
         return;
       }
-
       this.songService.removePlaylist(row.id, this.playlist.id).subscribe(
         () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
-        err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000));
-
+        err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
+      );
       this.dataSource.data = this.dataSource.data.filter(s => s !== row);
     });
   }

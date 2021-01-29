@@ -6,9 +6,8 @@
     <mat-icon>add</mat-icon>
   </button>
 
-</div>
 
-<div>
+<div *ngIf="this.playlists;else spinner">
   <mat-card *ngFor="let item of playlists" (click)="showInfo(item.id)" class="item">
 
     <mat-card-title>
@@ -25,4 +24,9 @@
 
     </mat-card-actions>
   </mat-card>
+</div>
+<ng-template #spinner>
+  <mat-spinner></mat-spinner>
+</ng-template>
+
 </div>

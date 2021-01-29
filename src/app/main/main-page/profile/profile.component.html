@@ -16,25 +16,25 @@
       <mat-card-content fxLayout="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
 
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
-          <mat-form-field >
-            <input formControlName="firstName" matInput placeholder="First name" [readonly]="true"/>
+          <mat-form-field fxFlex>
+            <input formControlName="firstName" matInput placeholder="First name" [readonly]="true" />
           </mat-form-field>
 
-          <mat-form-field>
-            <input formControlName="lastName" matInput placeholder="Last name" [readonly]="true"/>
+          <mat-form-field fxFlex>
+            <input formControlName="lastName" matInput placeholder="Last name" [readonly]="true" />
           </mat-form-field>
         </div>
 
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
+          <mat-form-field fxFlex>
+            <input formControlName="username" matInput placeholder="Username" [readonly]="true"/>
+          </mat-form-field>
 
-          <mat-form-field>
+          <mat-form-field fxFlex>
             <input formControlName="email" matInput placeholder="Email adress" [readonly]="true"/>
             <mat-error>Email format is invalid</mat-error>
           </mat-form-field>
 
-          <mat-form-field>
-            <input formControlName="username" matInput placeholder="Username" [readonly]="true"/>
-          </mat-form-field>
         </div>
       </mat-card-content>
     </mat-card>
