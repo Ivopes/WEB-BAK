@@ -11,6 +11,8 @@ import { filter, map, share, switchMap, tap } from 'rxjs/operators';
 import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-dialog/delete-dialog.component';
 import { PlaylistSong } from '../../shared/models/playlistSong.model';
 import { PlaylistService } from '../../shared/services/playlist.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-songs',
@@ -23,9 +25,17 @@ export class SongsComponent implements OnInit {
 
   fileToUpload: File = null;
 
+  displayedColumns = ['select', 'name', 'download', 'addToPl', 'remove'];
+
   allowedExtensions: string[] = [
     '.mp3'
   ];
+
+  dataSource: MatTableDataSource<Song>;
+
+  selection: SelectionModel<Song>;
+
+  checked = false;
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
@@ -36,11 +46,14 @@ export class SongsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.selection = new SelectionModel<Song>(true);
+
     this.getData();
   }
   getData(): void {
     this.songService.getAll().subscribe(data => {
       this.songs = data;
+      this.dataSource = new MatTableDataSource(data);
     });
   }
   onFileSelected(files: FileList): void {
@@ -127,5 +140,17 @@ export class SongsComponent implements OnInit {
       anchor.click();
       anchor.remove();
     });
+  }
+  isAllSelected(): boolean {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle(): void {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.dataSource.data.forEach(row => this.selection.select(row));
   }
 }
