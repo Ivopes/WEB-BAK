@@ -5,11 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, mergeMap, switchMap } from 'rxjs/operators';
 import { DeleteDialogComponent } from 'src/app/main/shared/components/dialogs/delete-dialog/delete-dialog.component';
 import { Playlist } from 'src/app/main/shared/models/playlist.model';
 import { Song } from 'src/app/main/shared/models/song.model';
 import { PlaylistService } from 'src/app/main/shared/services/playlist.service';
+import { SnackBarService } from 'src/app/main/shared/services/snackBar.service';
+import { SongService } from 'src/app/main/shared/services/song.service';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -34,6 +36,8 @@ export class PlaylistDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private matDialog: MatDialog,
+    private songService: SongService,
+    private snackBarService: SnackBarService,
   ) { }
 
   ngOnInit(): void {
@@ -68,17 +72,30 @@ export class PlaylistDetailComponent implements OnInit {
     dialogRef.afterClosed().pipe(
       filter(res => res)
     ).subscribe(() => {
-
       // TODO: send to server
       if (!row) {
         console.log(this.selection);
+
         console.log(this.selection.selected);
 
+        this.selection.selected.forEach( s => {
+          this.songService.removePlaylist(s.id, this.playlist.id).subscribe(
+            () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
+            err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000));
+        });
+        console.log(this.selection);
         this.dataSource.data = this.dataSource.data.filter(s => !this.selection.selected.includes(s));
+
         this.selection.clear();
+
 
         return;
       }
+
+      this.songService.removePlaylist(row.id, this.playlist.id).subscribe(
+        () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
+        err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000));
+
       this.dataSource.data = this.dataSource.data.filter(s => s !== row);
     });
   }

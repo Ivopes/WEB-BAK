@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Constants } from '../../../config/constants';
 import { Song } from '../models/song.model';
-import { share, shareReplay, tap } from 'rxjs/operators';
+import { share, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { PlaylistSong } from '../models/playlistSong.model';
 import { Playlist } from '../models/playlist.model';
 import { PlaylistService } from './playlist.service';
@@ -54,14 +54,32 @@ export class SongService {
     );
   }
   public addPlaylistToSong(sId: number, pId: number): Observable<any> {
-    this.addPlaylistToData(sId, pId);
-
-    return this.httpClient.get<any>(`${this.constants.API_ENDPOINT}/${this.controller}/pl/${sId}/${pId}`);
+    if (!this.data) {
+      return this.getAll().pipe(
+        switchMap(() => {
+          this.addPlaylistToData(sId, pId);
+          return this.httpClient.get<any>(`${this.constants.API_ENDPOINT}/${this.controller}/pl/${sId}/${pId}`);
+        })
+      );
+    } else {
+      this.addPlaylistToData(sId, pId);
+      return this.httpClient.get<any>(`${this.constants.API_ENDPOINT}/${this.controller}/pl/${sId}/${pId}`);
+    }
   }
   public removePlaylist(sId: number, pId: number): Observable<any> {
-    this.removePlaylistFromData(sId, pId);
+    if (!this.data) {
+      return this.getAll().pipe(
+        switchMap(() => {
+          this.removePlaylistFromData(sId, pId);
 
-    return this.httpClient.delete<any>(`${this.constants.API_ENDPOINT}/${this.controller}/pl/${sId}/${pId}`);
+          return this.httpClient.delete<any>(`${this.constants.API_ENDPOINT}/${this.controller}/pl/${sId}/${pId}`);
+        })
+      );
+    } else {
+      this.removePlaylistFromData(sId, pId);
+
+      return this.httpClient.delete<any>(`${this.constants.API_ENDPOINT}/${this.controller}/pl/${sId}/${pId}`);
+    }
   }
   public remove(id: number): Observable<any> {
     this.deleteSongFromData(id);
