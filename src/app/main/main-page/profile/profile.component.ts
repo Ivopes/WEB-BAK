@@ -4,7 +4,8 @@ import { Account } from '../../shared/models/account.model';
 import { AccountService } from '../../shared/services/account.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { SnackBarService } from '../../shared/services/snackBar.service';
-import { SongService } from '../../shared/services/song.service';
+import { StorageService  } from '../../shared/services/storage.service';
+import { Storage } from '../../shared/models/storage.model';
 
 @Component({
   selector: 'app-profile',
@@ -17,11 +18,16 @@ export class ProfileComponent implements OnInit {
 
   account: Account;
 
+  storages: Storage[];
+
+  displayedColumns = ['storage', 'add', 'remove', 'signed'];
+
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
     private accountService: AccountService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
@@ -35,15 +41,19 @@ export class ProfileComponent implements OnInit {
 
     this.getAccountInfo();
 
+    this.getStorages();
+
   }
 
-  auth(): void {
+  dbxAuth(): void {
     this.authService.dropboxAuthCode();
   }
   getAccountInfo(): void {
     this.accountService.getById().subscribe(data => {
       this.account = data;
       this.profileForm = this.createForm();
+      console.log(this.account);
+
     },
       err => this.snackBarService.showSnackBar('Could not receive account information', 'Close', 5000)
     );
@@ -55,5 +65,17 @@ export class ProfileComponent implements OnInit {
       email: [this.account.email],
       username: [this.account.username]
     });
+  }
+  getStorages(): void {
+    this.storageService.getAll().subscribe(data => {
+      this.storages = data;
+    });
+  }
+  /**
+   * does account have this storage signed
+   * @param storage storage to check if signed
+   */
+  isStorageSigned(storage: Storage): boolean {
+    return this.account.storage.some(s => s.name === storage.name);
   }
 }

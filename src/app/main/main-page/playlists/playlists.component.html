@@ -7,7 +7,7 @@
   </button>
 
 
-<div *ngIf="this.playlists;else spinner">
+<div *ngIf="this.playlists;else spinner" style="margin-top: 10px;">
   <mat-card *ngFor="let item of playlists" (click)="showInfo(item.id)" class="item">
 
     <mat-card-title>
