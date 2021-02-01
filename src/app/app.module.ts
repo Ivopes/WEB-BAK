@@ -25,6 +25,7 @@ import { DeleteDialogComponent } from './main/shared/components/dialogs/delete-d
 import { AddToPlDialogComponent } from './main/main-page/songs/add-to-pl-dialog/add-to-pl-dialog.component';
 import { PlaylistDetailComponent } from './main/main-page/playlists/playlist-detail/playlist-detail.component';
 import { MainDbxAuthComponent } from './main/main-dbx-auth/main-dbx-auth.component';
+import { AddSongsToPlDialogComponent } from './main/main-page/playlists/playlist-detail/add-songs-to-pl-dialog/add-songs-to-pl-dialog.component';
 
 
 export function tokenGetter(request: HttpRequest<any>): string {
@@ -51,6 +52,7 @@ export function tokenGetter(request: HttpRequest<any>): string {
     AddToPlDialogComponent,
     PlaylistDetailComponent,
     MainDbxAuthComponent,
+    AddSongsToPlDialogComponent,
   ],
   imports: [
     BrowserModule,

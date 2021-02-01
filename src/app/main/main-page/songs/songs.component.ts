@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { SongService } from '../../shared/services/song.service';
 import { SongStorageService } from '../../shared/services/song-storage.service';
 import { Song } from '../../shared/models/song.model';
@@ -7,25 +7,29 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '../../shared/services/snackBar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddToPlDialogComponent } from './add-to-pl-dialog/add-to-pl-dialog.component';
-import { filter, map, share, switchMap, tap } from 'rxjs/operators';
+import { delay, filter, map, share, switchMap, tap } from 'rxjs/operators';
 import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-dialog/delete-dialog.component';
 import { PlaylistSong } from '../../shared/models/playlistSong.model';
 import { PlaylistService } from '../../shared/services/playlist.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-songs',
   templateUrl: './songs.component.html',
   styleUrls: ['./songs.component.scss']
 })
-export class SongsComponent implements OnInit {
+export class SongsComponent implements OnInit, AfterViewInit{
 
-  songs: Song[] = [];
+  songs: Song[];
 
   fileToUpload: File = null;
 
   displayedColumns = ['select', 'name', 'download', 'addToPl', 'remove'];
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   allowedExtensions: string[] = [
     '.mp3'
@@ -37,6 +41,7 @@ export class SongsComponent implements OnInit {
 
   checked = false;
 
+
   @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(
@@ -44,16 +49,26 @@ export class SongsComponent implements OnInit {
     private snackBarService: SnackBarService,
     private matDialog: MatDialog
   ) { }
+  ngAfterViewInit(): void {
+
+    this.getData();
+  }
 
   ngOnInit(): void {
     this.selection = new SelectionModel<Song>(true);
 
-    this.getData();
+    //this.getData();
+
   }
   getData(): void {
-    this.songService.getAll().subscribe(data => {
+    this.songService.getAll().pipe(
+      delay(1)
+    ).subscribe(data => {
       this.songs = data;
-      this.dataSource = new MatTableDataSource(data);
+      this.songs = this.songs.concat(this.songs.concat(this.songs.concat(this.songs)));
+      this.dataSource = new MatTableDataSource(this.songs);
+      this.dataSource.paginator = this.paginator;
+      //console.log(this.dataSource.paginator);
     });
   }
   onFileSelected(files: FileList): void {

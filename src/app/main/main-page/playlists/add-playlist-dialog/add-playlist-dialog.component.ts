@@ -12,8 +12,6 @@ export class AddPlaylistDialogComponent implements OnInit {
 
   playlistForm: FormGroup;
 
-
-
   constructor(
     public dialogRef: MatDialogRef<AddPlaylistDialogComponent>,
     private fb: FormBuilder

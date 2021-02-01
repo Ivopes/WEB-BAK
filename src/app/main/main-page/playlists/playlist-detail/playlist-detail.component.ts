@@ -12,6 +12,7 @@ import { Song } from 'src/app/main/shared/models/song.model';
 import { PlaylistService } from 'src/app/main/shared/services/playlist.service';
 import { SnackBarService } from 'src/app/main/shared/services/snackBar.service';
 import { SongService } from 'src/app/main/shared/services/song.service';
+import { AddSongsToPlDialogComponent } from './add-songs-to-pl-dialog/add-songs-to-pl-dialog.component';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -92,5 +93,15 @@ export class PlaylistDetailComponent implements OnInit {
   }
   toPlaylists(): void {
     this.router.navigate(['/playlists']);
+  }
+  addSongs(): void {
+    const dialogRef = this.matDialog.open(AddSongsToPlDialogComponent, {
+      //width: '80%'
+    });
+
+    dialogRef.afterClosed().subscribe(data => {
+      console.log('Zavreno');
+      console.log(data);
+    });
   }
 }

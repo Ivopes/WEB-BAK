@@ -1,137 +1,90 @@
 <div fxLayoutAlign="center center" fxLayout="column">
-  <mat-card class="main">
-    <mat-card-title>
-      Add a song
-    </mat-card-title>
 
-    <mat-card-actions>
-      <button mat-icon-button (click)="fileInput.click()">
-        <span class="material-icons">
-          add_circle
-        </span>
-      </button>
-      <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file" accept=".mp3">
-      <button mat-raised-button color="primary" (click)="postFile()" [disabled]="this.fileToUpload == null">
-        Upload
-      </button>
-    </mat-card-actions>
-  </mat-card>
+  <div  class="data-Container">
 
-  <mat-slide-toggle (change)="this.checked = !this.checked">Swap</mat-slide-toggle>
-  <!-- <app-file-card *ngFor="let song of this.songs" [song]=song class="item">
-  </app-file-card> -->
+      <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="margin: 0px 20px 5px 20px;">
 
-  <div *ngIf="this.songs;else spinner" class="data-Container">
-    <div *ngIf="!this.checked;else table">
+        <mat-form-field fxFlexAlign="end" class="filter">
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
 
-      <mat-card *ngFor="let song of this.songs; let i = index " class="item">
+        <button mat-raised-button (click)="fileInput.click()">Choose file</button>
+        <button mat-raised-button color="primary" (click)="postFile()"
+          [disabled]="this.fileToUpload == null">Upload</button>
+        <button mat-raised-button [disabled]="this.selection.selected.length === 0">Delete</button>
 
-        <mat-card-title>
-          {{song.name.substring(0, song.name.lastIndexOf('.'))}}
-        </mat-card-title>
+      </div>
 
-        <mat-card-actions fxLayoutAlign="end end">
 
-          <button mat-icon-button (click)="downloadSong(song)" matTooltip="Download">
-            <span class="material-icons">
-              download
-            </span>
-          </button>
+      <div  class="table-Container mat-elevation-z4">
 
-          <button mat-icon-button (click)="addOrRemoveToPlaylist(song)" matTooltip="Modify playlists">
-            <span class="material-icons">
-              queue_music
-            </span>
-          </button>
+        <table *ngIf="this.songs;else spinner" mat-table [dataSource]="this.dataSource" >
 
-          <button mat-icon-button (click)="deleteSong(song)" matTooltip="Delete">
-            <span class="material-icons">
-              delete
-            </span>
-          </button>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let song"> {{song.name.substring(0, song.name.lastIndexOf('.'))}} </td>
+          </ng-container>
 
-        </mat-card-actions>
-      </mat-card>
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+            <td mat-cell *matCellDef="let song"> {{song.id}} </td>
+          </ng-container>
 
-    </div>
-    <ng-template #table>
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
 
-    <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px" style="margin: 0px 20px 15px 20px;">
+          <ng-container matColumnDef="download">
+            <th mat-header-cell *matHeaderCellDef> download </th>
+            <td mat-cell *matCellDef="let song">
 
-      <button mat-raised-button (click)="fileInput.click()">Choose file</button>
-      <button mat-raised-button color="primary" (click)="postFile()" [disabled]="this.fileToUpload == null">Upload</button>
-      <button mat-raised-button [disabled]="this.selection.selected.length === 0">Delete</button>
+              <button mat-icon-button (click)="downloadSong(song)" matTooltip="Download">
+                <mat-icon>download</mat-icon>
+              </button>
 
-    </div>
+            </td>
+          </ng-container>
 
-      <mat-form-field style="width: 100%;">
-        <mat-label>Filter</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-      </mat-form-field>
+          <ng-container matColumnDef="addToPl">
+            <th mat-header-cell *matHeaderCellDef> Modify playlists </th>
+            <td mat-cell *matCellDef="let song">
 
-      <table mat-table [dataSource]="this.dataSource" class="mat-elevation-z4">
+              <button mat-icon-button (click)="addOrRemoveToPlaylist(song)" matTooltip="Modify playlists">
+                <mat-icon>queue_music</mat-icon>
+              </button>
 
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let song"> {{song.name.substring(0, song.name.lastIndexOf('.'))}} </td>
-        </ng-container>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
-          <td mat-cell *matCellDef="let song"> {{song.id}} </td>
-        </ng-container>
+          <ng-container matColumnDef="remove">
+            <th mat-header-cell *matHeaderCellDef> Remove </th>
+            <td mat-cell *matCellDef="let song">
 
-        <ng-container matColumnDef="select">
-          <th mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
-              [indeterminate]="selection.hasValue() && !isAllSelected()">
-            </mat-checkbox>
-          </th>
-          <td mat-cell *matCellDef="let row">
-            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-              [checked]="selection.isSelected(row)">
-            </mat-checkbox>
-          </td>
-        </ng-container>
+              <button mat-icon-button (click)="deleteSong(song)" matTooltip="Remove">
+                <mat-icon>delete</mat-icon>
+              </button>
 
-        <ng-container matColumnDef="download">
-          <th mat-header-cell *matHeaderCellDef> download </th>
-          <td mat-cell *matCellDef="let song">
+            </td>
+          </ng-container>
 
-            <button mat-icon-button (click)="downloadSong(song)">
-              <mat-icon>download</mat-icon>
-            </button>
+          <tr mat-header-row *matHeaderRowDef="this.displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: this.displayedColumns;"></tr>
+        </table>
 
-          </td>
-        </ng-container>
+        <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 
-        <ng-container matColumnDef="addToPl">
-          <th mat-header-cell *matHeaderCellDef> Modify playlists </th>
-          <td mat-cell *matCellDef="let song">
-
-            <button mat-icon-button (click)="addOrRemoveToPlaylist(song)">
-              <mat-icon>queue_music</mat-icon>
-            </button>
-
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="remove">
-          <th mat-header-cell *matHeaderCellDef> Remove </th>
-          <td mat-cell *matCellDef="let song">
-
-            <button mat-icon-button (click)="deleteSong(song)">
-              <mat-icon>delete</mat-icon>
-            </button>
-
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="this.displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: this.displayedColumns;"></tr>
-      </table>
-    </ng-template>
-
+      </div>
   </div>
 
   <ng-template #spinner>
