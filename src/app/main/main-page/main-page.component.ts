@@ -7,6 +7,7 @@ import { AuthService } from '../shared/services/auth.service';
 import { PlaylistService } from '../shared/services/playlist.service';
 import { SongService } from '../shared/services/song.service';
 import { AccountService } from '../shared/services/account.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-main-page',
@@ -18,16 +19,20 @@ export class MainPageComponent implements OnInit {
   openSideNav = false;
   showMain = true;
 
+  isSmallScreen;
+
   constructor(
     private router: Router,
     private authService: AuthService,
     private route: ActivatedRoute,
     private songService: SongService,
-    private playlistService: PlaylistService
+    private playlistService: PlaylistService,
+    private breakpointObserver: BreakpointObserver
   ) { }
 
   ngOnInit(): void {
-     this.showMainGuard();
+    this.redirectCheck();
+    this.isSmallScreen = this.breakpointObserver.observe(Breakpoints.XSmall);
 
     // TODO: move to main-dbx-auth component
     // this.readJwtCodeFromUrl();
@@ -68,28 +73,17 @@ export class MainPageComponent implements OnInit {
       .subscribe(() => {
       });
   }
-  private showMainGuard(): void {
-    // Initial check
+  /**
+   * redirect to playlists if needed
+   */
+  private redirectCheck(): void {
     if (this.router.url === '/') {
       this.showMain = true;
-    } else {
-      this.showMain = false;
+      this.router.navigate(['/playlists']);
     }
-
-    // Subscribe for changes for later
-    this.router.events.pipe(
-      filter(url => url instanceof NavigationEnd)
-    ).subscribe((url: NavigationEnd) => {
-      if (url.urlAfterRedirects === '/') {
-        this.showMain = true;
-      } else {
-        this.showMain = false;
-      }
-    });
   }
+
   toMain(): void {
     this.router.navigate(['/']);
   }
-
-
 }

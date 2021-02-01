@@ -3,13 +3,11 @@ mat-sidenav-container {
   height: 100%;
   width: 100%;
 }
-mat-sidenav {
-  width: 20rem;
+.sidenav-desktop {
+  width: 15%;
 }
-mat-card {
-  cursor: pointer;
-  width: 7rem;
-  height: auto;
+.sidenav-phone {
+  width: 80%;
 }
 mat-nav-list {
   padding-top: 0;

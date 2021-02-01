@@ -1,17 +1,19 @@
 <mat-toolbar color="primary" fxLayoutGap="2rem" fxLayoutAlign="none center">
-  <!-- <button mat-icon-button (click)="sidenav.toggle()">
+  <button mat-icon-button (click)="sidenav.toggle()" *ngIf="(this.isSmallScreen | async)!.matches">
     <mat-icon>menu</mat-icon>
-  </button> -->
-  <span class="name" (click)="toMain()">Garmusic</span>
+  </button>
+  <span>Garmusic</span>
   <button mat-icon-button class="end-line" (click)="logout()" matTooltip="Delete" matTooltipPosition="left">
     <mat-icon>power_settings_new</mat-icon>
   </button>
 </mat-toolbar>
 
-
-
 <mat-sidenav-container>
-  <mat-sidenav [opened]="true" mode="side">
+  <mat-sidenav #sidenav
+    [ngClass]="!(this.isSmallScreen | async)!.matches ? 'sidenav-desktop' : 'sidenav-phone'"
+    [opened]="!(this.isSmallScreen | async)!.matches"
+    [mode]="!(this.isSmallScreen | async)!.matches ? 'side' : 'over'"
+    [autoFocus]="false">
     <mat-nav-list>
       <mat-list-item routerLink="profile" routerLinkActive="active"><mat-icon matListIcon>account_circle</mat-icon>Account</mat-list-item>
       <mat-list-item routerLink="songs" routerLinkActive="active"><mat-icon matListIcon>music_note</mat-icon>Songs</mat-list-item>
@@ -21,46 +23,9 @@
 
   <mat-sidenav-content fxLayoutAlign="center start">
 
-    <div *ngIf="this.showMain; else router" fxLayout="row" fxLayoutAlign="space-evenly center" style="width: 50%;margin-top: 10%;">
-
-      <mat-card routerLink="profile">
-        <mat-card-content fxLayoutAlign="center center">
-          <span class="material-icons" >
-            account_circle
-          </span>
-        </mat-card-content>
-        <mat-card-actions fxLayoutAlign="center center">
-          <button mat-button color="primary">Profile</button>
-        </mat-card-actions>
-      </mat-card>
-      <mat-card routerLink="songs">
-        <mat-card-content fxLayoutAlign="center center">
-          <span class="material-icons">
-            music_note
-          </span>
-        </mat-card-content>
-        <mat-card-actions fxLayoutAlign="center end">
-          <button mat-button color="primary">Songs</button>
-        </mat-card-actions>
-      </mat-card>
-      <mat-card routerLink="playlists">
-        <mat-card-content fxLayoutAlign="center center" color="primary">
-          <span class="material-icons">
-            library_music
-          </span>
-        </mat-card-content>
-        <mat-card-actions fxLayoutAlign="center end">
-          <button mat-button color="primary">Playlists</button>
-        </mat-card-actions>
-      </mat-card>
-
-    </div>
-
-    <ng-template #router>
       <div class="content-container">
         <router-outlet></router-outlet>
       </div>
-    </ng-template>
 
   </mat-sidenav-content>
 
