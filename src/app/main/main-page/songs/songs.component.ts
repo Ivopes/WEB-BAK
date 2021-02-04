@@ -15,6 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { of } from 'rxjs';
+import { LoadingService } from '../../shared/services/loading.service';
 
 @Component({
   selector: 'app-songs',
@@ -41,34 +42,28 @@ export class SongsComponent implements OnInit, AfterViewInit{
 
   checked = false;
 
-
   @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(
     private songService: SongService,
     private snackBarService: SnackBarService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private loadingService: LoadingService
   ) { }
   ngAfterViewInit(): void {
-
+    this.loadingService.startLoading();
     this.getData();
   }
 
   ngOnInit(): void {
     this.selection = new SelectionModel<Song>(true);
-
-    //this.getData();
-
   }
   getData(): void {
-    this.songService.getAll().pipe(
-      delay(1)
-    ).subscribe(data => {
+    this.songService.getAll().subscribe(data => {
       this.songs = data;
-      this.songs = this.songs.concat(this.songs.concat(this.songs.concat(this.songs)));
       this.dataSource = new MatTableDataSource(this.songs);
       this.dataSource.paginator = this.paginator;
-      //console.log(this.dataSource.paginator);
+      this.loadingService.stopLoading();
     });
   }
   onFileSelected(files: FileList): void {
@@ -90,16 +85,27 @@ export class SongsComponent implements OnInit, AfterViewInit{
       return;
     }
 
+    // Show loading
+    this.loadingService.startLoading();
+
+    const file = this.fileToUpload;
+
+    // Disable and reset input
+    this.resetFileInput();
+
     // post a file
-    this.songService.post(this.fileToUpload).subscribe(
+    this.songService.post(file).subscribe(
       data => {
         this.songService.addToData(data);
+        this.dataSource.data = this.dataSource.data;
+        this.loadingService.stopLoading();
         this.snackBarService.showSnackBar('File uploaded succesfully', 'Close', 3000);
         this.resetFileInput();
       },
       err => {
         this.snackBarService.showSnackBar(err.error, 'Close', 5000);
         this.resetFileInput();
+        this.loadingService.stopLoading();
       });
   }
   resetFileInput(): void {
@@ -143,10 +149,19 @@ export class SongsComponent implements OnInit, AfterViewInit{
 
     dialogRef.afterClosed().pipe(
       filter(res => res),
-      switchMap(res => this.songService.remove(song.id))
-    ).subscribe(
-      () => this.snackBarService.showSnackBar('Song was deleted', 'Close', 2000),
-      err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
+      switchMap(res => {
+        this.loadingService.startLoading();
+        return this.songService.remove(song.id);
+      })
+    ).subscribe(() => {
+        this.loadingService.stopLoading();
+        this.snackBarService.showSnackBar('Song was deleted', 'Close', 2000);
+        this.dataSource.data = this.dataSource.data;
+      },
+      err => {
+        this.loadingService.stopLoading();
+        this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+      }
     );
   }
   /**
@@ -155,8 +170,9 @@ export class SongsComponent implements OnInit, AfterViewInit{
    */
   downloadSong(song: Song): void {
     const fileName = song.name;
-
+    this.loadingService.startLoading();
     this.songService.getFile(song.id).subscribe(file => {
+      this.loadingService.stopLoading();
       const blob = new Blob([file], { type: file.type });
       const url = window.URL.createObjectURL(file);
       const anchor = document.createElement('a');
@@ -180,5 +196,8 @@ export class SongsComponent implements OnInit, AfterViewInit{
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  deleteRange(): void {
+    // Remove range
   }
 }

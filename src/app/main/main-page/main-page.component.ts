@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { EMPTY, observable } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
-import { DbxJson } from '../shared/models/dbxJson.model';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { PlaylistService } from '../shared/services/playlist.service';
 import { SongService } from '../shared/services/song.service';
-import { AccountService } from '../shared/services/account.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { SnackBarService } from '../shared/services/snackBar.service';
+import { LoadingService } from '../shared/services/loading.service';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { delay, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-page',
@@ -24,16 +23,15 @@ export class MainPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService,
-    private route: ActivatedRoute,
     private songService: SongService,
     private playlistService: PlaylistService,
     private breakpointObserver: BreakpointObserver,
-    private snack: SnackBarService
-  ) { }
+    private loadingService: LoadingService
+    ) { }
 
   ngOnInit(): void {
     this.redirectCheck();
+
     this.isSmallScreen = this.breakpointObserver.observe(Breakpoints.XSmall);
   }
   /**
@@ -54,8 +52,10 @@ export class MainPageComponent implements OnInit {
       this.router.navigate(['/playlists']);
     }
   }
-
   toMain(): void {
     this.router.navigate(['/']);
+  }
+  getLoading(): Observable<boolean> {
+    return this.loadingService.loading;
   }
 }

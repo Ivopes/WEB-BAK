@@ -7,6 +7,7 @@ import { SnackBarService } from '../../shared/services/snackBar.service';
 import { StorageService  } from '../../shared/services/storage.service';
 import { Storage } from '../../shared/models/storage.model';
 import { MatTableDataSource } from '@angular/material/table';
+import { LoadingService } from '../../shared/services/loading.service';
 
 @Component({
   selector: 'app-profile',
@@ -25,12 +26,15 @@ export class ProfileComponent implements OnInit {
 
   dataSource: MatTableDataSource<Storage>;
 
+  stopLoading = false;
+
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
     private accountService: AccountService,
     private snackBarService: SnackBarService,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -52,13 +56,21 @@ export class ProfileComponent implements OnInit {
     this.authService.toDropboxConfirm();
   }
   getAccountInfo(): void {
+    this.loadingService.startLoading();
+
     this.accountService.getById().subscribe(data => {
       this.account = data;
       this.profileForm = this.createForm();
-      console.log(this.account);
       this.dataSource = new MatTableDataSource(data.storage);
+      if (this.stopLoading === true) {
+        this.loadingService.stopLoading();
+      }
+      this.stopLoading = true;
     },
-      err => this.snackBarService.showSnackBar('Could not receive account information', 'Close', 5000)
+      err => {
+        this.snackBarService.showSnackBar('Could not receive account information', 'Close', 5000);
+        this.loadingService.stopLoading();
+      }
     );
   }
   createForm(): FormGroup {
@@ -72,6 +84,10 @@ export class ProfileComponent implements OnInit {
   getStorages(): void {
     this.storageService.getAll().subscribe(data => {
       this.storages = data;
+      if (this.stopLoading === true) {
+        this.loadingService.stopLoading();
+      }
+      this.stopLoading = true;
     });
   }
   /**

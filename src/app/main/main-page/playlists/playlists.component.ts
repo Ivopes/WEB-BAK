@@ -7,6 +7,8 @@ import { AddPlaylistDialogComponent } from './add-playlist-dialog/add-playlist-d
 import { SnackBarService } from '../../shared/services/snackBar.service';
 import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-dialog/delete-dialog.component';
 import { Router } from '@angular/router';
+import { LoadingService } from '../../shared/services/loading.service';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-playlists',
@@ -21,11 +23,15 @@ export class PlaylistsComponent implements OnInit {
     private playlistService: PlaylistService,
     private matDialog: MatDialog,
     private snackBarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
+    this.loadingService.startLoading();
+
     this.playlistService.GetAll().subscribe(data => {
+      this.loadingService.stopLoading();
       this.playlists = data;
     });
   }
@@ -34,10 +40,21 @@ export class PlaylistsComponent implements OnInit {
 
     dialogRef.afterClosed().pipe(
       filter(res => res),
-      switchMap(res => this.playlistService.Post(res))
+      switchMap(res => {
+        this.loadingService.startLoading();
+
+        return this.playlistService.Post(res);
+      })
       ).subscribe(
-        data => this.snackBarService.showSnackBar('Playlist was added', 'Close', 3000),
-        err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000)
+        data => {
+          this.snackBarService.showSnackBar('Playlist was added', 'Close', 3000);
+
+          this.loadingService.stopLoading();
+        },
+        err => {
+          this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
+          this.loadingService.stopLoading();
+        }
       );
   }
   showInfo(pId: number): void {
@@ -47,7 +64,12 @@ export class PlaylistsComponent implements OnInit {
     const dialogRef = this.matDialog.open(DeleteDialogComponent);
 
     dialogRef.afterClosed().pipe(
-      filter(res => res)
+      filter(res => res),
+      switchMap(res => {
+        this.loadingService.startLoading();
+
+        return EMPTY;
+      })
     ).subscribe(() => {
       // TODO fill delete logic
       console.log('delete');

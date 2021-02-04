@@ -4,7 +4,7 @@
     account_circle
     </span>
 
-  <div *ngIf="this.account;else spinner" class="container" fxLayoutGap="25px" fxLayout="column" fxLayoutAlign="center stretch">
+  <div *ngIf="this.account" class="container" fxLayoutGap="25px" fxLayout="column" fxLayoutAlign="center stretch">
 
     <form [formGroup]="this.profileForm" >
       <mat-card>
@@ -92,10 +92,6 @@
 
     </table>
   </div>
-
-<ng-template #spinner>
-      <mat-spinner style="margin-top: 10%;"></mat-spinner>
-    </ng-template>
 </div>
 
 

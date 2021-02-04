@@ -7,6 +7,7 @@ import { share, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { PlaylistSong } from '../models/playlistSong.model';
 import { Playlist } from '../models/playlist.model';
 import { PlaylistService } from './playlist.service';
+import { LowerCasePipe } from '@angular/common';
 
 @Injectable({providedIn: 'root'})
 export class SongService {
@@ -27,9 +28,7 @@ export class SongService {
       responseType: 'blob'
     });
   }
-  public addToData(song: Song): void {
-    this.data.push(song);
-  }
+
   public clearData(): void {
     this.data = null;
   }
@@ -101,5 +100,8 @@ export class SongService {
   }
   private deleteSongFromData(id: number): void {
     this.data.splice(this.data.findIndex(s => s.id === id), 1);
+  }
+  public addToData(song: Song): void {
+    this.data.push(song);
   }
 }

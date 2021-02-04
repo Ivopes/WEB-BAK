@@ -12,6 +12,7 @@
   <mat-sidenav #sidenav
     [ngClass]="!(this.isSmallScreen | async)!.matches ? 'sidenav-desktop' : 'sidenav-phone'"
     [opened]="!(this.isSmallScreen | async)!.matches"
+    [disableClose]="!(this.isSmallScreen | async)!.matches"
     [mode]="!(this.isSmallScreen | async)!.matches ? 'side' : 'over'"
     [autoFocus]="false">
     <mat-nav-list>
@@ -30,3 +31,5 @@
   </mat-sidenav-content>
 
 </mat-sidenav-container>
+
+<mat-spinner *ngIf="this.getLoading() | async" class="spinner"></mat-spinner>

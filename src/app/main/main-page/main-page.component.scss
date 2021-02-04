@@ -36,3 +36,12 @@ mat-nav-list {
   width: 100%;
   margin: 1rem 2rem 1rem 2rem;
 }
+.spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 1;
+}
