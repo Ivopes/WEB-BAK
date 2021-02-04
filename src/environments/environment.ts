@@ -6,8 +6,7 @@ export const environment = {
   production: false,
   baseUrl: 'https://localhost:44303',
   dropboxKey: '34niuwlpk3k4gki',
-  dropboxSecret: 'dopjxzkfmz66p6r',
-  dropboxRedirectURL: 'https://localhost:44303'
+  dropboxRedirectURL: 'https://localhost:44303/dbx'
 };
 
 /*
