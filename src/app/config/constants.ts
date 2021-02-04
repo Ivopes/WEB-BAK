@@ -8,7 +8,6 @@ export class Constants {
   private readonly baseUrl = environment.baseUrl;
 
   public readonly dropboxKey = environment.dropboxKey;
-  public readonly dropboxSecret = environment.dropboxSecret;
   public readonly API_ENDPOINT: string = this.baseUrl + '/api';
   public readonly dropboxRedirectURL = environment.dropboxRedirectURL;
 }

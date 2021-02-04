@@ -48,8 +48,8 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  dbxAuth(): void {
-    this.authService.dropboxAuthCode();
+  toBbxAuth(): void {
+    this.authService.toDropboxConfirm();
   }
   getAccountInfo(): void {
     this.accountService.getById().subscribe(data => {

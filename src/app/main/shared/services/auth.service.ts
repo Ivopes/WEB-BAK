@@ -60,21 +60,24 @@ private readonly controller: string = 'auth';
   /**
    * redirects user to dropbox auth site
    */
-  dropboxAuthCode(): void {
+  toDropboxConfirm(): void {
     window.location.href = `https://www.dropbox.com/oauth2/authorize?client_id=${this.constants.dropboxKey}&redirect_uri=${this.constants.dropboxRedirectURL}&response_type=code`;
   }
   /**
    * get dropbox token by dropbox code
    * @param code string for dropbox indentification
    */
-  dropboxOAuth(code: string): Observable<DbxOAuth> {
+  dropboxOAuth(code: string, hashKeys: string): Observable<DbxOAuth> {
     const formData: FormData = new FormData();
     formData.append('code', code);
     formData.append('grant_type', 'authorization_code');
     formData.append('redirect_uri', `${this.constants.dropboxRedirectURL}`);
 
     let myHeaders: HttpHeaders = new HttpHeaders();
-    myHeaders = myHeaders.append('Authorization', 'Basic ' + window.btoa(`${this.constants.dropboxKey}:${this.constants.dropboxSecret}`));
+
+    myHeaders = myHeaders.append('Authorization', 'Basic ' + hashKeys);
+
+    console.log('Basic ' + hashKeys);
 
     return this.httpClient.post<DbxOAuth>('https://api.dropbox.com/1/oauth2/token',
     formData, {
@@ -87,5 +90,13 @@ private readonly controller: string = 'auth';
    */
   saveDropboxJwt(dbxJson: DbxJson): Observable<any> {
     return this.httpClient.post<any>(`${this.constants.API_ENDPOINT}/${this.controller}/registerDropbox`, dbxJson);
+  }
+  /**
+   * requests hashed dropbox keys for OAuth
+   */
+  getDropboxCodeHashed(): Observable<string> {
+    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/dbxCodeHash`,{
+        responseType: 'text'
+    });
   }
  }
