@@ -21,8 +21,6 @@ export class MainDbxAuthComponent implements OnInit {
     private snack: SnackBarService
   ) { }
 
-  // TODO: add DBX token reading
-
   ngOnInit(): void {
     this.route.queryParamMap
     .pipe(
