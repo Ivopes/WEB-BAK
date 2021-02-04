@@ -1,4 +1,10 @@
 <div  class="data-Container">
+
+  <mat-form-field fxFlexAlign="end" class="filter">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)">
+  </mat-form-field>
+
   <div class="table-Container mat-elevation-z4">
 
     <table *ngIf="this.dataSource;else spinner" mat-table [dataSource]="this.dataSource">
@@ -30,10 +36,21 @@
       <tr mat-row *matRowDef="let row; columns: this.displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
-  </div>
-</div>
+    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
 
-<ng-template #spinner>
+  </div>
+
+  <ng-template #spinner>
   <mat-spinner class="spinner"></mat-spinner>
 </ng-template>
+
+  <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="margin: 0px 20px 5px 20px;">
+
+    <button mat-raised-button color="primary" [disabled]="this.selection.selected.length === 0">Change</button>
+    <button mat-raised-button mat-dialog-close>Close</button>
+
+  </div>
+
+</div>
+
+

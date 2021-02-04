@@ -38,7 +38,7 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
 
   getData(): void {
     this.songService.getAll().subscribe(data => {
-      this.dataSource = new MatTableDataSource(data);
+      this.dataSource = new MatTableDataSource(data.concat(data.concat(data.concat(data))));
       this.dataSource.paginator = this.paginator;
     });
   }
@@ -53,5 +53,9 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
     this.isAllSelected() ?
         this.selection.clear() :
         this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
