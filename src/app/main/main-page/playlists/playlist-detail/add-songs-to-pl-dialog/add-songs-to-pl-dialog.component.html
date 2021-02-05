@@ -7,7 +7,7 @@
 
   <div class="table-Container mat-elevation-z4">
 
-    <table *ngIf="this.dataSource;else spinner" mat-table [dataSource]="this.dataSource">
+    <table mat-table [dataSource]="this.dataSource">
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
