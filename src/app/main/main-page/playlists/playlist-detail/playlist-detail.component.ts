@@ -9,6 +9,7 @@ import { filter, mergeMap, switchMap } from 'rxjs/operators';
 import { DeleteDialogComponent } from 'src/app/main/shared/components/dialogs/delete-dialog/delete-dialog.component';
 import { Playlist } from 'src/app/main/shared/models/playlist.model';
 import { Song } from 'src/app/main/shared/models/song.model';
+import { LoadingService } from 'src/app/main/shared/services/loading.service';
 import { PlaylistService } from 'src/app/main/shared/services/playlist.service';
 import { SnackBarService } from 'src/app/main/shared/services/snackBar.service';
 import { SongService } from 'src/app/main/shared/services/song.service';
@@ -39,19 +40,30 @@ export class PlaylistDetailComponent implements OnInit {
     private matDialog: MatDialog,
     private songService: SongService,
     private snackBarService: SnackBarService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
     this.selection = new SelectionModel<Song>(true);
 
+    this.getData();
+  }
+
+  private getData(): void {
     this.route.paramMap.pipe(
       switchMap(params => {
+        this.loadingService.startLoading();
         const id = Number.parseInt(params.get('id'), 10);
-        return this.playlistService.GetById(id);
+        return this.playlistService.getById(id);
       })
     ).subscribe(data => {
       this.playlist = data;
       this.dataSource = new MatTableDataSource(data.songs);
+      this.loadingService.stopLoading();
+    },
+    err => {
+      this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+      this.loadingService.stopLoading();
     });
   }
 
@@ -96,12 +108,14 @@ export class PlaylistDetailComponent implements OnInit {
   }
   addSongs(): void {
     const dialogRef = this.matDialog.open(AddSongsToPlDialogComponent, {
-      //width: '80%'
+      data: {
+        songs: this.dataSource.data,
+        playlist: this.playlist
+      }
     });
 
     dialogRef.afterClosed().subscribe(data => {
-      console.log('Zavreno');
-      console.log(data);
+      this.getData();
     });
   }
 }

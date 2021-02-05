@@ -28,7 +28,7 @@ export class AddToPlDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.playlistService.GetAll().subscribe(data => {
+    this.playlistService.getAll().subscribe(data => {
       this.playlists = data;
       this.checkPlaylists();
     });

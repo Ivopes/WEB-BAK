@@ -30,24 +30,31 @@ export class PlaylistsComponent implements OnInit {
   ngOnInit(): void {
     this.loadingService.startLoading();
 
-    this.playlistService.GetAll().subscribe(data => {
+    this.getData();
+  }
+  private getData(): void {
+    this.playlistService.getAll().subscribe(data => {
       this.loadingService.stopLoading();
       this.playlists = data;
     });
   }
+
   addPlaylist(): void {
     const dialogRef = this.matDialog.open(AddPlaylistDialogComponent);
-
+    let plToAdd = null;
     dialogRef.afterClosed().pipe(
       filter(res => res),
       switchMap(res => {
         this.loadingService.startLoading();
-
-        return this.playlistService.Post(res);
+        plToAdd = res;
+        return this.playlistService.post(res);
       })
       ).subscribe(
-        data => {
+        () => {
           this.snackBarService.showSnackBar('Playlist was added', 'Close', 3000);
+
+          this.playlistService.clearData();
+          this.getData();
 
           this.loadingService.stopLoading();
         },
@@ -60,7 +67,7 @@ export class PlaylistsComponent implements OnInit {
   showInfo(pId: number): void {
     this.router.navigate(['/playlists', pId]);
   }
-  deletePlaylist(): void {
+  deletePlaylist(id: number): void {
     const dialogRef = this.matDialog.open(DeleteDialogComponent);
 
     dialogRef.afterClosed().pipe(
@@ -68,11 +75,18 @@ export class PlaylistsComponent implements OnInit {
       switchMap(res => {
         this.loadingService.startLoading();
 
-        return EMPTY;
+        return this.playlistService.remove(id);
       })
-    ).subscribe(() => {
-      // TODO fill delete logic
-      console.log('delete');
-    });
+    ).subscribe(
+      () => {
+        this.snackBarService.showSnackBar('Playlist was deleted', 'Close', 3000);
+
+        this.loadingService.stopLoading();
+      },
+      err => {
+        this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
+        this.loadingService.stopLoading();
+      }
+    );
   }
 }

@@ -157,10 +157,12 @@ export class SongsComponent implements OnInit, AfterViewInit{
         this.loadingService.stopLoading();
         this.snackBarService.showSnackBar('Song was deleted', 'Close', 2000);
         this.dataSource.data = this.dataSource.data;
+        this.selection.clear();
       },
       err => {
         this.loadingService.stopLoading();
         this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+        this.selection.clear();
       }
     );
   }
@@ -198,6 +200,19 @@ export class SongsComponent implements OnInit, AfterViewInit{
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   deleteRange(): void {
-    // Remove range
+    console.log(this.selection.selected.map(s => s.id));
+
+    this.loadingService.startLoading();
+
+    this.songService.removeRange(this.selection.selected.map(s => s.id)).subscribe(() => {
+      this.loadingService.stopLoading();
+      this.snackBarService.showSnackBar('Songs were deleted', 'Close', 2000);
+      this.selection.clear();
+      this.dataSource.data = this.dataSource.data;
+    },
+    err => {
+      this.loadingService.stopLoading();
+      this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+    });
   }
 }

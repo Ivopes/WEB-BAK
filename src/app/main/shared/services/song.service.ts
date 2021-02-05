@@ -85,6 +85,21 @@ export class SongService {
 
     return this.httpClient.delete<any>(`${this.constants.API_ENDPOINT}/${this.controller}/${id}`);
   }
+  public removeRange(ids: number[]): Observable<any> {
+    ids.forEach(sId => {
+      this.deleteSongFromData(sId);
+    });
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: ids
+    };
+    console.log(options.body);
+
+    return this.httpClient.delete<any>(`${this.constants.API_ENDPOINT}/${this.controller}`, options);
+  }
   private removePlaylistFromData(sId: number, pId: number): void {
     const song = this.data.find(s => s.id === sId);
 

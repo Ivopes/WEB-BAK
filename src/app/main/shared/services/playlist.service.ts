@@ -20,7 +20,7 @@ export class PlaylistService {
   public clearData(): void {
     this.data = null;
   }
-  public GetAll(): Observable<Playlist[]> {
+  public getAll(): Observable<Playlist[]> {
     if (this.data) {
       return of(this.data);
     }
@@ -30,12 +30,23 @@ export class PlaylistService {
       })
     );
   }
-  public GetById(id: number): Observable<Playlist> {
+  public getById(id: number): Observable<Playlist> {
     return this.httpClient.get<Playlist>(`${this.constants.API_ENDPOINT}/${this.controller}/${id}`);
   }
-  public Post(playlist: Playlist): Observable<any> {
+  public post(playlist: Playlist): Observable<any> {
     return this.httpClient.post(`${this.constants.API_ENDPOINT}/${this.controller}`,
       playlist
     );
+  }
+  public remove(id: number): Observable<any> {
+    this.deletePlaylistFromData(id);
+
+    return this.httpClient.delete(`${this.constants.API_ENDPOINT}/${this.controller}/${id}`);
+  }
+  private deletePlaylistFromData(id: number): void {
+    this.data.splice(this.data.findIndex(s => s.id === id), 1);
+  }
+  public addToData(playlist: Playlist): void {
+    this.data.push(playlist);
   }
 }
