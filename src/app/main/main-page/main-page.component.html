@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" fxLayoutGap="2rem" fxLayoutAlign="none center">
-  <button mat-icon-button (click)="sidenav.toggle()" *ngIf="(this.isSmallScreen | async)!.matches">
+  <button mat-icon-button (click)="sidenav.toggle()" *ngIf="(this.screenSizeService.isSmallScreen() | async)!.matches">
     <mat-icon>menu</mat-icon>
   </button>
   <span>Garmusic</span>
@@ -10,10 +10,10 @@
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav
-    [ngClass]="!(this.isSmallScreen | async)!.matches ? 'sidenav-desktop' : 'sidenav-phone'"
-    [opened]="!(this.isSmallScreen | async)!.matches"
-    [disableClose]="!(this.isSmallScreen | async)!.matches"
-    [mode]="!(this.isSmallScreen | async)!.matches ? 'side' : 'over'"
+    [ngClass]="!(this.screenSizeService.isSmallScreen() | async)!.matches ? 'sidenav-desktop' : 'sidenav-phone'"
+    [opened]="!(this.screenSizeService.isSmallScreen() | async)!.matches"
+    [disableClose]="!(this.screenSizeService.isSmallScreen() | async)!.matches"
+    [mode]="!(this.screenSizeService.isSmallScreen() | async)!.matches ? 'side' : 'over'"
     [autoFocus]="false">
     <mat-nav-list>
       <mat-list-item routerLink="profile" routerLinkActive="active"><mat-icon matListIcon>account_circle</mat-icon>Account</mat-list-item>

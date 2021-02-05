@@ -4,3 +4,21 @@
 .container mat-form-field {
   font-size: 1.5rem;
 }
+.account-icon {
+  font-size: 150px;
+}
+@media only screen and (max-width: 600px) {
+
+  .account-icon {
+    display: none;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  table {
+    margin-bottom: 10vh;
+  }
+
+}

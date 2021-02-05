@@ -9,6 +9,7 @@ import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-di
 import { Router } from '@angular/router';
 import { LoadingService } from '../../shared/services/loading.service';
 import { EMPTY } from 'rxjs';
+import { ScreenSizeService } from '../../shared/services/screenSize.service';
 
 @Component({
   selector: 'app-playlists',
@@ -24,7 +25,8 @@ export class PlaylistsComponent implements OnInit {
     private matDialog: MatDialog,
     private snackBarService: SnackBarService,
     private router: Router,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    public screenSizeService: ScreenSizeService
   ) { }
 
   ngOnInit(): void {

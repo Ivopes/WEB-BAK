@@ -14,3 +14,34 @@ table {
   margin: 0px auto 0px 0px !important;
 }
 
+@media only screen and (max-width: 600px) {
+
+  button span {
+    font-size: 35px;
+  }
+
+  .mat-cell {
+    font-size: 0.7rem;
+  }
+
+  .filter {
+    margin: 0px auto 0px 0px !important;
+  }
+
+  button {
+    font-size: 0.7rem;
+  }
+
+  .fab-button {
+    position: fixed;
+    right: 5%;
+    bottom: 5%;
+  }
+  mat-paginator {
+    font-size: 0.6rem;
+  }
+
+  table mat-icon {
+    font-size: 1.2rem;
+  }
+}

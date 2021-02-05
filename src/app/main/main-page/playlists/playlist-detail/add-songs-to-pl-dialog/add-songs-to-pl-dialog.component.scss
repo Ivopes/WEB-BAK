@@ -16,3 +16,17 @@ table {
   left: 50%;
   margin: -50px;
 }
+@media only screen and (max-width: 600px) {
+
+  .fab-button {
+    position: fixed;
+    right: 5%;
+    bottom: 5%;
+    z-index: 1;
+  }
+
+  mat-paginator {
+    font-size: 0.6rem;
+  }
+
+}

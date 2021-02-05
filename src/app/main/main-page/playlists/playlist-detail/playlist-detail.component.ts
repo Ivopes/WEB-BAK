@@ -2,15 +2,17 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, mergeMap, switchMap } from 'rxjs/operators';
+import { filter, first, mergeMap, switchMap } from 'rxjs/operators';
 import { DeleteDialogComponent } from 'src/app/main/shared/components/dialogs/delete-dialog/delete-dialog.component';
 import { Playlist } from 'src/app/main/shared/models/playlist.model';
 import { Song } from 'src/app/main/shared/models/song.model';
 import { LoadingService } from 'src/app/main/shared/services/loading.service';
 import { PlaylistService } from 'src/app/main/shared/services/playlist.service';
+import { ScreenSizeService } from 'src/app/main/shared/services/screenSize.service';
 import { SnackBarService } from 'src/app/main/shared/services/snackBar.service';
 import { SongService } from 'src/app/main/shared/services/song.service';
 import { AddSongsToPlDialogComponent } from './add-songs-to-pl-dialog/add-songs-to-pl-dialog.component';
@@ -33,6 +35,8 @@ export class PlaylistDetailComponent implements OnInit {
 
   dataSource: MatTableDataSource<Song>;
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   constructor(
     private playlistService: PlaylistService,
     private route: ActivatedRoute,
@@ -40,7 +44,8 @@ export class PlaylistDetailComponent implements OnInit {
     private matDialog: MatDialog,
     private songService: SongService,
     private snackBarService: SnackBarService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    public screenSizeService: ScreenSizeService
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +63,8 @@ export class PlaylistDetailComponent implements OnInit {
       })
     ).subscribe(data => {
       this.playlist = data;
-      this.dataSource = new MatTableDataSource(data.songs);
+      this.dataSource = new MatTableDataSource(data.songs.concat(data.songs.concat(data.songs.concat(data.songs.concat(data.songs)))));
+      this.dataSource.paginator = this.paginator;
       this.loadingService.stopLoading();
     },
     err => {
@@ -91,7 +97,6 @@ export class PlaylistDetailComponent implements OnInit {
             () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
             err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000));
         });
-        console.log(this.selection);
         this.dataSource.data = this.dataSource.data.filter(s => !this.selection.selected.includes(s));
         this.selection.clear();
         return;
@@ -107,15 +112,31 @@ export class PlaylistDetailComponent implements OnInit {
     this.router.navigate(['/playlists']);
   }
   addSongs(): void {
-    const dialogRef = this.matDialog.open(AddSongsToPlDialogComponent, {
-      data: {
-        songs: this.dataSource.data,
-        playlist: this.playlist
-      }
-    });
 
-    dialogRef.afterClosed().subscribe(data => {
-      this.getData();
+    this.screenSizeService.isSmallScreen().pipe(
+      first()
+    ).subscribe(data => {
+      let dialogRef;
+      if (data.matches) {
+        dialogRef = this.matDialog.open(AddSongsToPlDialogComponent, {
+          data: {
+            songs: this.dataSource.data,
+            playlist: this.playlist
+          },
+          minWidth: '90vw'
+        });
+      } else {
+        dialogRef = this.matDialog.open(AddSongsToPlDialogComponent, {
+          data: {
+            songs: this.dataSource.data,
+            playlist: this.playlist
+          }
+        });
+      }
+      dialogRef.afterClosed().subscribe(() => {
+        this.getData();
+      });
+
     });
   }
 }

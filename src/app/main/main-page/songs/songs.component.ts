@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '../../shared/services/snackBar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddToPlDialogComponent } from './add-to-pl-dialog/add-to-pl-dialog.component';
-import { delay, filter, map, share, switchMap, tap } from 'rxjs/operators';
+import { delay, filter, first, map, share, switchMap, tap } from 'rxjs/operators';
 import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-dialog/delete-dialog.component';
 import { PlaylistSong } from '../../shared/models/playlistSong.model';
 import { PlaylistService } from '../../shared/services/playlist.service';
@@ -16,6 +16,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { of } from 'rxjs';
 import { LoadingService } from '../../shared/services/loading.service';
+import { ScreenSizeService } from '../../shared/services/screenSize.service';
 
 @Component({
   selector: 'app-songs',
@@ -48,7 +49,8 @@ export class SongsComponent implements OnInit, AfterViewInit{
     private songService: SongService,
     private snackBarService: SnackBarService,
     private matDialog: MatDialog,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    public screenSizeService: ScreenSizeService
   ) { }
   ngAfterViewInit(): void {
     this.loadingService.startLoading();
@@ -68,6 +70,14 @@ export class SongsComponent implements OnInit, AfterViewInit{
   }
   onFileSelected(files: FileList): void {
     this.fileToUpload = files.item(0);
+
+    this.screenSizeService.isSmallScreen().pipe(
+      first()
+    ).subscribe(data => {
+      if (data.matches) {
+        this.postFile();
+      }
+    });
   }
   /**
    * uploads file to backend

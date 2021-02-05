@@ -26,3 +26,13 @@
 button span {
   font-size: 35px;
 }
+
+@media only screen and (max-width: 600px) {
+
+  .fab-button {
+    position: fixed;
+    right: 5%;
+    bottom: 5%;
+    z-index: 1;
+  }
+}

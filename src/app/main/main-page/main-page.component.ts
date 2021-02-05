@@ -7,7 +7,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { SnackBarService } from '../shared/services/snackBar.service';
 import { LoadingService } from '../shared/services/loading.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { ScreenSizeService } from '../shared/services/screenSize.service';
 
 @Component({
   selector: 'app-main-page',
@@ -19,20 +19,17 @@ export class MainPageComponent implements OnInit {
   openSideNav = false;
   showMain = true;
 
-  isSmallScreen;
-
   constructor(
     private router: Router,
     private songService: SongService,
     private playlistService: PlaylistService,
-    private breakpointObserver: BreakpointObserver,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    public screenSizeService: ScreenSizeService,
     ) { }
 
   ngOnInit(): void {
     this.redirectCheck();
 
-    this.isSmallScreen = this.breakpointObserver.observe(Breakpoints.XSmall);
   }
   /**
    * delete token from storage and and redirect user to login

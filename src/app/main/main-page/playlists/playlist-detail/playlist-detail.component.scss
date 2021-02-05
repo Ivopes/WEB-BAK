@@ -25,4 +25,15 @@ table {
 }
 .data-Container {
   margin-top: 20px;
+  width: 100%;
 }
+.table-Container {
+  margin-bottom: 75px;
+}
+@media only screen and (max-width: 600px) {
+
+  mat-paginator {
+    font-size: 0.6rem;
+  }
+}
+

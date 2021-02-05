@@ -1,6 +1,6 @@
 <div fxLayoutAlign="center center" fxLayout="column">
 
-  <div class="data-Container">
+  <div class="data-Container" fxLayoutAlign="center stretch" fxLayout="column">
 
       <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="margin: 0px 20px 5px 20px;">
 
@@ -9,15 +9,15 @@
           <input matInput (keyup)="applyFilter($event)">
         </mat-form-field>
 
-        <button mat-raised-button (click)="fileInput.click()">Choose file</button>
+        <button mat-raised-button (click)="fileInput.click()" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches">Choose file</button>
         <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file" accept=".mp3">
-        <button mat-raised-button color="primary" (click)="postFile()"
+        <button mat-raised-button color="primary" (click)="postFile()" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches"
           [disabled]="this.fileToUpload == null">Upload</button>
-        <button mat-raised-button [disabled]="this.selection.selected.length === 0" (click)="this.deleteRange()">Delete</button>
+        <button mat-raised-button [disabled]="this.selection.selected.length === 0" (click)="this.deleteRange()" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches">Delete</button>
 
       </div>
 
-      <div class="table-Container mat-elevation-z4" fxLayoutAlign="center center" fxLayout="column">
+      <div class="table-Container mat-elevation-z4" fxLayoutAlign="center stretch" fxLayout="column">
 
         <table mat-table [dataSource]="this.dataSource" >
 
@@ -82,8 +82,12 @@
           <tr mat-row *matRowDef="let row; columns: this.displayedColumns;"></tr>
         </table>
 
-        <mat-paginator fxFlexAlign="end" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+        <mat-paginator [hidePageSize]="(this.screenSizeService.isSmallScreen() | async)!.matches" fxFlexAlign="end" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 
       </div>
+
+      <button class="fab-button" (click)="fileInput.click()" mat-fab color="primary" *ngIf="(this.screenSizeService.isSmallScreen() | async)!.matches" >
+        <mat-icon>add</mat-icon>
+      </button>
   </div>
 </div>

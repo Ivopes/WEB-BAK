@@ -1,32 +1,38 @@
-<div fxLayoutAlign="center center" fxLayout="column">
+<div fxLayoutAlign="center center" fxLayout="column" style="margin-bottom: 10vh;">
 
-  <h1>Add a playlist</h1>
+  <div fxLayoutAlign="center center" fxLayout="column" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches;else fab">
 
-  <button mat-mini-fab color="primary" (click)="addPlaylist()">
-    <mat-icon>add</mat-icon>
-  </button>
+    <h1>Add a playlist</h1>
+
+    <button mat-mini-fab color="primary" (click)="addPlaylist()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
 
 
-<div *ngIf="this.playlists;else spinner" style="margin-top: 10px;">
-  <mat-card *ngFor="let item of playlists" (click)="showInfo(item.id)" class="item">
+  <div style="margin-top: 10px;">
+    <mat-card *ngFor="let item of playlists" (click)="showInfo(item.id)" class="item">
 
-    <mat-card-title>
-      {{item.name}}
-    </mat-card-title>
+      <mat-card-title>
+        {{item.name}}
+      </mat-card-title>
 
-    <mat-card-actions fxLayoutAlign="end end">
+      <mat-card-actions fxLayoutAlign="end end">
 
-      <button mat-icon-button (click)="deletePlaylist(item.id);$event.stopPropagation()" matTooltip="Delete">
-        <span class="material-icons">
-          delete
-        </span>
-      </button>
+        <button mat-icon-button (click)="deletePlaylist(item.id);$event.stopPropagation()" matTooltip="Delete">
+          <span class="material-icons">
+            delete
+          </span>
+        </button>
 
-    </mat-card-actions>
-  </mat-card>
-</div>
-<ng-template #spinner>
-  <mat-spinner></mat-spinner>
-</ng-template>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <ng-template #fab>
+    <button class="fab-button" mat-fab color="primary" (click)="addPlaylist()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </ng-template>
 
 </div>
