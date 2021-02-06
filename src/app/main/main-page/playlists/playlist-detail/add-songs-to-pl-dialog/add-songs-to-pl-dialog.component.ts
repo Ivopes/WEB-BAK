@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Playlist } from 'src/app/main/shared/models/playlist.model';
 import { Song } from 'src/app/main/shared/models/song.model';
+import { ScreenSizeService } from 'src/app/main/shared/services/screenSize.service';
 import { SnackBarService } from 'src/app/main/shared/services/snackBar.service';
 import { SongService } from 'src/app/main/shared/services/song.service';
 import { AddToPlDialogComponent } from '../../../songs/add-to-pl-dialog/add-to-pl-dialog.component';
@@ -20,7 +21,7 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
 
   selection: SelectionModel<Song>;
 
-  displayedColumns = ['select', 'name'];
+  displayedColumns = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -28,6 +29,7 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
     public dialogRef: MatDialogRef<AddSongsToPlDialogComponent>,
     private songService: SongService,
     private snackBarService: SnackBarService,
+    public screenSizeService: ScreenSizeService,
     @Inject(MAT_DIALOG_DATA) public data: {
       playlist: Playlist,
       songs: Song[]
@@ -35,12 +37,19 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
-
     this.getData();
   }
 
   ngOnInit(): void {
     this.selection = new SelectionModel<Song>(true);
+
+    this.screenSizeService.isSmallScreen().subscribe(data => {
+      if (data.matches) {
+        this.displayedColumns = ['select', 'name'];
+      } else {
+        this.displayedColumns = ['select', 'name', 'author', 'length'];
+      }
+    });
 
   }
 

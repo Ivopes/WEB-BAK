@@ -29,7 +29,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
 
   fileToUpload: File = null;
 
-  displayedColumns = ['select', 'name', 'download', 'addToPl', 'remove'];
+  displayedColumns = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -59,9 +59,20 @@ export class SongsComponent implements OnInit, AfterViewInit{
 
   ngOnInit(): void {
     this.selection = new SelectionModel<Song>(true);
+
+    this.screenSizeService.isSmallScreen().subscribe(data => {
+      if (data.matches) {
+        this.displayedColumns = ['select', 'name', 'options'];
+      } else {
+        this.displayedColumns = ['select', 'name', 'author', 'length' , 'download', 'addToPl', 'remove'];
+      }
+    });
+
   }
   getData(): void {
     this.songService.getAll().subscribe(data => {
+      console.log(data);
+
       this.songs = data;
       this.dataSource = new MatTableDataSource(this.songs);
       this.dataSource.paginator = this.paginator;
@@ -181,7 +192,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
    * @param song song to download
    */
   downloadSong(song: Song): void {
-    const fileName = song.name;
+    const fileName = song.fileName;
     this.loadingService.startLoading();
     this.songService.getFile(song.id).subscribe(file => {
       this.loadingService.stopLoading();
@@ -210,11 +221,15 @@ export class SongsComponent implements OnInit, AfterViewInit{
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   deleteRange(): void {
-    console.log(this.selection.selected.map(s => s.id));
+    const dialogRef = this.matDialog.open(DeleteDialogComponent);
 
-    this.loadingService.startLoading();
-
-    this.songService.removeRange(this.selection.selected.map(s => s.id)).subscribe(() => {
+    dialogRef.afterClosed().pipe(
+      filter(res => res),
+      switchMap(res => {
+        this.loadingService.startLoading();
+        return this.songService.removeRange(this.selection.selected.map(s => s.id));
+      })
+    ).subscribe(() => {
       this.loadingService.stopLoading();
       this.snackBarService.showSnackBar('Songs were deleted', 'Close', 2000);
       this.selection.clear();

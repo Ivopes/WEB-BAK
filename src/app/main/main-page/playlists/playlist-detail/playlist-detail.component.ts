@@ -29,7 +29,7 @@ export class PlaylistDetailComponent implements OnInit {
   /**
    * table columns to display
    */
-  displayedColumns = ['select', 'name', 'remove'];
+  displayedColumns = [];
 
   selection: SelectionModel<Song>;
 
@@ -52,6 +52,15 @@ export class PlaylistDetailComponent implements OnInit {
     this.selection = new SelectionModel<Song>(true);
 
     this.getData();
+
+    this.screenSizeService.isSmallScreen().subscribe(data => {
+      if (data.matches) {
+        this.displayedColumns = ['select', 'name', 'remove'];
+      } else {
+        this.displayedColumns = ['select', 'name', 'author', 'length' , 'remove'];
+      }
+    });
+
   }
 
   private getData(): void {
@@ -63,7 +72,8 @@ export class PlaylistDetailComponent implements OnInit {
       })
     ).subscribe(data => {
       this.playlist = data;
-      this.dataSource = new MatTableDataSource(data.songs.concat(data.songs.concat(data.songs.concat(data.songs.concat(data.songs)))));
+      //this.dataSource = new MatTableDataSource(data.songs.concat(data.songs.concat(data.songs.concat(data.songs.concat(data.songs)))));
+      this.dataSource = new MatTableDataSource(data.songs);
       this.dataSource.paginator = this.paginator;
       this.loadingService.stopLoading();
     },
@@ -130,10 +140,13 @@ export class PlaylistDetailComponent implements OnInit {
           data: {
             songs: this.dataSource.data,
             playlist: this.playlist
-          }
+          },
+          minWidth: '50vw'
         });
       }
       dialogRef.afterClosed().subscribe(() => {
+        this.selection.clear();
+
         this.getData();
       });
 

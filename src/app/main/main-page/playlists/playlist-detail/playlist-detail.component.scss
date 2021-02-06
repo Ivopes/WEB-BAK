@@ -35,5 +35,19 @@ table {
   mat-paginator {
     font-size: 0.6rem;
   }
+
+  .mat-cell {
+    font-size: 0.8rem;
+  }
+
+  table mat-icon {
+    font-size: 1.2rem;
+  }
+  .fab-button {
+    position: fixed;
+    right: 5%;
+    bottom: 5%;
+    z-index: 1;
+  }
 }
 
