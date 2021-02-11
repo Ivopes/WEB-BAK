@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MainLoginComponent } from './main/main-login/main-login.component';
-import { MainPrototypeComponent } from './prototype/main-prototype/main-prototype.component';
 import { AuthGuard } from './main/shared/services/auth-guard.service';
 import { MainPageComponent } from './main/main-page/main-page.component';
 import { SongsComponent } from './main/main-page/songs/songs.component';
@@ -13,7 +12,6 @@ import { MainDbxAuthComponent } from './main/main-dbx-auth/main-dbx-auth.compone
 const routes: Routes = [
   { path: 'login', component: MainLoginComponent},
   { path: 'login/watch', component: MainLoginComponent},
-  { path: 'test', component: MainPrototypeComponent},
   { path: '', component: MainPageComponent, canActivate: [AuthGuard] ,
       children: [
         {

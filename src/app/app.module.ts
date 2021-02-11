@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MainPrototypeComponent } from './prototype/main-prototype/main-prototype.component';
 import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import { MainLoginComponent } from './main/main-login/main-login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,7 +37,6 @@ export function tokenGetter(request: HttpRequest<any>): string {
 @NgModule({
   declarations: [
     AppComponent,
-    MainPrototypeComponent,
     MainLoginComponent,
     LoginComponent,
     RegisterComponent,

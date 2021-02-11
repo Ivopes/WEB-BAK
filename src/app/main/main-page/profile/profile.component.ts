@@ -8,6 +8,8 @@ import { StorageService  } from '../../shared/services/storage.service';
 import { Storage } from '../../shared/models/storage.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { LoadingService } from '../../shared/services/loading.service';
+import { Song } from '../../shared/models/song.model';
+import { SongService } from '../../shared/services/song.service';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +36,8 @@ export class ProfileComponent implements OnInit {
     private accountService: AccountService,
     private snackBarService: SnackBarService,
     private storageService: StorageService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private songService: SongService
   ) { }
 
   ngOnInit(): void {
@@ -96,5 +99,19 @@ export class ProfileComponent implements OnInit {
    */
   isStorageSigned(storage: Storage): boolean {
     return this.account.storage.some(s => s.name === storage.name);
+  }
+  signOutDbx(): void {
+    this.loadingService.startLoading();
+
+    this.authService.signOutDbx().subscribe(() => {
+      this.loadingService.stopLoading();
+      this.snackBarService.showSnackBar('Dropbox data deleted', 'Close', 2000);
+      this.account.storage.splice(this.account.storage.findIndex(s => s.name === 'Dropbox'), 1);
+      this.songService.clearData();
+    },
+    err => {
+      this.loadingService.stopLoading();
+      this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+    });
   }
 }

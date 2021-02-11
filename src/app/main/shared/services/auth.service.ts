@@ -67,8 +67,8 @@ private readonly controller: string = 'auth';
    * get dropbox token by dropbox code
    * @param code string for dropbox indentification
    */
-  dropboxOAuth(code: string, hashKeys: string): Observable<DbxOAuth> {
-    const formData: FormData = new FormData();
+  dropboxOAuth(code: string): Observable<any> {
+    /*const formData: FormData = new FormData();
     formData.append('code', code);
     formData.append('grant_type', 'authorization_code');
     formData.append('redirect_uri', `${this.constants.dropboxRedirectURL}`);
@@ -77,12 +77,11 @@ private readonly controller: string = 'auth';
 
     myHeaders = myHeaders.append('Authorization', 'Basic ' + hashKeys);
 
-    console.log('Basic ' + hashKeys);
-
     return this.httpClient.post<DbxOAuth>('https://api.dropbox.com/1/oauth2/token',
     formData, {
       headers: myHeaders
-    });
+    });*/
+    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/dbx/${code}`);
   }
   /**
    * request for saving token to database
@@ -95,8 +94,11 @@ private readonly controller: string = 'auth';
    * requests hashed dropbox keys for OAuth
    */
   getDropboxCodeHashed(): Observable<string> {
-    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/dbxCodeHash`,{
+    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/dbxCodeHash`, {
         responseType: 'text'
     });
+  }
+  signOutDbx(): Observable<any> {
+    return this.httpClient.delete(`${this.constants.API_ENDPOINT}/${this.controller}`);
   }
  }
