@@ -19,6 +19,7 @@ import { LoadingService } from '../../shared/services/loading.service';
 import { ScreenSizeService } from '../../shared/services/screenSize.service';
 import { AccountService } from '../../shared/services/account.service';
 import { Account } from '../../shared/models/account.model';
+import { StorageService } from '../../shared/services/storage.service';
 
 @Component({
   selector: 'app-songs',
@@ -28,6 +29,8 @@ import { Account } from '../../shared/models/account.model';
 export class SongsComponent implements OnInit, AfterViewInit{
 
   account: Account;
+
+  selectedStorage = 'Google Drive';
 
   songs: Song[];
   fileToUpload: File = null;
@@ -51,6 +54,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
     private loadingService: LoadingService,
     public screenSizeService: ScreenSizeService,
     private accountService: AccountService,
+    public storageService: StorageService
   ) { }
   ngAfterViewInit(): void {
     this.loadingService.startLoading();
@@ -70,8 +74,10 @@ export class SongsComponent implements OnInit, AfterViewInit{
 
     this.accountService.getById().subscribe(data => {
       this.account = data;
+      if (this.account.storage.length > 0) {
+        this.selectedStorage = this.account.storage[0].name;
+      }
     });
-
   }
   getData(): void {
     this.songService.getAll().subscribe(data => {
@@ -244,7 +250,6 @@ export class SongsComponent implements OnInit, AfterViewInit{
       this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
     });
   }
-
  areStoragesSigned(): boolean {
   return this.account.storage.length !== 0;
  }

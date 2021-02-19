@@ -80,15 +80,10 @@ private readonly controller: string = 'auth';
   saveDropboxJwt(dbxJson: DbxJson): Observable<any> {
     return this.httpClient.post<any>(`${this.constants.API_ENDPOINT}/${this.controller}/registerDropbox`, dbxJson);
   }
-  /**
-   * requests hashed dropbox keys for OAuth
-   */
-  getDropboxCodeHashed(): Observable<string> {
-    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/dbxCodeHash`, {
-        responseType: 'text'
-    });
-  }
   signOutDbx(): Observable<any> {
-    return this.httpClient.delete(`${this.constants.API_ENDPOINT}/${this.controller}`);
+    return this.httpClient.delete(`${this.constants.API_ENDPOINT}/${this.controller}/dbx`);
+  }
+  signOutGoogleDrive(): Observable<any> {
+    return this.httpClient.delete(`${this.constants.API_ENDPOINT}/${this.controller}/gd`);
   }
  }

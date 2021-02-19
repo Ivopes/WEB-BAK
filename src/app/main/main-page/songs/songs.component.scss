@@ -44,4 +44,10 @@ table {
   table mat-icon {
     font-size: 1.2rem;
   }
+  mat-form-field {
+    max-width: 33%;
+  }
+  data-Container {
+    max-width: 95%;
+  }
 }

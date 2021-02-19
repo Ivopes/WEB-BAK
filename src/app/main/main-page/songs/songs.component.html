@@ -9,15 +9,25 @@
           <input matInput (keyup)="applyFilter($event)">
         </mat-form-field>
 
-        <button mat-raised-button (click)="fileInput.click()" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches" [disabled]="!areStoragesSigned()">Choose file</button>
+        <mat-form-field *ngIf="this.account">
+          <mat-label>Storage</mat-label>
+          <mat-select [disabled]="!areStoragesSigned()" [(ngModel)]="this.selectedStorage">
+            <mat-option *ngFor="let item of this.account.storage" [value]="item.name" >{{item.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button (click)="fileInput.click()" *ngIf="(!(this.screenSizeService.isSmallScreen() | async)!.matches) && this.account" [disabled]="!areStoragesSigned()">Choose file</button>
+
         <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file" accept=".mp3">
+
         <button mat-raised-button color="primary" (click)="postFile()" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches"
           [disabled]="this.fileToUpload == null">Upload</button>
+
         <button mat-raised-button [disabled]="this.selection.selected.length === 0" (click)="this.deleteRange()">Delete</button>
 
       </div>
 
-      <div class="table-Container mat-elevation-z4" fxLayoutAlign="center stretch" fxLayout="column">
+      <div class="table-Container mat-elevation-z4" fxLayoutAlign="center stretch" fxLayout="column" fxFlexAlign.xs="center">
 
         <table mat-table [dataSource]="this.dataSource" >
 
@@ -107,7 +117,7 @@
 
       </div>
 
-      <button class="fab-button" (click)="fileInput.click()" mat-fab color="primary" *ngIf="(this.screenSizeService.isSmallScreen() | async)!.matches" >
+      <button class="fab-button" (click)="fileInput.click()" mat-fab color="primary" *ngIf="(this.screenSizeService.isSmallScreen() | async)!.matches" [disabled]="!areStoragesSigned()">
         <mat-icon>add</mat-icon>
       </button>
   </div>

@@ -64,7 +64,7 @@
         <th mat-header-cell *matHeaderCellDef> Remove </th>
         <td mat-cell *matCellDef="let storage">
 
-          <button mat-icon-button [disabled]="!this.isStorageSigned(storage)" (click)="this.signOutDbx()">
+          <button mat-icon-button [disabled]="!this.isStorageSigned(storage)" (click)="this.signOutStorage(storage.name)">
             <mat-icon>delete</mat-icon>
           </button>
 
