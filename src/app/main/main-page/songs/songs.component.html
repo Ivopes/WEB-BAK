@@ -9,7 +9,7 @@
           <input matInput (keyup)="applyFilter($event)">
         </mat-form-field>
 
-        <button mat-raised-button (click)="fileInput.click()" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches">Choose file</button>
+        <button mat-raised-button (click)="fileInput.click()" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches" [disabled]="!areStoragesSigned()">Choose file</button>
         <input hidden (change)="onFileSelected($event.target.files)" #fileInput type="file" id="file" accept=".mp3">
         <button mat-raised-button color="primary" (click)="postFile()" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches"
           [disabled]="this.fileToUpload == null">Upload</button>

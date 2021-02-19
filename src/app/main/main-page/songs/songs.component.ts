@@ -17,6 +17,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { of } from 'rxjs';
 import { LoadingService } from '../../shared/services/loading.service';
 import { ScreenSizeService } from '../../shared/services/screenSize.service';
+import { AccountService } from '../../shared/services/account.service';
+import { Account } from '../../shared/models/account.model';
 
 @Component({
   selector: 'app-songs',
@@ -25,24 +27,21 @@ import { ScreenSizeService } from '../../shared/services/screenSize.service';
 })
 export class SongsComponent implements OnInit, AfterViewInit{
 
-  songs: Song[];
+  account: Account;
 
+  songs: Song[];
   fileToUpload: File = null;
 
   displayedColumns = [];
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
-
   allowedExtensions: string[] = [
     '.mp3'
   ];
 
   dataSource: MatTableDataSource<Song>;
-
   selection: SelectionModel<Song>;
 
-  checked = false;
-
+  // checked = false;
   @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(
@@ -50,7 +49,8 @@ export class SongsComponent implements OnInit, AfterViewInit{
     private snackBarService: SnackBarService,
     private matDialog: MatDialog,
     private loadingService: LoadingService,
-    public screenSizeService: ScreenSizeService
+    public screenSizeService: ScreenSizeService,
+    private accountService: AccountService,
   ) { }
   ngAfterViewInit(): void {
     this.loadingService.startLoading();
@@ -66,6 +66,10 @@ export class SongsComponent implements OnInit, AfterViewInit{
       } else {
         this.displayedColumns = ['select', 'name', 'author', 'length' , 'download', 'addToPl', 'remove'];
       }
+    });
+
+    this.accountService.getById().subscribe(data => {
+      this.account = data;
     });
 
   }
@@ -240,4 +244,8 @@ export class SongsComponent implements OnInit, AfterViewInit{
       this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
     });
   }
+
+ areStoragesSigned(): boolean {
+  return this.account.storage.length !== 0;
+ }
 }

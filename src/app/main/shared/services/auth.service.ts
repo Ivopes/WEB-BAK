@@ -64,23 +64,10 @@ private readonly controller: string = 'auth';
     window.location.href = `https://www.dropbox.com/oauth2/authorize?client_id=${this.constants.dropboxKey}&redirect_uri=${this.constants.dropboxRedirectURL}&response_type=code`;
   }
   /**
-   * get dropbox token by dropbox code
+   * send dropbox code to backend
    * @param code string for dropbox indentification
    */
   dropboxOAuth(code: string): Observable<any> {
-    /*const formData: FormData = new FormData();
-    formData.append('code', code);
-    formData.append('grant_type', 'authorization_code');
-    formData.append('redirect_uri', `${this.constants.dropboxRedirectURL}`);
-
-    let myHeaders: HttpHeaders = new HttpHeaders();
-
-    myHeaders = myHeaders.append('Authorization', 'Basic ' + hashKeys);
-
-    return this.httpClient.post<DbxOAuth>('https://api.dropbox.com/1/oauth2/token',
-    formData, {
-      headers: myHeaders
-    });*/
     return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/dbx/${code}`);
   }
   /**
