@@ -55,8 +55,23 @@ export class ProfileComponent implements OnInit {
 
   }
 
-  toBbxAuth(): void {
-    this.authService.toDropboxConfirm();
+  toAuthStorage(storageName: string): void {
+    switch (storageName) {
+      case 'Dropbox': {
+        this.authService.toDropboxConfirm();
+        break;
+      }
+      case 'Google Drive': {
+        this.authService.toGoogleDriveAuth().subscribe(() => {
+          console.log('konec');
+        });
+        break;
+      }
+      default: {
+
+        break;
+      }
+    }
   }
   getAccountInfo(): void {
     this.loadingService.startLoading();

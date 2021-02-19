@@ -63,6 +63,9 @@ private readonly controller: string = 'auth';
   toDropboxConfirm(): void {
     window.location.href = `https://www.dropbox.com/oauth2/authorize?client_id=${this.constants.dropboxKey}&redirect_uri=${this.constants.dropboxRedirectURL}&response_type=code`;
   }
+  toGoogleDriveAuth(): Observable<any> {
+    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/gd`);
+  }
   /**
    * send dropbox code to backend
    * @param code string for dropbox indentification
