@@ -76,8 +76,6 @@ export class SongsComponent implements OnInit, AfterViewInit{
   }
   getData(): void {
     this.songService.getAll().subscribe(data => {
-      console.log(data);
-
       this.songs = data;
       this.dataSource = new MatTableDataSource(this.songs);
       this.dataSource.paginator = this.paginator;
@@ -119,8 +117,10 @@ export class SongsComponent implements OnInit, AfterViewInit{
     // Disable and reset input
     this.resetFileInput();
 
+    const storageID = this.account.storage[this.account.storage.findIndex(s => s.name === this.selectedStorage)].storageID;
+
     // post a file
-    this.songService.post(file).subscribe(
+    this.songService.post(file, storageID).subscribe(
       data => {
         this.songService.addToData(data);
         this.dataSource.data = this.dataSource.data;

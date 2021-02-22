@@ -44,9 +44,10 @@ export class SongService {
     );
 
   }
-  public post(file: File): Observable<Song> {
+  public post(file: File, storageID: number): Observable<Song> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
+    formData.append('storageID', storageID.toString());
 
     return this.httpClient.post<Song>(`${this.constants.API_ENDPOINT}/${this.controller}`,
     formData
@@ -96,7 +97,6 @@ export class SongService {
       }),
       body: ids
     };
-    console.log(options.body);
 
     return this.httpClient.delete<any>(`${this.constants.API_ENDPOINT}/${this.controller}`, options);
   }

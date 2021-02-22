@@ -14,7 +14,6 @@ export class SongStorageService {
     this.fileNames.push(item);
   }
   public getAll(): string[] {
-    console.log(this.requested);
     if (!this.requested) {
       this.songService.getAll().subscribe(data => {
         //this.fileNames = data;
