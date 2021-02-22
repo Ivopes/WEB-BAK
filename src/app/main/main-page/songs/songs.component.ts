@@ -1,25 +1,20 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SongService } from '../../shared/services/song.service';
-import { SongStorageService } from '../../shared/services/song-storage.service';
 import { Song } from '../../shared/models/song.model';
-import { Route } from '@angular/compiler/src/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { SnackBarService } from '../../shared/services/snackBar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddToPlDialogComponent } from './add-to-pl-dialog/add-to-pl-dialog.component';
-import { delay, filter, first, map, share, switchMap, tap } from 'rxjs/operators';
+import { filter, first, switchMap } from 'rxjs/operators';
 import { DeleteDialogComponent } from '../../shared/components/dialogs/delete-dialog/delete-dialog.component';
-import { PlaylistSong } from '../../shared/models/playlistSong.model';
-import { PlaylistService } from '../../shared/services/playlist.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
-import { of } from 'rxjs';
 import { LoadingService } from '../../shared/services/loading.service';
 import { ScreenSizeService } from '../../shared/services/screenSize.service';
 import { AccountService } from '../../shared/services/account.service';
 import { Account } from '../../shared/models/account.model';
 import { StorageService } from '../../shared/services/storage.service';
+import { Storage } from '../../shared/models/storage.model';
 
 @Component({
   selector: 'app-songs',
@@ -68,7 +63,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
       if (data.matches) {
         this.displayedColumns = ['select', 'name', 'options'];
       } else {
-        this.displayedColumns = ['select', 'name', 'author', 'length' , 'download', 'addToPl', 'remove'];
+        this.displayedColumns = ['select', 'name', 'storage','author', 'length' , 'download', 'addToPl', 'remove'];
       }
     });
 
@@ -158,7 +153,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
       })
     ).subscribe(
       () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
-      err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
+      () => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
     );
 
     // subscribe to removing playlist to song
@@ -168,7 +163,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
       })
     ).subscribe(
       () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
-      err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
+      () => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
     );
   }
   /**
@@ -180,7 +175,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
 
     dialogRef.afterClosed().pipe(
       filter(res => res),
-      switchMap(res => {
+      switchMap(() => {
         this.loadingService.startLoading();
         return this.songService.remove(song.id);
       })
@@ -190,7 +185,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
         this.dataSource.data = this.dataSource.data;
         this.selection.clear();
       },
-      err => {
+      () => {
         this.loadingService.stopLoading();
         this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
         this.selection.clear();
@@ -206,7 +201,6 @@ export class SongsComponent implements OnInit, AfterViewInit{
     this.loadingService.startLoading();
     this.songService.getFile(song.id).subscribe(file => {
       this.loadingService.stopLoading();
-      const blob = new Blob([file], { type: file.type });
       const url = window.URL.createObjectURL(file);
       const anchor = document.createElement('a');
       anchor.download = fileName;
@@ -235,7 +229,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
 
     dialogRef.afterClosed().pipe(
       filter(res => res),
-      switchMap(res => {
+      switchMap(() => {
         this.loadingService.startLoading();
         return this.songService.removeRange(this.selection.selected.map(s => s.id));
       })
@@ -245,12 +239,21 @@ export class SongsComponent implements OnInit, AfterViewInit{
       this.selection.clear();
       this.dataSource.data = this.dataSource.data;
     },
-    err => {
+    () => {
       this.loadingService.stopLoading();
       this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
     });
   }
- areStoragesSigned(): boolean {
-  return this.account.storage.length !== 0;
- }
+  areStoragesSigned(): boolean {
+    return this.account.storage.length !== 0;
+  }
+  getSongStorage(song: Song): Storage {
+    if (song) {
+      return this.account.storage[this.account.storage.findIndex(s => s.storageID === song.storageID)];
+    }
+    return {
+      storageID: 0,
+      name: 'Uknown'
+    };
+  }
 }

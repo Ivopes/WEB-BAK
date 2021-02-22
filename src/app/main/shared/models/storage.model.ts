@@ -1,5 +1,4 @@
-
 export interface Storage {
-  id: number;
+  storageID: number;
   name: string;
 }

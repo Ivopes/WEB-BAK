@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
         this.authService.toGoogleDriveAuth().subscribe(() => {
           const storage = this.storages.find(s => s.name === 'Google Drive');
           this.account.storage.push({
-            id: storage.id,
+            storageID: storage.storageID,
             name: storage.name
           });
           this.loadingService.stopLoading();
@@ -133,8 +133,6 @@ export class ProfileComponent implements OnInit {
 
     switch (storageName) {
       case 'Dropbox': {
-        console.log('dbx');
-
         this.authService.signOutDbx().subscribe(() => {
           this.loadingService.stopLoading();
           this.snackBarService.showSnackBar('Dropbox data deleted', 'Close', 2000);
@@ -148,8 +146,6 @@ export class ProfileComponent implements OnInit {
         break;
       }
       case 'Google Drive': {
-        console.log('drive');
-
         this.authService.signOutGoogleDrive().subscribe(() => {
           this.loadingService.stopLoading();
           this.snackBarService.showSnackBar('Google Drive data deleted', 'Close', 2000);

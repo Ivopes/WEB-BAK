@@ -6,5 +6,6 @@ export interface Song {
   name: string;
   author: string;
   lengthSec: number;
+  storageID: number;
   playlists: Playlist[];
 }
