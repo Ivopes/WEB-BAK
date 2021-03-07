@@ -111,7 +111,7 @@ export class LoginComponent implements OnInit {
       const token = res.token;
       // this.router.navigate(['/login'], {queryParams: {token}});
       // window.location.reload();
-      window.location.href = '/login?token=' + token;
+      window.location.href = '/login/watch/code?token=' + token;
     },
     (err: HttpErrorResponse) => {
       this.load = false;

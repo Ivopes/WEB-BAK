@@ -12,6 +12,7 @@ import { MainDbxAuthComponent } from './main/main-dbx-auth/main-dbx-auth.compone
 const routes: Routes = [
   { path: 'login', component: MainLoginComponent},
   { path: 'login/watch', component: MainLoginComponent},
+  { path: 'login/watch/code', component: MainLoginComponent},
   { path: '', component: MainPageComponent, canActivate: [AuthGuard] ,
       children: [
         {
