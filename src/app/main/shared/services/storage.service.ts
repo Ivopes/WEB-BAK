@@ -18,16 +18,18 @@ export class StorageService {
     private constants: Constants
     ) { }
 
-    public getAll(): Observable<Storage[]> {
-      if (this.data) {
-        return of(this.data);
-      }
-
-      return this.httpClient.get<Storage[]>(`${this.constants.API_ENDPOINT}/${this.controller}`).pipe(
-        tap(data => {
-          this.data = data;
-        })
-      );
+  public getAll(): Observable<Storage[]> {
+    if (this.data) {
+      return of(this.data);
     }
 
+    return this.httpClient.get<Storage[]>(`${this.constants.API_ENDPOINT}/${this.controller}`).pipe(
+      tap(data => {
+        this.data = data;
+      })
+    );
+  }
+  public clearData(): void {
+    this.data = null;
+  }
 }

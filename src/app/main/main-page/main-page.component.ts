@@ -8,6 +8,8 @@ import { SnackBarService } from '../shared/services/snackBar.service';
 import { LoadingService } from '../shared/services/loading.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ScreenSizeService } from '../shared/services/screenSize.service';
+import { AccountService } from '../shared/services/account.service';
+import { StorageService } from '../shared/services/storage.service';
 
 @Component({
   selector: 'app-main-page',
@@ -25,6 +27,8 @@ export class MainPageComponent implements OnInit {
     private playlistService: PlaylistService,
     private loadingService: LoadingService,
     public screenSizeService: ScreenSizeService,
+    private accountService: AccountService,
+    private storageService: StorageService
     ) { }
 
   ngOnInit(): void {
@@ -38,6 +42,8 @@ export class MainPageComponent implements OnInit {
     localStorage.removeItem('jwt');
     this.songService.clearData();
     this.playlistService.clearData();
+    this.accountService.clearData();
+    this.storageService.clearData();
     this.router.navigate(['/login']);
   }
   /**

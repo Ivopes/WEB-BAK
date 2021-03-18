@@ -28,4 +28,7 @@ export class AccountService {
       })
     );
   }
+  public clearData(): void {
+    this.data = null;
+  }
 }
