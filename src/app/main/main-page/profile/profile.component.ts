@@ -65,14 +65,8 @@ export class ProfileComponent implements OnInit {
       case 'Google Drive': {
         this.loadingService.startLoading();
 
-        this.authService.toGoogleDriveAuth().subscribe(() => {
-          const storage = this.storages.find(s => s.name === 'Google Drive');
-          this.account.storage.push({
-            storageID: storage.storageID,
-            name: storage.name
-          });
-          this.loadingService.stopLoading();
-          this.snackBarService.showSnackBar('Google Drive added', 'Close', 2000);
+        this.authService.getGoogleDriveAuth().subscribe(data => {
+          window.location.href = data;
         },
         err => {
           this.snackBarService.showSnackBar('Could not receive account information', 'Close', 5000);

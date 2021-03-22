@@ -63,8 +63,8 @@ private readonly controller: string = 'auth';
   toDropboxConfirm(): void {
     window.location.href = `https://www.dropbox.com/oauth2/authorize?client_id=${this.constants.dropboxKey}&redirect_uri=${this.constants.dropboxRedirectURL}&response_type=code`;
   }
-  toGoogleDriveAuth(): Observable<any> {
-    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/gd`);
+  getGoogleDriveAuth(): Observable<any> {
+    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/gd/url`, {responseType: 'text'});
   }
   /**
    * send dropbox code to backend
@@ -72,6 +72,13 @@ private readonly controller: string = 'auth';
    */
   dropboxOAuth(code: string): Observable<any> {
     return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/dbx/${code}`);
+  }
+  /**
+   * send gd code to backend
+   * @param code string for gd indentification
+   */
+  GoogleDriveAuth(code: string): Observable<any> {
+    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/gd/${encodeURIComponent(code)}`);
   }
   /**
    * request for saving token to database
