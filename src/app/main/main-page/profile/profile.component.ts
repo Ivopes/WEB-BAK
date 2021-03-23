@@ -66,7 +66,7 @@ export class ProfileComponent implements OnInit {
         this.loadingService.startLoading();
 
         this.authService.getGoogleDriveAuth().subscribe(data => {
-          window.location.href = data;
+          window.location.replace(data);
         },
         err => {
           this.snackBarService.showSnackBar('Could not receive account information', 'Close', 5000);
