@@ -78,7 +78,8 @@ private readonly controller: string = 'auth';
    * @param code string for gd indentification
    */
   GoogleDriveAuth(code: string): Observable<any> {
-    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/gd/${encodeURIComponent(code)}`);
+    const encodedUrl = encodeURIComponent(code);
+    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/gd/${encodedUrl}`, { responseType: 'text' });
   }
   /**
    * request for saving token to database
