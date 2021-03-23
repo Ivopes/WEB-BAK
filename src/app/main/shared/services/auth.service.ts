@@ -78,10 +78,10 @@ private readonly controller: string = 'auth';
    * @param code string for gd indentification
    */
   GoogleDriveAuth(code: string): Observable<any> {
-    const encodedUrl = encodeURIComponent(code);
-    console.log('URL:');
-    console.log(`${this.constants.API_ENDPOINT}/${this.controller}/gd/${encodedUrl}`);
-    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/gd/${encodedUrl}`, { responseType: 'text' });
+    // Azure decodes url anyway so no need for encoding
+    console.log(`${this.constants.API_ENDPOINT}/${this.controller}/gd/code/${code}`);
+
+    return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/gd/code/${code}`, { responseType: 'text' });
   }
   /**
    * request for saving token to database
