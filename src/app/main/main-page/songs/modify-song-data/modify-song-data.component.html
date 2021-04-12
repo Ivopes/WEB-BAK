@@ -1,0 +1,19 @@
+<form *ngIf="this.formGroup" [formGroup]="this.formGroup" (ngSubmit)="onSubmit()">
+
+  <div fxLayout="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
+
+    <mat-form-field>
+      <input formControlName="name" matInput placeholder="Name of the song" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input formControlName="author" matInput placeholder="Author of the song" />
+    </mat-form-field>
+
+  </div>
+
+  <div fxLayout="row" fxLayoutGap="1rem">
+    <button mat-raised-button color="primary" type="submit">Change</button>
+    <button mat-stroked-button mat-dialog-close>Cancel</button>
+  </div>
+</form>

@@ -86,6 +86,9 @@ export class SongService {
 
     return this.httpClient.delete<any>(`${this.constants.API_ENDPOINT}/${this.controller}/${id}`);
   }
+  public put(song: Song): Observable<any> {
+    return this.httpClient.put<Song>(`${this.constants.API_ENDPOINT}/${this.controller}`, song);
+  }
   public removeRange(ids: number[]): Observable<any> {
     ids.forEach(sId => {
       this.deleteSongFromData(sId);

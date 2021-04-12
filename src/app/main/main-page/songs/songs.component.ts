@@ -15,6 +15,8 @@ import { AccountService } from '../../shared/services/account.service';
 import { Account } from '../../shared/models/account.model';
 import { StorageService } from '../../shared/services/storage.service';
 import { Storage } from '../../shared/models/storage.model';
+import { ModifySongDataComponent } from './modify-song-data/modify-song-data.component';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-songs',
@@ -63,7 +65,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
       if (data.matches) {
         this.displayedColumns = ['select', 'name', 'options'];
       } else {
-        this.displayedColumns = ['select', 'name', 'storage','author', 'length' , 'download', 'addToPl', 'remove'];
+        this.displayedColumns = ['select', 'name', 'storage', 'author', 'length' , 'download', 'addToPl', 'alterData', 'remove'];
       }
     });
 
@@ -253,7 +255,40 @@ export class SongsComponent implements OnInit, AfterViewInit{
     }
     return {
       storageID: 0,
-      name: 'Uknown'
+      name: 'Unknown'
     };
+  }
+  modifySongData(song: Song): void {
+    const dialog = this.matDialog.open(ModifySongDataComponent, {
+      data: {
+        song
+      }
+    });
+
+    let songData: Song = null;
+
+    dialog.afterClosed()
+    .pipe(
+      switchMap(data => {
+        if (!data) {
+          return EMPTY;
+        }
+        songData = data;
+        this.loadingService.startLoading();
+        return this.songService.put(data);
+      })
+    ).subscribe(() => {
+      this.snackBarService.showSnackBar('Songs data updated', 'Close', 2000);
+      let sng = this.songs.find(s => s.id === song.id);
+      sng.author = songData.author;
+      sng.name = songData.name;
+
+      this.dataSource.data = this.dataSource.data;
+      this.loadingService.stopLoading();
+    },
+    () => {
+      this.loadingService.stopLoading();
+      this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+    });
   }
 }
