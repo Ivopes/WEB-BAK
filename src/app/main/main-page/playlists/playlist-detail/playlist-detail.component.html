@@ -14,8 +14,7 @@
         <h1 >{{this.playlist.name}}</h1>
         <button mat-icon-button (click)="this.renamePlaylist()"><mat-icon>edit</mat-icon></button>
       </div>
-
-      <mat-checkbox style="font-size: 1rem;" [checked]="this.playlist.sync" #syncBox (change)="this.changeSync()">Sync on watch</mat-checkbox>
+      <mat-slide-toggle [checked]="this.playlist.sync" #sync (change)="this.changeSync()">Sync on watch</mat-slide-toggle>
       <button mat-raised-button color="primary" (click)="this.addSongs()" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches">Add</button>
       <button mat-raised-button [disabled]="this.selection.selected.length === 0"
         (click)="removeFromPl()">Remove</button>

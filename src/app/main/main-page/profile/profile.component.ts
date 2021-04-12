@@ -11,6 +11,11 @@ import { LoadingService } from '../../shared/services/loading.service';
 import { Song } from '../../shared/models/song.model';
 import { SongService } from '../../shared/services/song.service';
 import { LoginComponent } from '../../main-login/login/login.component';
+import { MatDialog } from '@angular/material/dialog';
+import { RenamePlDialogComponent } from '../playlists/playlist-detail/rename-pl-dialog/rename-pl-dialog.component';
+import { filter, switchMap } from 'rxjs/operators';
+import { Playlist } from '../../shared/models/playlist.model';
+import { ChangePasswdDialogComponent } from './change-passwd-dialog/change-passwd-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -38,7 +43,8 @@ export class ProfileComponent implements OnInit {
     private snackBarService: SnackBarService,
     private storageService: StorageService,
     private loadingService: LoadingService,
-    private songService: SongService
+    private songService: SongService,
+    private matDialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -156,5 +162,28 @@ export class ProfileComponent implements OnInit {
         break;
       }
     }
+  }
+  changePasswd(): void {
+    this.matDialog.open(ChangePasswdDialogComponent);
+
+    /*dialogRef.afterClosed().pipe(
+      filter(res => res),
+      switchMap(res => {
+        this.loadingService.startLoading();
+
+        return this.authService.changePasswd();
+      })
+    ).subscribe(
+      () => {
+        this.snackBarService.showSnackBar('Playlist was renamed', 'Close', 3000);
+        this.loadingService.stopLoading();
+        this.playlistService.clearData();
+        this.getData();
+      },
+      err => {
+        this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
+        this.loadingService.stopLoading();
+      }
+    );*/
   }
 }

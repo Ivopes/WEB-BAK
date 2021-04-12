@@ -27,6 +27,7 @@ import { MainDbxAuthComponent } from './main/main-dbx-auth/main-dbx-auth.compone
 import { AddSongsToPlDialogComponent } from './main/main-page/playlists/playlist-detail/add-songs-to-pl-dialog/add-songs-to-pl-dialog.component';
 import { MainGdAuthComponent } from './main/main-gd-auth/main-gd-auth.component';
 import { RenamePlDialogComponent } from './main/main-page/playlists/playlist-detail/rename-pl-dialog/rename-pl-dialog.component';
+import { ChangePasswdDialogComponent } from './main/main-page/profile/change-passwd-dialog/change-passwd-dialog.component';
 
 
 export function tokenGetter(request: HttpRequest<any>): string {
@@ -55,6 +56,7 @@ export function tokenGetter(request: HttpRequest<any>): string {
     AddSongsToPlDialogComponent,
     MainGdAuthComponent,
     RenamePlDialogComponent,
+    ChangePasswdDialogComponent,
   ],
   imports: [
     BrowserModule,

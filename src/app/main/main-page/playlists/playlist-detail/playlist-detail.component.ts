@@ -18,6 +18,7 @@ import { SongService } from 'src/app/main/shared/services/song.service';
 import { AddSongsToPlDialogComponent } from './add-songs-to-pl-dialog/add-songs-to-pl-dialog.component';
 import { RenamePlDialogComponent } from './rename-pl-dialog/rename-pl-dialog.component';
 import { EMPTY } from 'rxjs';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -38,7 +39,7 @@ export class PlaylistDetailComponent implements OnInit {
   dataSource: MatTableDataSource<Song>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild('syncBox') syncBox: MatCheckbox;
+  @ViewChild('sync') sync: MatSlideToggle;
 
   constructor(
     private playlistService: PlaylistService,
@@ -202,14 +203,14 @@ export class PlaylistDetailComponent implements OnInit {
       id: this.playlist.id,
       name: this.playlist.name,
       songs: null,
-      sync: this.syncBox.checked
+      sync: this.sync.checked
     };
     this.playlistService.put(pl)
     .subscribe(
       () => {
         this.snackBarService.showSnackBar('Playlist was updated', 'Close', 3000);
         this.loadingService.stopLoading();
-        this.playlist.sync = this.syncBox.checked;
+        this.playlist.sync = this.sync.checked;
       },
       err => {
         this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);

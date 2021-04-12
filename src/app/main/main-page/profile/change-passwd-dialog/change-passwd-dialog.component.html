@@ -1,0 +1,24 @@
+<form *ngIf="this.passwdForm" [formGroup]="this.passwdForm" (ngSubmit)="onSubmit()">
+
+  <div fxLayout="column" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
+
+    <mat-form-field>
+      <input formControlName="currentPsswd" required matInput type="password" placeholder="Current Password" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input formControlName="newPsswd" required matInput type="password" placeholder="New password" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <input formControlName="reNewPsswd" required matInput type="password" placeholder="Re-type new password" />
+      <mat-error>Passwords do not match</mat-error>
+    </mat-form-field>
+
+  </div>
+
+  <div fxLayout="row" fxLayoutGap="1rem" fxLayoutGap.lt-sm="0rem">
+    <button mat-raised-button color="primary" type="submit">Change</button>
+    <button mat-stroked-button mat-dialog-close>Cancel</button>
+  </div>
+</form>

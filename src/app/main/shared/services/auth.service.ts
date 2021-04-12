@@ -96,4 +96,12 @@ private readonly controller: string = 'auth';
   signOutGoogleDrive(): Observable<any> {
     return this.httpClient.delete(`${this.constants.API_ENDPOINT}/${this.controller}/gd`);
   }
+  public changePasswd(oldPasswd: string, newPasswd: string): Observable<Account> {
+    const formData = new FormData();
+
+    formData.append('oldPass', oldPasswd);
+    formData.append('newPass', newPasswd);
+
+    return this.httpClient.post<Account>(`${this.constants.API_ENDPOINT}/${this.controller}/password`, formData);
+  }
  }
