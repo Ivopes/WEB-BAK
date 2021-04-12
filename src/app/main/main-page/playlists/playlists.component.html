@@ -10,12 +10,21 @@
   </div>
 
 
-  <div style="margin-top: 10px;">
+  <div style="margin-top: 10px;" fxFlexAlign="start">
     <mat-card *ngFor="let item of playlists" (click)="showInfo(item.id)" class="item">
 
       <mat-card-title>
         {{item.name}}
       </mat-card-title>
+
+      <mat-card-content>
+        <div *ngFor="let i of descSongsIndex">
+          {{item.songs[i]?.name}}
+        </div>
+        <div *ngIf="item.songs?.length > 3">
+          &#x22EE;
+        </div>
+      </mat-card-content>
 
       <mat-card-actions fxLayoutAlign="end end">
 

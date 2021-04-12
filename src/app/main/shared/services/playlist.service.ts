@@ -38,6 +38,11 @@ export class PlaylistService {
       playlist
     );
   }
+  public put(playlist: Playlist): Observable<any> {
+    return this.httpClient.put(`${this.constants.API_ENDPOINT}/${this.controller}`,
+      playlist
+    );
+  }
   public remove(id: number): Observable<any> {
     this.deletePlaylistFromData(id);
 

@@ -20,6 +20,8 @@ export class PlaylistsComponent implements OnInit {
 
   playlists: Playlist[] = [];
 
+  descSongsIndex = [0, 1, 2];
+
   constructor(
     private playlistService: PlaylistService,
     private matDialog: MatDialog,

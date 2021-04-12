@@ -16,6 +16,8 @@ import { ScreenSizeService } from 'src/app/main/shared/services/screenSize.servi
 import { SnackBarService } from 'src/app/main/shared/services/snackBar.service';
 import { SongService } from 'src/app/main/shared/services/song.service';
 import { AddSongsToPlDialogComponent } from './add-songs-to-pl-dialog/add-songs-to-pl-dialog.component';
+import { RenamePlDialogComponent } from './rename-pl-dialog/rename-pl-dialog.component';
+import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -36,6 +38,7 @@ export class PlaylistDetailComponent implements OnInit {
   dataSource: MatTableDataSource<Song>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('syncBox') syncBox: MatCheckbox;
 
   constructor(
     private playlistService: PlaylistService,
@@ -89,7 +92,7 @@ export class PlaylistDetailComponent implements OnInit {
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  // Selects all rows if they are not all selected; otherwise clear selection.
   masterToggle(): void {
     this.isAllSelected() ?
         this.selection.clear() :
@@ -104,15 +107,24 @@ export class PlaylistDetailComponent implements OnInit {
       if (!row) {
         this.selection.selected.forEach( s => {
           this.songService.removePlaylist(s.id, this.playlist.id).subscribe(
-            () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
-            err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000));
+            () => {
+              this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000);
+              this.playlistService.clearData();
+            },
+            err => {
+              this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+            });
         });
         this.dataSource.data = this.dataSource.data.filter(s => !this.selection.selected.includes(s));
         this.selection.clear();
         return;
       }
       this.songService.removePlaylist(row.id, this.playlist.id).subscribe(
-        () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
+        () => {
+          this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000);
+          this.playlistService.clearData();
+          this.selection.clear();
+        },
         err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
       );
       this.dataSource.data = this.dataSource.data.filter(s => s !== row);
@@ -122,7 +134,6 @@ export class PlaylistDetailComponent implements OnInit {
     this.router.navigate(['/playlists']);
   }
   addSongs(): void {
-
     this.screenSizeService.isSmallScreen().pipe(
       first()
     ).subscribe(data => {
@@ -151,5 +162,59 @@ export class PlaylistDetailComponent implements OnInit {
       });
 
     });
+  }
+  renamePlaylist(id: number): void {
+    const dialogRef = this.matDialog.open(RenamePlDialogComponent,{
+      data: {
+        name: this.playlist.name
+      }
+    });
+
+    dialogRef.afterClosed().pipe(
+      filter(res => res),
+      switchMap(res => {
+        this.loadingService.startLoading();
+        const pl: Playlist = {
+          id: this.playlist.id,
+          name: res.name,
+          songs: null,
+          sync: this.playlist.sync
+        };
+        return this.playlistService.put(pl);
+      })
+    ).subscribe(
+      () => {
+        this.snackBarService.showSnackBar('Playlist was renamed', 'Close', 3000);
+        this.loadingService.stopLoading();
+        this.playlistService.clearData();
+        this.getData();
+      },
+      err => {
+        this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
+        this.loadingService.stopLoading();
+      }
+    );
+  }
+  changeSync(): void {
+
+    this.loadingService.startLoading();
+    const pl: Playlist = {
+      id: this.playlist.id,
+      name: this.playlist.name,
+      songs: null,
+      sync: this.syncBox.checked
+    };
+    this.playlistService.put(pl)
+    .subscribe(
+      () => {
+        this.snackBarService.showSnackBar('Playlist was updated', 'Close', 3000);
+        this.loadingService.stopLoading();
+        this.playlist.sync = this.syncBox.checked;
+      },
+      err => {
+        this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
+        this.loadingService.stopLoading();
+      }
+    );
   }
 }

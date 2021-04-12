@@ -106,12 +106,13 @@ export class SongService {
     song.playlists.splice(song.playlists.findIndex(p => p.id === pId), 1);
   }
   private addPlaylistToData(sId: number, pId: number): void {
-    const p: Playlist = {
+    const pl: Playlist = {
       id: pId,
       name: null,
-      songs: null
+      songs: null,
+      sync: null
     };
-    this.data.find(s => s.id === sId).playlists.push(p);
+    this.data.find(s => s.id === sId).playlists.push(pl);
   }
   private deleteSongFromData(id: number): void {
     this.data.splice(this.data.findIndex(s => s.id === id), 1);

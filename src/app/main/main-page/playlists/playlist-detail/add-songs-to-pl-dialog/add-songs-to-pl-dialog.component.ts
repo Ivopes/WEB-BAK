@@ -9,6 +9,7 @@ import { ScreenSizeService } from 'src/app/main/shared/services/screenSize.servi
 import { SnackBarService } from 'src/app/main/shared/services/snackBar.service';
 import { SongService } from 'src/app/main/shared/services/song.service';
 import { AddToPlDialogComponent } from '../../../songs/add-to-pl-dialog/add-to-pl-dialog.component';
+import { PlaylistService } from 'src/app/main/shared/services/playlist.service';
 
 @Component({
   selector: 'add-songs-to-pl-dialog',
@@ -30,6 +31,7 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
     private songService: SongService,
     private snackBarService: SnackBarService,
     public screenSizeService: ScreenSizeService,
+    private playlistService: PlaylistService,
     @Inject(MAT_DIALOG_DATA) public data: {
       playlist: Playlist,
       songs: Song[]
@@ -88,6 +90,7 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
       this.songService.addPlaylistToSong(row.id, this.data.playlist.id).subscribe(
         () => {
           this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000);
+          this.playlistService.clearData();
         },
         err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
       );
@@ -95,6 +98,7 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
       this.songService.removePlaylist(row.id, this.data.playlist.id).subscribe(
         () => {
           this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000);
+          this.playlistService.clearData();
         },
         err => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
       );

@@ -4,4 +4,5 @@ export interface Playlist {
   id: number;
   name: string;
   songs: Song[];
+  sync: boolean;
 }
