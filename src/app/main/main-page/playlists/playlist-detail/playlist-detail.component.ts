@@ -80,7 +80,7 @@ export class PlaylistDetailComponent implements OnInit {
       this.dataSource = new MatTableDataSource(data.songs);
 
       // Connect paginator
-      if (!this.paginator) {
+      if (!this.paginator && this.playlist.songs?.length > 0) {
         const intervar = setInterval(() => {
           if (this.paginator) {
             this.dataSource.paginator = this.paginator;

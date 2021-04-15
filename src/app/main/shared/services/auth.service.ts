@@ -79,7 +79,6 @@ private readonly controller: string = 'auth';
    */
   GoogleDriveAuth(code: string): Observable<any> {
     // Azure decodes url anyway so no need for encoding
-    console.log(`${this.constants.API_ENDPOINT}/${this.controller}/gd/code/${code}`);
 
     return this.httpClient.get(`${this.constants.API_ENDPOINT}/${this.controller}/gd/code/${code}`, { responseType: 'text' });
   }

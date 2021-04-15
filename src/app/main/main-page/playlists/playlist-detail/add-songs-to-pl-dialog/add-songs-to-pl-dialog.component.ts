@@ -59,9 +59,8 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
       this.dataSource = new MatTableDataSource(data.concat(data).concat(data).concat(data).concat(data));
 
       // Connect paginator
-      if (!this.paginator) {
+      if (!this.paginator && data?.length > 0) {
         const intervar = setInterval(() => {
-          console.log(this.paginator);
           if (this.paginator) {
             this.dataSource.paginator = this.paginator;
             clearInterval(intervar);

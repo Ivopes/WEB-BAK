@@ -83,7 +83,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
       this.dataSource.paginator = this.paginator;
 
       // Connect paginator
-      if (!this.paginator) {
+      if (!this.paginator && this.songs?.length > 0) {
         const intervar = setInterval(() => {
           if (this.paginator) {
             this.dataSource.paginator = this.paginator;

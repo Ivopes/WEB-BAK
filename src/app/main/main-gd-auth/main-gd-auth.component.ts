@@ -29,28 +29,20 @@ export class MainGdAuthComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadingService.startLoading();
-    console.log('beru kod');
 
     this.route.queryParamMap
     .pipe(
       switchMap(params => {
 
         this.gdCode = params.get('code');
-        console.log('kod je:');
-        console.log(this.gdCode);
 
         return this.gdCode !== null ? this.authService.GoogleDriveAuth(this.gdCode) : EMPTY;
       })).subscribe(() => {
           this.snack.showSnackBar('Storage was added succesfully', 'Close', 5000);
-          console.log('vsechno ok');
 
           this.router.navigate(['playlists']);
         },
           err => {
-            console.log('mam error');
-
-            console.log(err);
-
             this.snack.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
             this.router.navigate(['playlists']);
           }
