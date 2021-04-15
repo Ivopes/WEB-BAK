@@ -10,6 +10,7 @@ import { SnackBarService } from 'src/app/main/shared/services/snackBar.service';
 import { SongService } from 'src/app/main/shared/services/song.service';
 import { AddToPlDialogComponent } from '../../../songs/add-to-pl-dialog/add-to-pl-dialog.component';
 import { PlaylistService } from 'src/app/main/shared/services/playlist.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'add-songs-to-pl-dialog',
@@ -27,6 +28,7 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private router: Router,
     public dialogRef: MatDialogRef<AddSongsToPlDialogComponent>,
     private songService: SongService,
     private snackBarService: SnackBarService,
@@ -37,11 +39,9 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
       songs: Song[]
     }
   ) { }
-
   ngAfterViewInit(): void {
     this.getData();
   }
-
   ngOnInit(): void {
     this.selection = new SelectionModel<Song>(true);
 
@@ -54,7 +54,6 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
     });
 
   }
-
   getData(): void {
     this.songService.getAll().subscribe(data => {
       this.dataSource = new MatTableDataSource(data);
@@ -63,7 +62,6 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
       this.checkPlaylists();
     });
   }
-
   isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -108,7 +106,6 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
   checkPlaylists(): void {
     const checkIds = this.data.songs.map(s => s.id);
 
@@ -118,6 +115,9 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
       }
     }
   }
+  toSongs(): void {
+    this.dialogRef.close('redir');
 
-
+    this.router.navigateByUrl('/songs');
+  }
 }

@@ -156,15 +156,16 @@ export class PlaylistDetailComponent implements OnInit {
           minWidth: '50vw'
         });
       }
-      dialogRef.afterClosed().subscribe(() => {
+      dialogRef.afterClosed().subscribe( (msg: string) => {
+        if (msg === 'redir') {
+          return;
+        }
         this.selection.clear();
-
         this.getData();
       });
-
     });
   }
-  renamePlaylist(id: number): void {
+  renamePlaylist(): void {
     const dialogRef = this.matDialog.open(RenamePlDialogComponent,{
       data: {
         name: this.playlist.name

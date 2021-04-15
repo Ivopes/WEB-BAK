@@ -2,9 +2,9 @@
 
   <div class="data-Container" fxLayoutAlign="center stretch" fxLayout="column">
 
-      <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="margin: 0px 20px 5px 20px;">
+      <div *ngIf="this.account?.storage.length > 0;else noStorages" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="margin: 0px 20px 5px 20px;">
 
-        <mat-form-field fxFlexAlign="end" class="filter">
+        <mat-form-field fxFlexAlign="end" class="filter" *ngIf="this.songs?.length > 0">
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="applyFilter($event)">
         </mat-form-field>
@@ -27,7 +27,14 @@
 
       </div>
 
-      <div class="table-Container mat-elevation-z4" fxLayoutAlign="center stretch" fxLayout="column" fxFlexAlign.xs="center">
+      <ng-template #noStorages>
+        <div style="margin: 10rem 1rem 1rem 0rem; font-size: 1rem; color: grey; user-select: none; text-align: center;">
+          You have no storages connected<br>
+          Connect them in the Account tab or click <a [routerLink]="'/profile'">Here</a>
+        </div>
+      </ng-template>
+
+      <div *ngIf="this.account?.storage.length > 0 && this.songs?.length > 0;else noSongs" class="table-Container mat-elevation-z4" fxLayoutAlign="center stretch" fxLayout="column" fxFlexAlign.xs="center">
 
         <table mat-table [dataSource]="this.dataSource">
 
@@ -134,8 +141,16 @@
 
       </div>
 
+      <ng-template #noSongs>
+        <div *ngIf="this.account?.storage.length > 0" style="margin: 10rem 1rem 1rem 0rem; font-size: 1rem; color: grey; user-select: none; text-align: center;">
+          You have no songs uploaded<br>
+          You can upload them on this page or directly in your connected storage
+        </div>
+      </ng-template>
+
       <button class="fab-button" (click)="fileInput.click()" mat-fab color="primary" *ngIf="(this.screenSizeService.isSmallScreen() | async)!.matches" [disabled]="!areStoragesSigned()">
         <mat-icon>add</mat-icon>
       </button>
+
   </div>
 </div>
