@@ -78,7 +78,19 @@ export class PlaylistDetailComponent implements OnInit {
       this.playlist = data;
       //this.dataSource = new MatTableDataSource(data.songs.concat(data.songs.concat(data.songs.concat(data.songs.concat(data.songs)))));
       this.dataSource = new MatTableDataSource(data.songs);
-      this.dataSource.paginator = this.paginator;
+
+      // Connect paginator
+      if (!this.paginator) {
+        const intervar = setInterval(() => {
+          if (this.paginator) {
+            this.dataSource.paginator = this.paginator;
+            clearInterval(intervar);
+          }
+        }, 10);
+      } else {
+        this.dataSource.paginator = this.paginator;
+      }
+
       this.loadingService.stopLoading();
     },
     err => {
