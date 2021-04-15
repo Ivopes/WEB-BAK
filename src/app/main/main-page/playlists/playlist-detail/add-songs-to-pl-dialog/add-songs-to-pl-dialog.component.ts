@@ -56,7 +56,7 @@ export class AddSongsToPlDialogComponent implements OnInit, AfterViewInit {
   }
   getData(): void {
     this.songService.getAll().subscribe(data => {
-      this.dataSource = new MatTableDataSource(data.concat(data).concat(data).concat(data).concat(data));
+      this.dataSource = new MatTableDataSource(data);
 
       // Connect paginator
       if (!this.paginator && data?.length > 0) {
