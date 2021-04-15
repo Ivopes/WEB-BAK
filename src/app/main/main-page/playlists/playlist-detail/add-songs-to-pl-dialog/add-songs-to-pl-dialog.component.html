@@ -1,6 +1,6 @@
 <div class="data-Container">
 
-  <div >
+  <div *ngIf="this.dataSource?.data?.length > 0;else noSongs">
 
     <mat-form-field fxFlexAlign="end" class="filter">
       <mat-label>Filter</mat-label>
