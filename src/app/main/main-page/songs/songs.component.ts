@@ -17,6 +17,7 @@ import { StorageService } from '../../shared/services/storage.service';
 import { Storage } from '../../shared/models/storage.model';
 import { ModifySongDataComponent } from './modify-song-data/modify-song-data.component';
 import { EMPTY } from 'rxjs';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
   selector: 'app-songs',
@@ -71,9 +72,10 @@ export class SongsComponent implements OnInit, AfterViewInit {
 
     this.accountService.getById().subscribe(data => {
       this.account = data;
-      if (this.account.storage.length > 0) {
-        this.selectedStorage = this.account.storage[0].name;
-      }
+    });
+
+    this.storageService.getSelectedStorage().subscribe(storage => {
+      this.selectedStorage = storage.name;
     });
   }
   getData(): void {
@@ -335,6 +337,11 @@ export class SongsComponent implements OnInit, AfterViewInit {
           this.loadingService.addStopLoading();
         });
     }
+  }
+  onStorageChange(change: MatSelectChange): void {
+    const storage = this.account.storage[this.account.storage.findIndex(s => s.name === change.value)];
+
+    this.storageService.setSelectedStorage(storage);
   }
 }
 

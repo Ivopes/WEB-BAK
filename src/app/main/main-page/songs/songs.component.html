@@ -11,7 +11,7 @@
 
         <mat-form-field *ngIf="this.account">
           <mat-label>Storage for upload</mat-label>
-          <mat-select [disabled]="!areStoragesSigned()" [(ngModel)]="this.selectedStorage">
+          <mat-select [disabled]="!areStoragesSigned()" [(ngModel)]="this.selectedStorage" (selectionChange)="onStorageChange($event)">
             <mat-option *ngFor="let item of this.account.storage" [value]="item.name" >{{item.name}}</mat-option>
           </mat-select>
         </mat-form-field>
