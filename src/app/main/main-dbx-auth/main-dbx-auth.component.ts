@@ -24,11 +24,11 @@ export class MainDbxAuthComponent implements OnInit, OnDestroy {
     private loadingService: LoadingService
   ) { }
   ngOnDestroy(): void {
-    this.loadingService.stopLoading();
+    this.loadingService.addStopLoading();
   }
 
   ngOnInit(): void {
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
 
     this.route.queryParamMap
     .pipe(

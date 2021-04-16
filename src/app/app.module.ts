@@ -29,6 +29,7 @@ import { MainGdAuthComponent } from './main/main-gd-auth/main-gd-auth.component'
 import { RenamePlDialogComponent } from './main/main-page/playlists/playlist-detail/rename-pl-dialog/rename-pl-dialog.component';
 import { ChangePasswdDialogComponent } from './main/main-page/profile/change-passwd-dialog/change-passwd-dialog.component';
 import { ModifySongDataComponent } from './main/main-page/songs/modify-song-data/modify-song-data.component';
+import { DndSongsDirective } from './main/shared/directives/dnd-songs.directive';
 
 
 export function tokenGetter(request: HttpRequest<any>): string {
@@ -59,6 +60,7 @@ export function tokenGetter(request: HttpRequest<any>): string {
     RenamePlDialogComponent,
     ChangePasswdDialogComponent,
     ModifySongDataComponent,
+    DndSongsDirective,
   ],
   imports: [
     BrowserModule,

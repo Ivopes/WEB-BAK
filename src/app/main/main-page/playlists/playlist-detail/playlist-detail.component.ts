@@ -19,6 +19,7 @@ import { AddSongsToPlDialogComponent } from './add-songs-to-pl-dialog/add-songs-
 import { RenamePlDialogComponent } from './rename-pl-dialog/rename-pl-dialog.component';
 import { EMPTY } from 'rxjs';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { StorageService } from 'src/app/main/shared/services/storage.service';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -28,6 +29,10 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
 export class PlaylistDetailComponent implements OnInit {
 
   playlist: Playlist;
+
+  allowedExtensions: string[] = [
+    '.mp3'
+  ];
 
   /**
    * table columns to display
@@ -49,7 +54,8 @@ export class PlaylistDetailComponent implements OnInit {
     private songService: SongService,
     private snackBarService: SnackBarService,
     private loadingService: LoadingService,
-    public screenSizeService: ScreenSizeService
+    public screenSizeService: ScreenSizeService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
@@ -61,16 +67,15 @@ export class PlaylistDetailComponent implements OnInit {
       if (data.matches) {
         this.displayedColumns = ['select', 'name', 'remove'];
       } else {
-        this.displayedColumns = ['select', 'name', 'author', 'length' , 'remove'];
+        this.displayedColumns = ['select', 'name', 'author', 'length', 'remove'];
       }
     });
 
   }
-
   private getData(): void {
     this.route.paramMap.pipe(
       switchMap(params => {
-        this.loadingService.startLoading();
+        this.loadingService.addStartLoading();
         const id = Number.parseInt(params.get('id'), 10);
         return this.playlistService.getById(id);
       })
@@ -91,25 +96,23 @@ export class PlaylistDetailComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
       }
 
-      this.loadingService.stopLoading();
+      this.loadingService.addStopLoading();
     },
-    err => {
-      this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
-      this.loadingService.stopLoading();
-    });
+      err => {
+        this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+        this.loadingService.addStopLoading();
+      });
   }
-
   isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
-
   // Selects all rows if they are not all selected; otherwise clear selection.
   masterToggle(): void {
     this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
   }
   removeFromPl(row?: Song): void {
     const dialogRef = this.matDialog.open(DeleteDialogComponent);
@@ -118,7 +121,7 @@ export class PlaylistDetailComponent implements OnInit {
       filter(res => res)
     ).subscribe(() => {
       if (!row) {
-        this.selection.selected.forEach( s => {
+        this.selection.selected.forEach(s => {
           this.songService.removePlaylist(s.id, this.playlist.id).subscribe(
             () => {
               this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000);
@@ -168,7 +171,7 @@ export class PlaylistDetailComponent implements OnInit {
           minWidth: '50vw'
         });
       }
-      dialogRef.afterClosed().subscribe( (msg: string) => {
+      dialogRef.afterClosed().subscribe((msg: string) => {
         if (msg === 'redir') {
           return;
         }
@@ -178,7 +181,7 @@ export class PlaylistDetailComponent implements OnInit {
     });
   }
   renamePlaylist(): void {
-    const dialogRef = this.matDialog.open(RenamePlDialogComponent,{
+    const dialogRef = this.matDialog.open(RenamePlDialogComponent, {
       data: {
         name: this.playlist.name
       }
@@ -187,7 +190,7 @@ export class PlaylistDetailComponent implements OnInit {
     dialogRef.afterClosed().pipe(
       filter(res => res),
       switchMap(res => {
-        this.loadingService.startLoading();
+        this.loadingService.addStartLoading();
         const pl: Playlist = {
           id: this.playlist.id,
           name: res.name,
@@ -199,19 +202,19 @@ export class PlaylistDetailComponent implements OnInit {
     ).subscribe(
       () => {
         this.snackBarService.showSnackBar('Playlist was renamed', 'Close', 3000);
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
         this.playlistService.clearData();
         this.getData();
       },
       err => {
         this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
       }
     );
   }
   changeSync(): void {
 
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
     const pl: Playlist = {
       id: this.playlist.id,
       name: this.playlist.name,
@@ -219,16 +222,59 @@ export class PlaylistDetailComponent implements OnInit {
       sync: this.sync.checked
     };
     this.playlistService.put(pl)
-    .subscribe(
-      () => {
-        this.snackBarService.showSnackBar('Playlist was updated', 'Close', 3000);
-        this.loadingService.stopLoading();
-        this.playlist.sync = this.sync.checked;
-      },
-      err => {
-        this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
-        this.loadingService.stopLoading();
+      .subscribe(
+        () => {
+          this.snackBarService.showSnackBar('Playlist was updated', 'Close', 3000);
+          this.loadingService.addStopLoading();
+          this.playlist.sync = this.sync.checked;
+        },
+        err => {
+          this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
+          this.loadingService.addStopLoading();
+        }
+      );
+  }
+  onFilesUpload(files: File[]): void {
+    this.songService.getAll().subscribe(() => {
+
+      for (const file of files) {
+        const extension = file.name.substring(file.name.lastIndexOf('.'));
+
+        if (!this.allowedExtensions.includes(extension)) {
+          this.snackBarService.showSnackBar('This format is not supported', 'Close', 5000);
+          return;
+        }
+
+        // Show loading
+
+        this.storageService.getSelectedStorage().pipe(
+          switchMap(storage => {
+            if (!storage) {
+              this.snackBarService.showSnackBar('You dont have any connected storage. Connect one in the Account tab', 'Close', 5000);
+              return;
+            }
+            this.loadingService.addStartLoading();
+            return this.songService.post(file, storage.storageID);
+          })
+        )
+          .pipe(
+            switchMap(song => {
+              this.songService.addToData(song);
+              return this.songService.addPlaylistToSong(song.id, this.playlist.id);
+            })
+          )
+          .subscribe(
+            () => {
+              this.playlistService.clearData();
+              this.getData();
+              this.loadingService.addStopLoading();
+              this.snackBarService.showSnackBar('File uploaded succesfully and added to playlist', 'Close', 3000);
+            },
+            err => {
+              this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
+              this.loadingService.addStopLoading();
+            });
       }
-    );
+    });
   }
 }

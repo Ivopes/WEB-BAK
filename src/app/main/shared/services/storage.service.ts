@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Constants } from '../../../config/constants';
 import { Storage } from '../models/storage.model';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, first, map } from 'rxjs/operators';
 
 
 @Injectable({providedIn: 'root'})
@@ -12,6 +12,8 @@ export class StorageService {
   private readonly controller: string = 'storage';
 
   private data: Storage[];
+
+  private selectedStorage: Storage = null;
 
   constructor(
     private httpClient: HttpClient,
@@ -31,5 +33,26 @@ export class StorageService {
   }
   public clearData(): void {
     this.data = null;
+  }
+
+  public getSelectedStorage(): Observable<Storage> {
+
+    if (this.selectedStorage) {
+      return of(this.selectedStorage);
+    }
+    return this.getAll().pipe(
+      map(data => {
+        if (data.length > 0) {
+          this.selectedStorage = data[0];
+        } else {
+          this.selectedStorage = null;
+        }
+        return this.selectedStorage;
+      })
+    );
+  }
+
+  public setSelectedStorage(storage: Storage): void {
+    this.selectedStorage = storage;
   }
 }

@@ -69,14 +69,14 @@ export class ProfileComponent implements OnInit {
         break;
       }
       case 'Google Drive': {
-        this.loadingService.startLoading();
+        this.loadingService.addStartLoading();
 
         this.authService.getGoogleDriveAuth().subscribe(data => {
           window.location.replace(data);
         },
         err => {
           this.snackBarService.showSnackBar('Could not receive account information', 'Close', 5000);
-          this.loadingService.stopLoading();
+          this.loadingService.addStopLoading();
         });
         break;
       }
@@ -87,20 +87,20 @@ export class ProfileComponent implements OnInit {
     }
   }
   getAccountInfo(): void {
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
 
     this.accountService.getById().subscribe(data => {
       this.account = data;
       this.profileForm = this.createForm();
       this.dataSource = new MatTableDataSource(data.storage);
       if (this.stopLoading === true) {
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
       }
       this.stopLoading = true;
     },
       err => {
         this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
       }
     );
   }
@@ -116,7 +116,7 @@ export class ProfileComponent implements OnInit {
     this.storageService.getAll().subscribe(data => {
       this.storages = data;
       if (this.stopLoading === true) {
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
       }
       this.stopLoading = true;
     });
@@ -129,31 +129,31 @@ export class ProfileComponent implements OnInit {
     return this.account.storage.some(s => s.name === storage.name);
   }
   signOutStorage(storageName: string): void {
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
 
     switch (storageName) {
       case 'Dropbox': {
         this.authService.signOutDbx().subscribe(() => {
-          this.loadingService.stopLoading();
+          this.loadingService.addStopLoading();
           this.snackBarService.showSnackBar('Dropbox data deleted', 'Close', 2000);
           this.account.storage.splice(this.account.storage.findIndex(s => s.name === 'Dropbox'), 1);
           this.songService.clearData();
         },
         err => {
-          this.loadingService.stopLoading();
+          this.loadingService.addStopLoading();
           this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
         });
         break;
       }
       case 'Google Drive': {
         this.authService.signOutGoogleDrive().subscribe(() => {
-          this.loadingService.stopLoading();
+          this.loadingService.addStopLoading();
           this.snackBarService.showSnackBar('Google Drive data deleted', 'Close', 2000);
           this.account.storage.splice(this.account.storage.findIndex(s => s.name === 'Google Drive'), 1);
           this.songService.clearData();
         },
         err => {
-          this.loadingService.stopLoading();
+          this.loadingService.addStopLoading();
           this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
         });
         break;
