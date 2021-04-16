@@ -24,11 +24,11 @@ export class MainGdAuthComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnDestroy(): void {
-    this.loadingService.stopLoading();
+    this.loadingService.addStopLoading();
   }
 
   ngOnInit(): void {
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
 
     this.route.queryParamMap
     .pipe(

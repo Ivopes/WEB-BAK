@@ -32,13 +32,13 @@ export class PlaylistsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
 
     this.getData();
   }
   private getData(): void {
     this.playlistService.getAll().subscribe(data => {
-      this.loadingService.stopLoading();
+      this.loadingService.addStopLoading();
       this.playlists = data;
     });
   }
@@ -49,7 +49,7 @@ export class PlaylistsComponent implements OnInit {
     dialogRef.afterClosed().pipe(
       filter(res => res),
       switchMap(res => {
-        this.loadingService.startLoading();
+        this.loadingService.addStartLoading();
         plToAdd = res;
         return this.playlistService.post(res);
       })
@@ -60,11 +60,11 @@ export class PlaylistsComponent implements OnInit {
           this.playlistService.clearData();
           this.getData();
 
-          this.loadingService.stopLoading();
+          this.loadingService.addStopLoading();
         },
         err => {
           this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
-          this.loadingService.stopLoading();
+          this.loadingService.addStopLoading();
         }
       );
   }
@@ -77,7 +77,7 @@ export class PlaylistsComponent implements OnInit {
     dialogRef.afterClosed().pipe(
       filter(res => res),
       switchMap(res => {
-        this.loadingService.startLoading();
+        this.loadingService.addStartLoading();
 
         return this.playlistService.remove(id);
       })
@@ -85,11 +85,11 @@ export class PlaylistsComponent implements OnInit {
       () => {
         this.snackBarService.showSnackBar('Playlist was deleted', 'Close', 3000);
 
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
       },
       err => {
         this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
       }
     );
   }

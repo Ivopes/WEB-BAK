@@ -6,13 +6,20 @@ export class LoadingService {
 
   public loading = new BehaviorSubject<boolean>(false);
 
+  private counter = 0;
+
   constructor() { }
 
-  startLoading(): void {
-    this.loading.next(true);
+  addStartLoading(): void {
+    if (this.counter++ === 0) {
+      this.loading.next(true);
+    }
   }
 
-  stopLoading(): void {
-    this.loading.next(false);
+  addStopLoading(): void {
+    if (--this.counter < 1) {
+      this.loading.next(false);
+      this.counter = 0;
+    }
   }
 }

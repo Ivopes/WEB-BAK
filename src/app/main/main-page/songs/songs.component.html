@@ -154,8 +154,8 @@
 
   </div>
 </div>
-<div id="overlay" appDndSongs>
-  <!-- <div>
+<div *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches" id="overlay" appDndSongs (filesUpload)="onFilesUpload($event)">
+   <div>
     Drag and drop songs here
-  </div> -->
+  </div>
 </div>

@@ -40,16 +40,16 @@ export class ChangePasswdDialogComponent implements OnInit {
     const oldP = this.passwdForm.controls['currentPsswd'].value;
     const newP = this.passwdForm.controls['reNewPsswd'].value;
 
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
 
     this.authService.changePasswd(oldP, newP).subscribe(() => {
       this.snackBarService.showSnackBar('Password was changed', 'Close', 3000);
-      this.loadingService.stopLoading();
+      this.loadingService.addStopLoading();
       this.dialogRef.close();
     },
     err => {
       this.snackBarService.showSnackBar(err.error, 'Close', 3000);
-      this.loadingService.stopLoading();
+      this.loadingService.addStopLoading();
     });
 
   }

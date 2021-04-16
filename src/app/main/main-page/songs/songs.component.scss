@@ -26,13 +26,13 @@ table {
   z-index: 2;
   //pointer-events: none;
 }
-/*#overlay div {
+#overlay div {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
   font-size: 3rem;
-  color: lightgrey;
-}*/
+  color: white;
+}
 @media only screen and (max-width: 600px) {
 
   button span {

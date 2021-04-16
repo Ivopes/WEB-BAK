@@ -115,12 +115,24 @@ export class SongService {
       songs: null,
       sync: null
     };
+
     this.data.find(s => s.id === sId).playlists.push(pl);
   }
   private deleteSongFromData(id: number): void {
     this.data.splice(this.data.findIndex(s => s.id === id), 1);
   }
   public addToData(song: Song): void {
+    /*if (!this.data) {
+      this.data = [];
+    }*/
     this.data.push(song);
   }
+ /* public addToData(song: Song): void {
+    if (!this.data) {
+      this.getAll().subscribe(data => {
+        this.data = data;
+        this.data.push(song);
+      });
+    }
+  }*/
 }

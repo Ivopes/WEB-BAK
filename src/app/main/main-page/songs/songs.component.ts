@@ -23,7 +23,7 @@ import { EMPTY } from 'rxjs';
   templateUrl: './songs.component.html',
   styleUrls: ['./songs.component.scss']
 })
-export class SongsComponent implements OnInit, AfterViewInit{
+export class SongsComponent implements OnInit, AfterViewInit {
 
   account: Account;
 
@@ -54,7 +54,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
     public storageService: StorageService
   ) { }
   ngAfterViewInit(): void {
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
     this.getData();
   }
 
@@ -65,7 +65,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
       if (data.matches) {
         this.displayedColumns = ['select', 'name', 'options'];
       } else {
-        this.displayedColumns = ['select', 'name', 'storage', 'author', 'length' , 'download', 'addToPl', 'alterData', 'remove'];
+        this.displayedColumns = ['select', 'name', 'storage', 'author', 'length', 'download', 'addToPl', 'alterData', 'remove'];
       }
     });
 
@@ -93,7 +93,7 @@ export class SongsComponent implements OnInit, AfterViewInit{
       } else {
         this.dataSource.paginator = this.paginator;
       }
-      this.loadingService.stopLoading();
+      this.loadingService.addStopLoading();
     });
   }
   onFileSelected(files: FileList): void {
@@ -124,28 +124,30 @@ export class SongsComponent implements OnInit, AfterViewInit{
     }
 
     // Show loading
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
 
     const file = this.fileToUpload;
 
     // Disable and reset input
     this.resetFileInput();
 
-    const storageID = this.account.storage[this.account.storage.findIndex(s => s.name === this.selectedStorage)].storageID;
+    const storage = this.account.storage[this.account.storage.findIndex(s => s.name === this.selectedStorage)];
+
+    this.storageService.setSelectedStorage(storage);
 
     // post a file
-    this.songService.post(file, storageID).subscribe(
+    this.songService.post(file, storage.storageID).subscribe(
       data => {
         this.songService.addToData(data);
         this.dataSource.data = this.dataSource.data;
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
         this.snackBarService.showSnackBar('File uploaded succesfully', 'Close', 3000);
         this.resetFileInput();
       },
       err => {
         this.snackBarService.showSnackBar(err.error, 'Close', 5000);
         this.resetFileInput();
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
       });
   }
   resetFileInput(): void {
@@ -190,17 +192,17 @@ export class SongsComponent implements OnInit, AfterViewInit{
     dialogRef.afterClosed().pipe(
       filter(res => res),
       switchMap(() => {
-        this.loadingService.startLoading();
+        this.loadingService.addStartLoading();
         return this.songService.remove(song.id);
       })
     ).subscribe(() => {
-        this.loadingService.stopLoading();
-        this.snackBarService.showSnackBar('Song was deleted', 'Close', 2000);
-        this.dataSource.data = this.dataSource.data;
-        this.selection.clear();
-      },
+      this.loadingService.addStopLoading();
+      this.snackBarService.showSnackBar('Song was deleted', 'Close', 2000);
+      this.dataSource.data = this.dataSource.data;
+      this.selection.clear();
+    },
       () => {
-        this.loadingService.stopLoading();
+        this.loadingService.addStopLoading();
         this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
         this.selection.clear();
       }
@@ -212,9 +214,9 @@ export class SongsComponent implements OnInit, AfterViewInit{
    */
   downloadSong(song: Song): void {
     const fileName = song.fileName;
-    this.loadingService.startLoading();
+    this.loadingService.addStartLoading();
     this.songService.getFile(song.id).subscribe(file => {
-      this.loadingService.stopLoading();
+      this.loadingService.addStopLoading();
       const url = window.URL.createObjectURL(file);
       const anchor = document.createElement('a');
       anchor.download = fileName;
@@ -231,8 +233,8 @@ export class SongsComponent implements OnInit, AfterViewInit{
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle(): void {
     this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
   }
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -244,22 +246,22 @@ export class SongsComponent implements OnInit, AfterViewInit{
     dialogRef.afterClosed().pipe(
       filter(res => res),
       switchMap(() => {
-        this.loadingService.startLoading();
+        this.loadingService.addStartLoading();
         return this.songService.removeRange(this.selection.selected.map(s => s.id));
       })
     ).subscribe(() => {
-      this.loadingService.stopLoading();
+      this.loadingService.addStopLoading();
       this.snackBarService.showSnackBar('Songs were deleted', 'Close', 2000);
       this.selection.clear();
       this.dataSource.data = this.dataSource.data;
     },
-    () => {
-      this.loadingService.stopLoading();
-      this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
-    });
+      () => {
+        this.loadingService.addStopLoading();
+        this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+      });
   }
   areStoragesSigned(): boolean {
-    return this.account.storage.length !== 0;
+    return this.account?.storage.length !== 0;
   }
   getSongStorage(song: Song): Storage {
     if (song) {
@@ -280,27 +282,59 @@ export class SongsComponent implements OnInit, AfterViewInit{
     let songData: Song = null;
 
     dialog.afterClosed()
-    .pipe(
-      switchMap(data => {
-        if (!data) {
-          return EMPTY;
-        }
-        songData = data;
-        this.loadingService.startLoading();
-        return this.songService.put(data);
-      })
-    ).subscribe(() => {
-      this.snackBarService.showSnackBar('Songs data updated', 'Close', 2000);
-      let sng = this.songs.find(s => s.id === song.id);
-      sng.author = songData.author;
-      sng.name = songData.name;
+      .pipe(
+        switchMap(data => {
+          if (!data) {
+            return EMPTY;
+          }
+          songData = data;
+          this.loadingService.addStartLoading();
+          return this.songService.put(data);
+        })
+      ).subscribe(() => {
+        this.snackBarService.showSnackBar('Songs data updated', 'Close', 2000);
+        let sng = this.songs.find(s => s.id === song.id);
+        sng.author = songData.author;
+        sng.name = songData.name;
 
-      this.dataSource.data = this.dataSource.data;
-      this.loadingService.stopLoading();
-    },
-    () => {
-      this.loadingService.stopLoading();
-      this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
-    });
+        this.dataSource.data = this.dataSource.data;
+        this.loadingService.addStopLoading();
+      },
+        () => {
+          this.loadingService.addStopLoading();
+          this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000);
+        });
+  }
+  onFilesUpload(files: File[]): void {
+
+    for (const file of files) {
+      const extension = file.name.substring(file.name.lastIndexOf('.'));
+
+      if (!this.allowedExtensions.includes(extension)) {
+        this.snackBarService.showSnackBar('This format is not supported', 'Close', 5000);
+        return;
+      }
+
+      // Show loading
+      this.loadingService.addStartLoading();
+
+      const storage = this.account.storage[this.account.storage.findIndex(s => s.name === this.selectedStorage)];
+
+      this.storageService.setSelectedStorage(storage);
+
+      // post a file
+      this.songService.post(file, storage.storageID).subscribe(
+        data => {
+          this.songService.addToData(data);
+          this.dataSource.data = this.dataSource.data;
+          this.loadingService.addStopLoading();
+          this.snackBarService.showSnackBar('File uploaded succesfully', 'Close', 3000);
+        },
+        err => {
+          this.snackBarService.showSnackBar(err.error, 'Close', 5000);
+          this.loadingService.addStopLoading();
+        });
+    }
   }
 }
+

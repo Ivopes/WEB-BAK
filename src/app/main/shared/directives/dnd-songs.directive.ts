@@ -1,77 +1,39 @@
-import { Directive, HostListener, HostBinding, ElementRef } from '@angular/core';
-import { DndDirectiveBase } from './dnd.directive';
-import { DomSanitizer } from '@angular/platform-browser';
-import { SnackBarService } from '../services/snackBar.service';
-import { getLocaleFirstDayOfWeek } from '@angular/common';
+import { Directive, HostListener, HostBinding, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 
 @Directive({
   selector: '[appDndSongs]'
 })
 export class DndSongsDirective {
 
-  @HostBinding('style.background-color') private backgroundColor;
-  @HostBinding('style.display') private display;
-  @HostBinding('style.z-index') private zIndex;
+  @Output() filesUpload = new EventEmitter<File[]>();
 
-  private counter: number = 0;
+  @HostBinding('style.background-color') private backgroundColor: string;
+  @HostBinding('style.display') private display: string;
 
-  constructor(
-    private snackBarService: SnackBarService,
-    private el: ElementRef
-  ) {}
+  private counter = 0;
 
-  /*@HostListener('dragover', ['$event']) public onDragOver(evt: DragEvent): void {
-    evt.preventDefault();
-    evt.stopPropagation();
-    /*if (this.counter++ === 0){
-      console.log(evt);
-      console.log('over');
-      this.show();
-    }
-    console.log('drageover');
-
-  }
-
-  @HostListener('dragleave', ['$event']) public onDragLeave(evt: DragEvent): void {
-    evt.preventDefault();
-    evt.stopPropagation();
-    if (--this.counter === 0) {
-      console.log(evt);
-      console.log('leave');
-      this.hide();
-    }
-    //console.log('dragleave');
-  }*/
+  constructor() {}
 
   @HostListener('drop', ['$event']) public onDrop(evt: DragEvent): void {
     evt.preventDefault();
     evt.stopPropagation();
+
     this.hide();
 
     this.counter = 0;
 
-    for (let i = 0; i < evt.dataTransfer.files.length; i++) {
-      console.log(evt.dataTransfer.files[i]);
-      this.snackBarService.showSnackBar(evt.dataTransfer.files[i].name, 'close', 5000);
-    }
-  }
+    const files: File[] = [];
 
-  private show(): void {
-    this.backgroundColor = 'rgba(0,0,0,0.5)';
-    this.display = 'block';
-    //this.zIndex = 2;
-  }
-  private hide(): void {
-    this.backgroundColor = 'rgba(0,0,0,0)';
-    this.display = 'none';
-    //this.zIndex = -1;
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < evt.dataTransfer.files.length; i++) {
+      files.push(evt.dataTransfer.files[i]);
+    }
+    this.filesUpload.emit(files);
   }
   @HostListener('window:dragenter', ['$event']) onDragEnter(evt: DragEvent): void {
     evt.preventDefault();
     evt.stopPropagation();
     if (this.counter++ === 0){
-      console.log(event);
-      console.log('enter');
       this.show();
     }
   }
@@ -79,11 +41,10 @@ export class DndSongsDirective {
     evt.preventDefault();
     evt.stopPropagation();
     if (--this.counter === 0) {
-      console.log(evt);
-      console.log('leave');
       this.hide();
     }
   }
+  // Must be implementes so drop event can work properly
   @HostListener('window:dragover', ['$event']) onDragOver(evt: DragEvent): void {
     evt.preventDefault();
     evt.stopPropagation();
@@ -92,16 +53,15 @@ export class DndSongsDirective {
     evt.preventDefault();
     evt.stopPropagation();
 
-
     this.counter = 0;
     this.hide();
-
-    console.log('DROOOOOOP');
-
   }
-  /*@HostListener('drop', ['$event']) onMessagaa(evt: DragEvent) {
-    console.log(evt);
-    console.log('drop');
-  }*/
-
+  private show(): void {
+    this.backgroundColor = 'rgba(0,0,0,0.6)';
+    this.display = 'table';
+  }
+  private hide(): void {
+    this.backgroundColor = 'rgba(0,0,0,0)';
+    this.display = 'none';
+  }
 }
