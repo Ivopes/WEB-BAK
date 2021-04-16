@@ -18,6 +18,7 @@ import { Storage } from '../../shared/models/storage.model';
 import { ModifySongDataComponent } from './modify-song-data/modify-song-data.component';
 import { EMPTY } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
+import { PlaylistService } from '../../shared/services/playlist.service';
 
 @Component({
   selector: 'app-songs',
@@ -52,7 +53,8 @@ export class SongsComponent implements OnInit, AfterViewInit {
     private loadingService: LoadingService,
     public screenSizeService: ScreenSizeService,
     private accountService: AccountService,
-    public storageService: StorageService
+    public storageService: StorageService,
+    private playlistService: PlaylistService
   ) { }
   ngAfterViewInit(): void {
     this.loadingService.addStartLoading();
@@ -170,7 +172,10 @@ export class SongsComponent implements OnInit, AfterViewInit {
         return this.songService.addPlaylistToSong(song.id, pId);
       })
     ).subscribe(
-      () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
+      () => {
+        this.playlistService.clearData();
+        this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000);
+      },
       () => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
     );
 
@@ -180,7 +185,10 @@ export class SongsComponent implements OnInit, AfterViewInit {
         return this.songService.removePlaylist(song.id, pId);
       })
     ).subscribe(
-      () => this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000),
+      () => {
+        this.playlistService.clearData();
+        this.snackBarService.showSnackBar('Playlist was changed', 'Close', 2000);
+      },
       () => this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 3000)
     );
   }
