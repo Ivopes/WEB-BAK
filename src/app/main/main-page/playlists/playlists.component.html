@@ -1,13 +1,6 @@
 <div fxLayoutAlign="center center" fxLayout="column" style="margin-bottom: 10vh;">
 
-  <div fxLayoutAlign="center center" fxLayout="column" *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches;else fab">
-
-    <h1>Add a playlist</h1>
-
-    <button mat-mini-fab color="primary" (click)="addPlaylist()">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
+  <button fxFlexAlign="end" mat-raised-button color="primary" (click)="addPlaylist()">Add playlist</button>
 
 
   <div style="margin-top: 10px;" fxFlexAlign="start">
@@ -38,10 +31,10 @@
     </mat-card>
   </div>
 
-  <ng-template #fab>
+  <!-- <ng-template #fab> -->
     <button class="fab-button" mat-fab color="primary" (click)="addPlaylist()">
       <mat-icon>add</mat-icon>
     </button>
-  </ng-template>
+  <!-- </ng-template> -->
 
 </div>
