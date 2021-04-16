@@ -1,6 +1,6 @@
 <div  fxLayout="column" fxLayoutGap="20px" fxLayoutGap.xs="7px">
 
-  <button mat-raised-button (click)="toPlaylists()" fxFlexAlign="start">
+  <button *ngIf="(this.screenSizeService.isSmallScreen() | async)!.matches" mat-raised-button (click)="toPlaylists()" fxFlexAlign="start" class="backButton">
     <mat-icon>arrow_back</mat-icon>
     Back
   </button>
@@ -9,6 +9,11 @@
 
     <div *ngIf="this.playlist" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px"
       style="margin: 0px 20px 15px 20px;">
+
+      <button *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches" mat-raised-button (click)="toPlaylists()" fxFlexAlign="start">
+        <mat-icon>arrow_back</mat-icon>
+        Back
+      </button>
 
       <div class="header" fxLayout="row">
         <h1 >{{this.playlist.name}}</h1>

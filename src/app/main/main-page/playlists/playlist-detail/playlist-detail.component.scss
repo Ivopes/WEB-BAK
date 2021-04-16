@@ -18,7 +18,7 @@ table {
   width: 100%;
 }
 .header {
-  margin: 0px auto 0px 0px !important;
+  margin: 0px auto 0px 10px !important;
 }
 .main-Container {
   margin: 20px 15px 0px 15px;
@@ -49,6 +49,9 @@ table {
   vertical-align: middle;
   font-size: 3rem;
   color: white;
+}
+.backButton {
+  margin-left: 10px;
 }
 @media only screen and (max-width: 600px) {
 
