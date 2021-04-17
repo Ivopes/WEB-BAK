@@ -33,6 +33,7 @@ export class StorageService {
   }
   public clearData(): void {
     this.data = null;
+    this.selectedStorage = null;
   }
 
   public getSelectedStorage(): Observable<Storage> {

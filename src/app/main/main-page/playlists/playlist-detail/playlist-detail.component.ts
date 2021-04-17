@@ -81,7 +81,6 @@ export class PlaylistDetailComponent implements OnInit {
       })
     ).subscribe(data => {
       this.playlist = data;
-      //this.dataSource = new MatTableDataSource(data.songs.concat(data.songs.concat(data.songs.concat(data.songs.concat(data.songs)))));
       this.dataSource = new MatTableDataSource(data.songs);
 
       // Connect paginator
