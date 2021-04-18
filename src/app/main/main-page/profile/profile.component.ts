@@ -16,6 +16,7 @@ import { RenamePlDialogComponent } from '../playlists/playlist-detail/rename-pl-
 import { filter, switchMap } from 'rxjs/operators';
 import { Playlist } from '../../shared/models/playlist.model';
 import { ChangePasswdDialogComponent } from './change-passwd-dialog/change-passwd-dialog.component';
+import { PlaylistService } from '../../shared/services/playlist.service';
 
 @Component({
   selector: 'app-profile',
@@ -44,7 +45,8 @@ export class ProfileComponent implements OnInit {
     private storageService: StorageService,
     private loadingService: LoadingService,
     private songService: SongService,
-    private matDialog: MatDialog
+    private matDialog: MatDialog,
+    private playlistService: PlaylistService
   ) { }
 
   ngOnInit(): void {
@@ -138,6 +140,7 @@ export class ProfileComponent implements OnInit {
           this.snackBarService.showSnackBar('Dropbox data deleted', 'Close', 2000);
           this.account.storage.splice(this.account.storage.findIndex(s => s.name === 'Dropbox'), 1);
           this.songService.clearData();
+          this.playlistService.clearData();
         },
         err => {
           this.loadingService.addStopLoading();
@@ -151,6 +154,7 @@ export class ProfileComponent implements OnInit {
           this.snackBarService.showSnackBar('Google Drive data deleted', 'Close', 2000);
           this.account.storage.splice(this.account.storage.findIndex(s => s.name === 'Google Drive'), 1);
           this.songService.clearData();
+          this.playlistService.clearData();
         },
         err => {
           this.loadingService.addStopLoading();
