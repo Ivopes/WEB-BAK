@@ -169,25 +169,5 @@ export class ProfileComponent implements OnInit {
   }
   changePasswd(): void {
     this.matDialog.open(ChangePasswdDialogComponent);
-
-    /*dialogRef.afterClosed().pipe(
-      filter(res => res),
-      switchMap(res => {
-        this.loadingService.startLoading();
-
-        return this.authService.changePasswd();
-      })
-    ).subscribe(
-      () => {
-        this.snackBarService.showSnackBar('Playlist was renamed', 'Close', 3000);
-        this.loadingService.stopLoading();
-        this.playlistService.clearData();
-        this.getData();
-      },
-      err => {
-        this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
-        this.loadingService.stopLoading();
-      }
-    );*/
   }
 }

@@ -43,7 +43,6 @@ export class SongsComponent implements OnInit, AfterViewInit {
   dataSource: MatTableDataSource<Song>;
   selection: SelectionModel<Song>;
 
-  // checked = false;
   @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(

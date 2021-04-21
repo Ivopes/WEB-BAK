@@ -109,8 +109,6 @@ export class LoginComponent implements OnInit {
   watchLogin(credentials: AccountCredentials): void {
     this.auth.watchLogin(credentials).subscribe(res => {
       const token = res.token;
-      // this.router.navigate(['/login'], {queryParams: {token}});
-      // window.location.reload();
       window.location.href = '/login/watch/code?token=' + token;
     },
     (err: HttpErrorResponse) => {
