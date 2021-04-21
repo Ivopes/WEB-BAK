@@ -1,9 +1,23 @@
 <div fxLayoutAlign="center center" fxLayout="column" style="margin-bottom: 10vh;">
 
-  <button fxFlexAlign="end" mat-raised-button color="primary" (click)="addPlaylist()">Add playlist</button>
+  <button *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches;else fab" fxFlexAlign="end" mat-raised-button color="primary" (click)="addPlaylist()">Add playlist</button>
 
 
   <div style="margin-top: 10px;" fxFlexAlign="start">
+
+    <mat-card  *ngIf="!(this.screenSizeService.isSmallScreen() | async)!.matches" class="item" (click)="addPlaylist()">
+      <mat-card-title >
+        Add a new playlist
+      </mat-card-title>
+
+      <mat-card-actions fxLayoutAlign="center center">
+        <button mat-mini-fab color="primary" >
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+
     <mat-card *ngFor="let item of playlists" (click)="showInfo(item.id)" class="item">
 
       <mat-card-title>
@@ -31,10 +45,10 @@
     </mat-card>
   </div>
 
-  <!-- <ng-template #fab> -->
+  <ng-template #fab>
     <button class="fab-button" mat-fab color="primary" (click)="addPlaylist()">
       <mat-icon>add</mat-icon>
     </button>
-  <!-- </ng-template> -->
+  </ng-template>
 
 </div>
