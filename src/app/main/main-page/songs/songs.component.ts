@@ -97,6 +97,10 @@ export class SongsComponent implements OnInit, AfterViewInit {
         this.dataSource.paginator = this.paginator;
       }
       this.loadingService.addStopLoading();
+    },
+    err => {
+      this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
+      this.loadingService.addStopLoading();
     });
   }
   onFileSelected(files: FileList): void {

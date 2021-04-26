@@ -40,6 +40,10 @@ export class PlaylistsComponent implements OnInit {
     this.playlistService.getAll().subscribe(data => {
       this.loadingService.addStopLoading();
       this.playlists = data;
+    },
+    err => {
+      this.snackBarService.showSnackBar('Oops! Something went wrong, please try again later', 'Close', 5000);
+      this.loadingService.addStopLoading();
     });
   }
 

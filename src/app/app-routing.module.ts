@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'login', component: MainLoginComponent},
   { path: 'login/watch', component: MainLoginComponent},
   { path: 'login/watch/code', component: MainLoginComponent},
-  { path: '', component: MainPageComponent, canActivate: [AuthGuard] ,
+  { path: '', component: MainPageComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
       children: [
         {
           path: 'songs', component: SongsComponent
